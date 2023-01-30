@@ -45,11 +45,24 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
     webviewPanel.webview.onDidReceiveMessage((e) => {
       switch (e.type) {
         case 'update':
+          this.updateTextDocument(document, e.text)
           return
       }
     })
 
     updateWebview()
+  }
+  private async updateTextDocument(document: vscode.TextDocument, text: any) {
+    const edit = new vscode.WorkspaceEdit()
+
+    edit.replace(
+      document.uri,
+      new vscode.Range(0, 0, document.lineCount, 0),
+      text
+    )
+
+    await vscode.workspace.applyEdit(edit)
+    document.save()
   }
   private getHtmlForWebview(webview: vscode.Webview): string {
     const styleUri = webview.asWebviewUri(

@@ -1,5 +1,10 @@
 @import "luna-setting/luna-setting.css";
 
+#container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 .luna-setting {
   color: var(--vscode-foreground);
   background: transparent;
