@@ -1,0 +1,18 @@
+@import "luna-setting/luna-setting.css";
+
+.luna-setting {
+  color: var(--vscode-foreground);
+  background: transparent;
+}
+
+.luna-setting-item {
+  &:hover {
+    background: var(--vscode-settings-rowHoverBackground);
+  }
+}
+
+.luna-setting-item-title {
+  color: var(--vscode-settings-headerForeground);
+  font-size: 26px;
+  font-weight: 600;
+}
