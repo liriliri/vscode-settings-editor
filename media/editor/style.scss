@@ -71,6 +71,20 @@
   }
 }
 
+.luna-setting-item-button {
+  button {
+    padding: 2px 14px;
+    margin-top: 4px;
+    color: var(--vscode-button-foreground);
+    background: var(--vscode-button-background);
+    border-color: var(--vscode-button-border);
+    &:hover,
+    &:active {
+      background: var(--vscode-button-hoverBackground); 
+    }
+  }
+}
+
 .vscode-dark {
   .luna-setting-item-input {
     input {
@@ -90,6 +104,11 @@
         border-color: var(--vscode-settings-checkboxBorder);
         background-color: var(--vscode-settings-checkboxBackground); 
       }
+    }
+  }
+  .luna-setting-item-button {
+    button {
+      border: none;
     }
   }
 }

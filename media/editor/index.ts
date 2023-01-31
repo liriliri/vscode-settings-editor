@@ -2,6 +2,9 @@ import LunaSetting from 'luna-setting'
 import splitPath from 'licia/splitPath'
 import safeSet from 'licia/safeSet'
 import isJson from 'licia/isJson'
+import isEmpty from 'licia/isEmpty'
+import each from 'licia/each'
+import truncate from 'licia/truncate'
 
 // @ts-ignore
 const vscode = acquireVsCodeApi()
@@ -10,6 +13,7 @@ const container = document.getElementById('container') as HTMLElement
 const setting = new LunaSetting(container)
 let curName = ''
 let curText = ''
+let curDir = ''
 
 window.addEventListener('message', (event) => {
   const message = event.data // The json data that the extension sent
@@ -23,7 +27,7 @@ window.addEventListener('message', (event) => {
 })
 
 function updateContent(fileName: string, text: string) {
-  const { name } = splitPath(fileName)
+  const { name, dir } = splitPath(fileName)
   if (name === curName && text === curText) {
     return
   }
@@ -31,6 +35,7 @@ function updateContent(fileName: string, text: string) {
   setting.removeAllListeners()
   curName = name
   curText = text
+  curDir = dir
 
   if (isJson(text)) {
     switch (name) {
@@ -116,6 +121,19 @@ function updatePackage() {
     'main',
     'The main field is a module ID that is the primary entry point to your program.'
   )
+
+  if (json.scripts && !isEmpty(json.scripts)) {
+    setting.appendTitle('Scripts')
+    const {} = splitPath(curName)
+    each(json.scripts, (script: string, name: string) => {
+      setting.appendButton(name, truncate(script, 30), () => {
+        vscode.postMessage({
+          type: 'run',
+          command: `cd ${curDir} && npm run ${name}`,
+        })
+      })
+    })
+  }
 }
 
 function updateProjectMiniapp() {

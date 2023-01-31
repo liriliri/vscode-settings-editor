@@ -47,6 +47,9 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
         case 'update':
           this.updateTextDocument(document, e.text)
           return
+        case 'run':
+          this.runCommand(e.command)
+          return
       }
     })
 
@@ -63,6 +66,24 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
 
     await vscode.workspace.applyEdit(edit)
     document.save()
+  }
+  private runCommand(command: string) {
+    const terminal = this.getTerminal()
+    terminal.sendText(command)
+    vscode.window.setStatusBarMessage(
+      `Running command ${command} in terminal settings editor.`,
+      3000
+    )
+  }
+  private getTerminal() {
+    const terminals = vscode.window.terminals
+    for (let i = 0, len = terminals.length; i < len; i++) {
+      const terminal = terminals[i]
+      if (terminal.name === 'settings editor') {
+        return terminal
+      }
+    }
+    return vscode.window.createTerminal('settings editor')
   }
   private getHtmlForWebview(webview: vscode.Webview): string {
     const styleUri = webview.asWebviewUri(
