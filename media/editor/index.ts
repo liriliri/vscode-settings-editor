@@ -35,11 +35,11 @@ function updateContent(fileName: string, text: string) {
   if (isJson(text)) {
     switch (name) {
       case 'project.config.json':
-        updateProjectConfig();
-        break;
+        updateProjectConfig()
+        break
       case 'package.json':
-        updatePackage();
-        break;  
+        updatePackage()
+        break
     }
   }
 }
@@ -56,7 +56,7 @@ function updateProjectConfig() {
     }
   })
 
-  setting.appendTitle('General')
+  setting.appendTitle('Miniprogram Project')
   setting.appendInput('appid', json.appid || '', 'AppId')
   setting.appendInput(
     'miniprogramRoot',
@@ -88,6 +88,14 @@ function updatePackage() {
       vscode.postMessage({ type: 'update', text })
     }
   })
+
+  setting.appendTitle('NPM Package')
+  setting.appendInput(
+    'name',
+    json.name,
+    'name',
+    'The name is what your thing is called.'
+  )
 }
 
 const state = vscode.getState()
