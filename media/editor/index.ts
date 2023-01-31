@@ -87,7 +87,17 @@ function updateProjectConfig() {
 function updatePackage() {
   const json = JSON.parse(curText)
   setting.on('change', (key, val) => {
+    switch (key) {
+      case 'keywords':
+        val = val.split(',')
+        break
+    }
+
     safeSet(json, key, val)
+
+    if (key === 'license' && val === '') {
+      delete json.license
+    }
 
     const text = JSON.stringify(json, null, 2) + '\n'
     if (text !== curText) {
@@ -104,16 +114,44 @@ function updatePackage() {
     'The name is what your thing is called.'
   )
   setting.appendInput(
+    'version',
+    json.version,
+    'version',
+    'Version must be parseable by node-semver, which is bundled with npm as a dependency. (npm install semver to use it yourself.)'
+  )
+  setting.appendInput(
     'description',
     json.description,
     'description',
     "This helps people discover your package, as it's listed in npm search."
   )
   setting.appendInput(
-    'version',
-    json.version,
-    'version',
-    'Version must be parseable by node-semver, which is bundled with npm as a dependency. (npm install semver to use it yourself.)'
+    'keywords',
+    (json.keywords || []).join(','),
+    'keywords',
+    "This helps people discover your package as it's listed in npm search."
+  )
+  setting.appendInput(
+    'homepage',
+    json.homepage || '',
+    'homepage',
+    'The url to the project homepage.'
+  )
+  const licenseOptions: any = {
+    MIT: 'MIT',
+    ISC: 'ISC',
+    'BSD-2-Clause': 'BSD-2-Clause',
+    none: '',
+  }
+  if (json.license) {
+    licenseOptions[json.license] = json.license
+  }
+  setting.appendSelect(
+    'license',
+    json.license || '',
+    'license',
+    "You should specify a license for your package so that people know how they are permitted to use it, and any restrictions you're placing on it.",
+    licenseOptions
   )
   setting.appendInput(
     'main',
