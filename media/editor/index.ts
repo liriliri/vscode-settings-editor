@@ -41,7 +41,7 @@ function updateProjectConfig() {
     console.log(key, val)
     safeSet(json, key, val)
 
-    const text = JSON.stringify(json, null, 2)
+    const text = JSON.stringify(json, null, 2) + '\n'
     if (text !== curText) {
       curText = text
       vscode.postMessage({ type: 'update', text })

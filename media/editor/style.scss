@@ -21,3 +21,20 @@
   font-size: 26px;
   font-weight: 600;
 }
+
+.luna-setting-item-input {
+  input {
+    color: var(--vscode-settings-textInputForeground);
+    background: var(--vscode-settings-textInputBackground);
+    border: none;
+    width: 420px;
+    padding: 4px 6px;
+    &:focus {
+      outline-color: #007fd4;
+      outline-width: 1px;
+      outline-style: solid;
+      outline-offset: -1px;
+      opacity: 1;
+    }
+  }
+}
