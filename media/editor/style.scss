@@ -14,7 +14,7 @@
   &:hover {
     background: var(--vscode-settings-rowHoverBackground);
   }
-  .luna-setting-control {
+  .luna-setting-control, .luna-setting-description {
     font-size: 13px;
   }
   input {

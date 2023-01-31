@@ -79,7 +79,6 @@ function updateProjectConfig() {
 function updatePackage() {
   const json = JSON.parse(curText)
   setting.on('change', (key, val) => {
-    console.log(key, val)
     safeSet(json, key, val)
 
     const text = JSON.stringify(json, null, 2) + '\n'
@@ -95,6 +94,24 @@ function updatePackage() {
     json.name,
     'name',
     'The name is what your thing is called.'
+  )
+  setting.appendInput(
+    'description',
+    json.description,
+    'description',
+    "This helps people discover your package, as it's listed in npm search."
+  )
+  setting.appendInput(
+    'version',
+    json.version,
+    'version',
+    'Version must be parseable by node-semver, which is bundled with npm as a dependency. (npm install semver to use it yourself.)'
+  )
+  setting.appendInput(
+    'main',
+    json.main,
+    'main',
+    'The main field is a module ID that is the primary entry point to your program.'
   )
 }
 
