@@ -37,6 +37,9 @@ function updateContent(fileName: string, text: string) {
       case 'project.config.json':
         updateProjectConfig()
         break
+      case 'project.miniapp.json':
+        updateProjectMiniapp()
+        break
       case 'package.json':
         updatePackage()
         break
@@ -113,6 +116,22 @@ function updatePackage() {
     'main',
     'The main field is a module ID that is the primary entry point to your program.'
   )
+}
+
+function updateProjectMiniapp() {
+  const json = JSON.parse(curText)
+  setting.on('change', (key, val) => {
+    safeSet(json, key, val)
+
+    const text = JSON.stringify(json, null, 2) + '\n'
+    if (text !== curText) {
+      curText = text
+      vscode.postMessage({ type: 'update', text })
+    }
+  })
+
+  setting.appendTitle('Miniapp Project')
+  setting.appendInput('name', json.name, 'Name')
 }
 
 const state = vscode.getState()

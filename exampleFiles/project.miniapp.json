@@ -1,1 +1,34 @@
-{}
+{
+  "name": "找呀找呀找盲盒",
+  "version": "1.0.0",
+  "miniModuleId": "wxae2082e9fc4d1823",
+  "description": "this is a corss-end app module demo",
+  "icon": "",
+  "mini-android": {
+    "useProjectTemplate": true,
+    "projectPath": "/Users/runzisu/source/miniprogram-demo/miniapp/android",
+    "archivePath": "app/src/main/assets/SaaA_embed/wxae2082e9fc4d1823",
+    "buildArchiveEverytime": true,
+    "runArgs": {
+      "mainActivity": ".ui.MainActivity",
+      "variant": "ArmDebug"
+    },
+    "buildArgs": {
+      "mainActivity": ".ui.MainActivity",
+      "variant": "ArmRelease"
+    }
+  },
+  "mini-ios": {
+    "useProjectTemplate": true,
+    "projectPath": "/Users/runzisu/source/miniprogram-demo/miniapp/ios",
+    "archivePath": "demo/Kernel/MiniApp.bundle/Saaa/wxae2082e9fc4d1823",
+    "buildArchiveEverytime": true,
+    "runArgs": {
+      "scheme": "miniapp-demo"
+    },
+    "buildArgs": {
+      "scheme": "miniapp-demo",
+      "exportOptionPlistPath": ""
+    }
+  }
+}
