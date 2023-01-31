@@ -13,3 +13,10 @@ class StateStore extends Store {
 }
 
 export const store = new StateStore()
+
+export function updateText(text: string) {
+  if (text !== store.get('text')) {
+    store.set('text', text)
+    vscode.postMessage({ type: 'update', text })
+  }
+}

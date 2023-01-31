@@ -1,11 +1,11 @@
 import LunaSetting from 'luna-setting'
 import splitPath from 'licia/splitPath'
-import safeSet from 'licia/safeSet'
 import isJson from 'licia/isJson'
 import * as npmPackage from './npmPackage'
 import * as miniprogram from './miniprogram'
 import * as miniapp from './miniapp'
-import { vscode, store } from './util'
+import * as prettier from './prettier'
+import { store } from './util'
 
 const container = document.getElementById('container') as HTMLElement
 const setting = new LunaSetting(container)
@@ -40,6 +40,9 @@ function updateContent(fileName: string, text: string) {
         break
       case 'package.json':
         npmPackage.update(setting)
+        break
+      case '.prettierrc.json':
+        prettier.update(setting)
         break
     }
   }

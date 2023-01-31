@@ -21,7 +21,7 @@
         "displayName": "Settings Editor",
         "selector": [
           {
-            "filenamePattern": "{package.json,project.miniapp.json,project.config.json}"
+            "filenamePattern": "{package.json,project.miniapp.json,project.config.json,.prettierrc.json}"
           }
         ],
         "priority": "option"

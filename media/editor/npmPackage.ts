@@ -4,7 +4,7 @@ import each from 'licia/each'
 import truncate from 'licia/truncate'
 import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
-import { vscode, store } from './util'
+import { vscode, store, updateText } from './util'
 
 export function update(setting: LunaSetting) {
   const json = JSON.parse(store.get('text'))
@@ -21,11 +21,7 @@ export function update(setting: LunaSetting) {
       delete json.license
     }
 
-    const text = JSON.stringify(json, null, 2) + '\n'
-    if (text !== store.get('text')) {
-      store.set('text', text)
-      vscode.postMessage({ type: 'update', text })
-    }
+    updateText(JSON.stringify(json, null, 2) + '\n')
   })
 
   setting.appendTitle('NPM Package')
