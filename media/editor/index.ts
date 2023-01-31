@@ -1,6 +1,7 @@
 import LunaSetting from 'luna-setting'
 import splitPath from 'licia/splitPath'
 import safeSet from 'licia/safeSet'
+import isJson from 'licia/isJson'
 
 // @ts-ignore
 const vscode = acquireVsCodeApi()
@@ -30,12 +31,52 @@ function updateContent(fileName: string, text: string) {
   setting.removeAllListeners()
   curName = name
   curText = text
-  if (name === 'project.config.json') {
-    updateProjectConfig()
+
+  if (isJson(text)) {
+    switch (name) {
+      case 'project.config.json':
+        updateProjectConfig();
+        break;
+      case 'package.json':
+        updatePackage();
+        break;  
+    }
   }
 }
 
 function updateProjectConfig() {
+  const json = JSON.parse(curText)
+  setting.on('change', (key, val) => {
+    safeSet(json, key, val)
+
+    const text = JSON.stringify(json, null, 2) + '\n'
+    if (text !== curText) {
+      curText = text
+      vscode.postMessage({ type: 'update', text })
+    }
+  })
+
+  setting.appendTitle('General')
+  setting.appendInput('appid', json.appid || '', 'AppId')
+  setting.appendInput(
+    'miniprogramRoot',
+    json.miniprogramRoot || '',
+    'Miniprogram Root'
+  )
+  setting.appendSelect('compileType', json.compileType, 'Compile Type', {
+    Miniprogram: 'miniprogram',
+    Plugin: 'plugin',
+  })
+
+  setting.appendTitle('Setting')
+  setting.appendCheckbox(
+    'setting.ignoreUploadUnusedFiles',
+    json.setting.ignoreUploadUnusedFiles,
+    'Ignore unuse files automatically when uploading code.'
+  )
+}
+
+function updatePackage() {
   const json = JSON.parse(curText)
   setting.on('change', (key, val) => {
     console.log(key, val)
@@ -47,8 +88,6 @@ function updateProjectConfig() {
       vscode.postMessage({ type: 'update', text })
     }
   })
-  setting.appendTitle('General')
-  setting.appendInput('appid', json.appid || '', 'AppId', 'Miniprogram appid.')
 }
 
 const state = vscode.getState()

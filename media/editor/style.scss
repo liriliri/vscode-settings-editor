@@ -14,6 +14,18 @@
   &:hover {
     background: var(--vscode-settings-rowHoverBackground);
   }
+  .luna-setting-control {
+    font-size: 13px;
+  }
+  input {
+    &:focus {
+      outline-color: #007fd4;
+      outline-width: 1px;
+      outline-style: solid;
+      outline-offset: -1px;
+      opacity: 1;
+    }
+  }
 }
 
 .luna-setting-item-title {
@@ -29,12 +41,32 @@
     border: none;
     width: 420px;
     padding: 4px 6px;
-    &:focus {
-      outline-color: #007fd4;
-      outline-width: 1px;
-      outline-style: solid;
-      outline-offset: -1px;
-      opacity: 1;
+  }
+}
+
+.luna-setting-item-select {
+  .luna-setting-select {
+    select {
+      width: 320px;
+      color: var(--vscode-settings-textInputForeground);
+      border-color: var(--vscode-settings-textInputBackground);
+      background: var(--vscode-settings-textInputBackground);
+    }
+    &:after {
+      border-top-color: var(--vscode-settings-textInputForeground);
+    }
+  }
+}
+
+.luna-setting-item-checkbox {
+  input {
+    height: 18px;
+    width: 18px;
+    border-color: var(--vscode-settings-checkboxBorder);
+    background-color: var(--vscode-settings-checkboxBackground);
+    &:checked {
+      border-color: var(--vscode-settings-checkboxBorder);
+      background-color: var(--vscode-settings-checkboxBackground); 
     }
   }
 }
