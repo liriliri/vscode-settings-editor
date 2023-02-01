@@ -80,7 +80,9 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
     const terminal = this.getTerminal()
     terminal.sendText(command)
     vscode.window.setStatusBarMessage(
-      `Running command ${command} in terminal settings editor.`,
+      vscode.l10n.t('Running command {command} in terminal settings editor', {
+        command,
+      }),
       3000
     )
   }
