@@ -1,6 +1,6 @@
 import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
-import { store, updateText } from './util'
+import { store, updateText, i18n } from './util'
 
 export function update(setting: LunaSetting) {
   const json = JSON.parse(store.get('text'))
@@ -10,7 +10,7 @@ export function update(setting: LunaSetting) {
     updateText(JSON.stringify(json, null, 2) + '\n')
   })
 
-  setting.appendTitle('Miniapp Project')
+  setting.appendTitle(i18n.t('miniapp.title'))
   setting.appendInput('name', json.name, 'Name')
   setting.appendInput('version', json.version, 'Version')
   setting.appendInput('miniModuleId', json.miniModuleId, 'Mini Module Id')

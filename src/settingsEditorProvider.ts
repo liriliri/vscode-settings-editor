@@ -59,6 +59,10 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
       }
     })
 
+    webviewPanel.webview.postMessage({
+      type: 'init',
+      language: vscode.env.language,
+    })
     updateWebview()
   }
   private updateOpenSourceButton(show: boolean) {

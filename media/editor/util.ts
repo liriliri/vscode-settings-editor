@@ -1,4 +1,5 @@
 import Store from 'licia/Store'
+import I18n from 'licia/I18n'
 
 // @ts-ignore
 export const vscode = acquireVsCodeApi()
@@ -20,3 +21,12 @@ export function updateText(text: string) {
     vscode.postMessage({ type: 'update', text })
   }
 }
+
+export const i18n = new I18n('en', {
+  en: {
+    'miniapp.title': 'Miniapp Project',
+  },
+  'zh-cn': {
+    'miniapp.title': '多端应用',
+  },
+})

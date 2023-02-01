@@ -5,7 +5,7 @@ import * as npmPackage from './npmPackage'
 import * as miniprogram from './miniprogram'
 import * as miniapp from './miniapp'
 import * as prettier from './prettier'
-import { store } from './util'
+import { store, i18n } from './util'
 
 const container = document.getElementById('container') as HTMLElement
 const setting = new LunaSetting(container)
@@ -21,7 +21,11 @@ window.addEventListener('message', (event) => {
       store.set('fileName', fileName)
       store.set('text', text)
       updateContent(fileName, text)
-      return
+      break
+    case 'init':
+      i18n.locale(message.language)
+      store.set('language', message.language)
+      break
   }
 })
 
@@ -50,6 +54,10 @@ function updateContent(fileName: string, text: string) {
 
 const fileName = store.get('fileName')
 const text = store.get('text')
+const language = store.get('language')
+if (language) {
+  i18n.locale(language)
+}
 if (fileName && text) {
   updateContent(fileName, text)
 }
