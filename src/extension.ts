@@ -4,7 +4,12 @@ import contain from 'licia/contain'
 import { setContext } from './util'
 import { SettingsEditorProvider } from './settingsEditorProvider'
 
-const supportedFiles = ['package.json']
+const supportedFiles = [
+  '.prettierrc.json',
+  'package.json',
+  'project.config.json',
+  'project.miniapp.json',
+]
 
 function reopenWith(editor: string) {
   const activeTabInput = vscode.window.tabGroups.activeTabGroup.activeTab
