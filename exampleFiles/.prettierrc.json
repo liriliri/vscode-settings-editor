@@ -2,5 +2,8 @@
   "singleQuote": true,
   "tabWidth": 2,
   "semi": false,
-  "printWidth": 8
+  "printWidth": 8,
+  "useTabs": false,
+  "quoteProps": "as-needed",
+  "bracketSameLine": false
 }

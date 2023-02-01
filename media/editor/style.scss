@@ -11,6 +11,11 @@
 }
 
 .luna-setting-item {
+  padding: 12px 14px 18px;
+  line-height: 1.4em;
+  .luna-setting-title {
+    margin-bottom: 2px;
+  }
   &:hover {
     background: var(--vscode-settings-rowHoverBackground);
   }
@@ -29,6 +34,7 @@
 }
 
 .luna-setting-item-title {
+  padding: 10px 10px 10px 15px;
   color: var(--vscode-settings-headerForeground);
   font-size: 26px;
   font-weight: 600;
@@ -38,7 +44,7 @@
   input {
     color: var(--vscode-settings-textInputForeground);
     background: var(--vscode-settings-textInputBackground);
-    border-color: var(--vscode-settings-textInputBorder);
+    border-color: var(--vscode-settings-textInputBorder, transparent);
     width: 420px;
     padding: 4px 6px;
   }
@@ -60,13 +66,30 @@
 
 .luna-setting-item-checkbox {
   input {
+    align-self: flex-start;
+    flex-shrink: 0;
     height: 18px;
     width: 18px;
+    margin-top: 0;
     border-color: var(--vscode-settings-checkboxBorder);
     background-color: var(--vscode-settings-checkboxBackground);
     &:checked {
       border-color: #007fd4;
       background-color: #007fd4;
+    }
+  }
+}
+
+.luna-setting-item-number {
+  input[type='number'] {
+    padding: 4px 6px;
+    width: 200px;
+    color: var(--vscode-settings-numberInputForeground);
+    background-color: var(--vscode-settings-numberInputBackground);
+    border-color: var(--vscode-settings-numberInputBorder, transparent);
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
   }
 }
@@ -77,7 +100,7 @@
     margin-top: 4px;
     color: var(--vscode-button-foreground);
     background: var(--vscode-button-background);
-    border-color: var(--vscode-button-border);
+    border-color: var(--vscode-button-border, transparent);
     &:hover,
     &:active {
       background: var(--vscode-button-hoverBackground); 
@@ -86,11 +109,6 @@
 }
 
 .vscode-dark {
-  .luna-setting-item-input {
-    input {
-      border: none;
-    }
-  }
   .luna-setting-item-select {
     .luna-setting-select {
       select {
@@ -104,11 +122,6 @@
         border-color: var(--vscode-settings-checkboxBorder);
         background-color: var(--vscode-settings-checkboxBackground); 
       }
-    }
-  }
-  .luna-setting-item-button {
-    button {
-      border: none;
     }
   }
 }
