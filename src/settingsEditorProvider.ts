@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
 import randomId from 'licia/randomId'
+import { setContext } from './util'
 
 export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
@@ -21,6 +22,10 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
       enableScripts: true,
     }
     webviewPanel.webview.html = this.getHtmlForWebview(webviewPanel.webview)
+    webviewPanel.onDidChangeViewState(() => {
+      this.updateOpenSourceButton(webviewPanel.active)
+    })
+    this.updateOpenSourceButton(true)
 
     function updateWebview() {
       webviewPanel.webview.postMessage({
@@ -40,6 +45,7 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
 
     webviewPanel.onDidDispose(() => {
       changeDocumentSubscription.dispose()
+      this.updateOpenSourceButton(false)
     })
 
     webviewPanel.webview.onDidReceiveMessage((e) => {
@@ -54,6 +60,9 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
     })
 
     updateWebview()
+  }
+  private updateOpenSourceButton(show: boolean) {
+    setContext('settingsEditor.openSource', show)
   }
   private async updateTextDocument(document: vscode.TextDocument, text: any) {
     const edit = new vscode.WorkspaceEdit()

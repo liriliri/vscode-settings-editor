@@ -11,7 +11,8 @@
   ],
   "activationEvents": [
     "onCustomEditor:settingsEditor.settingsedit",
-    "onCommand:settingsEditor.openFile"
+    "onCommand:settingsEditor.openFile",
+    "onLanguage:json"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -21,7 +22,7 @@
         "displayName": "Settings Editor",
         "selector": [
           {
-            "filenamePattern": "{package.json,project.miniapp.json,project.config.json,.prettierrc.json}"
+            "filenamePattern": "*"
           }
         ],
         "priority": "option"
@@ -29,10 +30,30 @@
     ],
     "commands": [
       {
-        "command": "settingsEditor.openFile",
-        "title": "Settings Editor: Open Active File in Settings Editor"
+        "command": "settingsEditor.openEditor",
+        "title": "Settings Editor: Open File in Settings Editor",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "settingsEditor.openSource",
+        "title": "Settings Editor: Open File in Source",
+        "icon": "$(go-to-file)"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "settingsEditor.openEditor",
+          "when": "settingsEditor.openEditor",
+          "group": "navigation@200"
+        },
+        {
+          "command": "settingsEditor.openSource",
+          "when": "settingsEditor.openSource",
+          "group": "navigation@200"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

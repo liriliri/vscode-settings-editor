@@ -9,10 +9,6 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [
-    "onCustomEditor:settingsEditor.settingsedit",
-    "onCommand:settingsEditor.openFile"
-  ],
   "main": "./dist/extension.js",
   "scripts": {
     "vscode:prepublish": "npm run compile",
