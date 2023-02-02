@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import splitPath from 'licia/splitPath'
 import contain from 'licia/contain'
-import { setContext } from './util'
+import { getDocument, setContext, setDocument } from './util'
 import { SettingsEditorProvider } from './settingsEditorProvider'
 
 const supportedFiles = [
@@ -12,14 +12,19 @@ const supportedFiles = [
 ]
 
 function reopenWith(editor: string) {
-  const activeTabInput = vscode.window.tabGroups.activeTabGroup.activeTab
-    ?.input as { [key: string]: any; uri: vscode.Uri | undefined }
-  if (activeTabInput.uri) {
-    vscode.commands.executeCommand(
-      'vscode.openWith',
-      activeTabInput.uri,
-      editor
-    )
+  const document = getDocument()
+  let uri: vscode.Uri | undefined
+  if (document) {
+    uri = document.uri
+  } else {
+    try {
+      const activeTabInput = vscode.window.tabGroups.activeTabGroup.activeTab
+        ?.input as { [key: string]: any; uri: vscode.Uri | undefined }
+      uri = activeTabInput.uri
+    } catch (e) {}
+  }
+  if (uri) {
+    vscode.commands.executeCommand('vscode.openWith', uri, editor)
   }
 }
 
@@ -48,6 +53,7 @@ function updateOpenEditorButton(textEditor: vscode.TextEditor | undefined) {
     const fileName = document.fileName
     const { name } = splitPath(fileName)
     if (contain(supportedFiles, name)) {
+      setDocument(document)
       setContext(key, true)
     } else {
       setContext(key, false)
