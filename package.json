@@ -6,6 +6,9 @@
   "engines": {
     "vscode": "^1.74.0"
   },
+  "files": [
+    "dist"
+  ],
   "categories": [
     "Other"
   ],
@@ -63,6 +66,10 @@
     "watch": "node .esbuild.config.js --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liriliri/vscode-settings-editor.git"
   },
   "devDependencies": {
     "@types/glob": "^8.0.0",
