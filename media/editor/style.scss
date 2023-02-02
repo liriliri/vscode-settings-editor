@@ -16,11 +16,27 @@
   .luna-setting-title {
     margin-bottom: 2px;
   }
-  &:hover {
+  &:hover, &.luna-setting-selected {
     background: var(--vscode-settings-rowHoverBackground);
+  }
+  &.luna-setting-selected:focus {
+    outline-color: var(--vscode-settings-focusedRowBorder);
   }
   .luna-setting-control, .luna-setting-description {
     font-size: 13px;
+  }
+  .luna-setting-description {
+    code {
+      line-height: 15px;
+      font-family: var(--monaco-monospace-font);
+      color: var(--vscode-textPreformat-foreground);
+    }
+    a {
+      color: var(--vscode-textLink-foreground);
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
   input {
     &:focus {
@@ -66,8 +82,6 @@
 
 .luna-setting-item-checkbox {
   input {
-    align-self: flex-start;
-    flex-shrink: 0;
     height: 18px;
     width: 18px;
     margin-top: 0;

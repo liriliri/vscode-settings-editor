@@ -1,7 +1,7 @@
 import LunaSetting from 'luna-setting'
 import splitPath from 'licia/splitPath'
 import isJson from 'licia/isJson'
-import * as npmPackage from './npmPackage'
+import * as npm from './npm'
 import * as miniprogram from './miniprogram'
 import * as miniapp from './miniapp'
 import * as prettier from './prettier'
@@ -37,16 +37,16 @@ function updateContent(fileName: string, text: string) {
   if (isJson(text)) {
     switch (name) {
       case 'project.config.json':
-        miniprogram.update(setting)
+        miniprogram.project(setting)
         break
       case 'project.miniapp.json':
-        miniapp.update(setting)
+        miniapp.project(setting)
         break
       case 'package.json':
-        npmPackage.update(setting)
+        npm.pack(setting)
         break
       case '.prettierrc.json':
-        prettier.update(setting)
+        prettier.config(setting)
         break
     }
   }

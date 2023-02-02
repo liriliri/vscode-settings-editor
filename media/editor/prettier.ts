@@ -3,7 +3,7 @@ import safeSet from 'licia/safeSet'
 import isUndef from 'licia/isUndef'
 import { store, vscode } from './util'
 
-export function update(setting: LunaSetting) {
+export function config(setting: LunaSetting) {
   const json = JSON.parse(store.get('text'))
 
   setting.on('change', (key, val) => {
@@ -93,7 +93,7 @@ export function update(setting: LunaSetting) {
     'bracketSameLine',
     !!json.bracketSameLine,
     'Bracket Line',
-    'Put the > of a multi-line HTML (HTML, JSX, Vue, Angular) element at the end of the last line instead of being alone on the next line (does not apply to self closing elements).'
+    'Put the `>` of a multi-line HTML (HTML, JSX, Vue, Angular) element at the end of the last line instead of being alone on the next line (does not apply to self closing elements).'
   )
   setting.appendSelect(
     'arrowParens',
@@ -120,7 +120,7 @@ export function update(setting: LunaSetting) {
     'htmlWhitespaceSensitivity',
     json.htmlWhitespaceSensitivity || 'css',
     'HTML Whitespace Sensitivity',
-    'Specify the global whitespace sensitivity for HTML, Vue, Angular, and Handlebars.',
+    'Specify the global whitespace sensitivity for HTML, Vue, Angular, and Handlebars. See [whitespace-sensitive formatting](https://prettier.io/blog/2018/11/07/1.15.0.html#whitespace-sensitive-formatting) for more info.',
     {
       'Respect the default value of CSS display property': 'css',
       'Whitespace (or the lack of it) around all tags is considered significant':
@@ -133,13 +133,13 @@ export function update(setting: LunaSetting) {
     'vueIndentScriptAndStyle',
     !!json.vueIndentScriptAndStyle,
     'Vue files script and style tags indentation',
-    'Whether or not to indent the code inside <script> and <style> tags in Vue files.'
+    'Whether or not to indent the code inside `<script>` and `<style>` tags in Vue files.'
   )
   setting.appendSelect(
     'endOfLine',
     json.endOfLine || 'lf',
     'End of Line',
-    'For historical reasons, there exist two common flavors of line endings in text files. That is \n (or LF for Line Feed) and \r\n (or CRLF for Carriage Return + Line Feed). The former is common on Linux and macOS, while the latter is prevalent on Windows.',
+    'For historical reasons, there exist two common flavors of line endings in text files. That is `\\n` (or `LF` for Line Feed) and `\\r\\n` (or `CRLF` for Carriage Return + Line Feed). The former is common on Linux and macOS, while the latter is prevalent on Windows. Some details explaining why it is so [can be found on Wikipedia](https://en.wikipedia.org/wiki/Newline).',
     {
       'Line Feed only (\\n), common on Linux and macOS as well as inside git repos':
         'lf',

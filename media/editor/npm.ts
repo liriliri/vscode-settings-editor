@@ -6,7 +6,7 @@ import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
 import { vscode, store, updateText } from './util'
 
-export function update(setting: LunaSetting) {
+export function pack(setting: LunaSetting) {
   const json = JSON.parse(store.get('text'))
   setting.on('change', (key, val) => {
     switch (key) {
