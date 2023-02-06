@@ -1,16 +1,10 @@
 import LunaSetting from 'luna-setting'
 import * as npm from './npm'
 import * as miniprogram from './miniprogram'
-import * as miniapp from './miniapp'
 import * as prettier from './prettier'
 import { store, i18n } from './util'
 
-const handlers = [
-  prettier.handler,
-  miniapp.handler,
-  miniprogram.handler,
-  npm.handler,
-]
+const handlers = [prettier.handler, miniprogram.handler, npm.handler]
 
 const container = document.getElementById('container') as HTMLElement
 const setting = new LunaSetting(container)
