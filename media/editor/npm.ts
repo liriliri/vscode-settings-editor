@@ -4,10 +4,19 @@ import each from 'licia/each'
 import truncate from 'licia/truncate'
 import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
-import { vscode, store, updateText } from './util'
+import { vscode, updateText } from './util'
+import endWith from 'licia/endWith'
 
-export function pack(setting: LunaSetting) {
-  const json = JSON.parse(store.get('text'))
+export function handler(setting: LunaSetting, fileName: string, text: string) {
+  if (endWith(fileName, 'package.json')) {
+    pack(setting, fileName, text)
+    return true
+  }
+  return false
+}
+
+function pack(setting: LunaSetting, fileName: string, text: string) {
+  const json = JSON.parse(text)
   setting.on('change', (key, val) => {
     switch (key) {
       case 'keywords':
@@ -80,7 +89,7 @@ export function pack(setting: LunaSetting) {
 
   if (json.scripts && !isEmpty(json.scripts)) {
     setting.appendTitle('Scripts')
-    const { dir } = splitPath(store.get('fileName'))
+    const { dir } = splitPath(fileName)
     each(json.scripts, (script: string, name: string) => {
       setting.appendButton(name, truncate(script, 30), () => {
         vscode.postMessage({

@@ -1,9 +1,25 @@
 import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
-import { store, updateText, i18n } from './util'
+import { updateText, i18n } from './util'
+import endWith from 'licia/endWith'
 
-export function project(setting: LunaSetting) {
-  const json = JSON.parse(store.get('text'))
+i18n.set('en', {
+  'miniapp.title': 'Miniapp Project',
+})
+i18n.set('zh-cn', {
+  'miniapp.title': '多端应用',
+})
+
+export function handler(setting: LunaSetting, fileName: string, text: string) {
+  if (endWith(fileName, 'project.miniapp.json')) {
+    project(setting, text)
+    return true
+  }
+  return false
+}
+
+function project(setting: LunaSetting, text: string) {
+  const json = JSON.parse(text)
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
 

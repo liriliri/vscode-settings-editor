@@ -1,11 +1,16 @@
 import LunaSetting from 'luna-setting'
-import splitPath from 'licia/splitPath'
-import isJson from 'licia/isJson'
 import * as npm from './npm'
 import * as miniprogram from './miniprogram'
 import * as miniapp from './miniapp'
 import * as prettier from './prettier'
 import { store, i18n } from './util'
+
+const handlers = [
+  prettier.handler,
+  miniapp.handler,
+  miniprogram.handler,
+  npm.handler,
+]
 
 const container = document.getElementById('container') as HTMLElement
 const setting = new LunaSetting(container)
@@ -30,24 +35,12 @@ window.addEventListener('message', (event) => {
 })
 
 function updateContent(fileName: string, text: string) {
-  const { name } = splitPath(fileName)
   setting.clear()
   setting.removeAllListeners()
 
-  if (isJson(text)) {
-    switch (name) {
-      case 'project.config.json':
-        miniprogram.project(setting)
-        break
-      case 'project.miniapp.json':
-        miniapp.project(setting)
-        break
-      case 'package.json':
-        npm.pack(setting)
-        break
-      case '.prettierrc.json':
-        prettier.config(setting)
-        break
+  for (let i = 0, len = handlers.length; i < len; i++) {
+    if (handlers[i](setting, fileName, text)) {
+      break
     }
   }
 }

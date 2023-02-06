@@ -1,9 +1,18 @@
 import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
-import { store, updateText } from './util'
+import { updateText } from './util'
+import endWith from 'licia/endWith'
 
-export function project(setting: LunaSetting) {
-  const json = JSON.parse(store.get('text'))
+export function handler(setting: LunaSetting, fileName: string, text: string) {
+  if (endWith(fileName, 'project.config.json')) {
+    project(setting, text)
+    return true
+  }
+  return false
+}
+
+function project(setting: LunaSetting, text: string) {
+  const json = JSON.parse(text)
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
 

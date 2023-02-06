@@ -23,10 +23,6 @@ export function updateText(text: string) {
 }
 
 export const i18n = new I18n('en', {
-  en: {
-    'miniapp.title': 'Miniapp Project',
-  },
-  'zh-cn': {
-    'miniapp.title': '多端应用',
-  },
+  en: {},
+  'zh-cn': {},
 })

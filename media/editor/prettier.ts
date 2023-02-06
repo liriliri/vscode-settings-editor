@@ -1,19 +1,32 @@
 import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
 import isUndef from 'licia/isUndef'
-import { store, vscode } from './util'
+import endWith from 'licia/endWith'
+import { i18n, updateText } from './util'
 
-export function config(setting: LunaSetting) {
-  const json = JSON.parse(store.get('text'))
+i18n.set('en', {
+  'prettier.tabWidthDesc':
+    'Specify the number of spaces per indentation-level.',
+})
+i18n.set('zh-cn', {
+  'prettier.tabWidthDesc': '指定缩进空格数。',
+})
+
+export function handler(setting: LunaSetting, fileName: string, text: string) {
+  if (endWith(fileName, '.prettierrc.json')) {
+    config(setting, text)
+    return true
+  }
+  return false
+}
+
+function config(setting: LunaSetting, text: string) {
+  const json = JSON.parse(text)
 
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
 
-    const text = JSON.stringify(json, null, 2) + '\n'
-    if (text !== store.get('text')) {
-      store.set('text', text)
-      vscode.postMessage({ type: 'update', text })
-    }
+    updateText(JSON.stringify(json, null, 2) + '\n')
   })
 
   setting.appendTitle('Prettier')
@@ -28,7 +41,7 @@ export function config(setting: LunaSetting) {
     'tabWidth',
     json.tabWidth || 2,
     'Tab Width',
-    'Specify the number of spaces per indentation-level.',
+    i18n.t('prettier.tabWidthDesc'),
     {
       min: 0,
       step: 1,
