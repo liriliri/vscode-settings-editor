@@ -1,7 +1,13 @@
-# vscode-settings-editor
-
-VS Code visual editor for settings like npm package.json
+VS Code visual editor for settings like prettier, npm package etc.
 
 ## Features
 
-* miniprogram
+Supported configuration type:
+
+* .prettierrc.json
+
+![settings-editor](https://raw.githubusercontent.com/liriliri/vscode-settings-editor/main/settings-editor.gif)
+
+## How to Use
+
+Click button on editor title to open settings visual editor.
