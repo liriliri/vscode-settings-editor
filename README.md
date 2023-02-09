@@ -4,11 +4,15 @@ VS Code visual editor for settings like prettier, npm package etc.
 
 Supported configuration type:
 
-* prettier
-  - .prettierrc.json
+* miniprogram
+  - project.config.json
+  - project.miniapp.json
+  - app.json
 * npm
   - package.json
   - .npmrc
+* prettier
+  - .prettierrc.json
 
 ![settings-editor](https://raw.githubusercontent.com/liriliri/vscode-settings-editor/main/settings-editor.gif)
 
