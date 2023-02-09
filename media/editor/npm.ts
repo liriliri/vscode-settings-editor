@@ -48,13 +48,13 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
   setting.appendInput(
     'name',
     json.name,
-    'name',
+    'Name',
     'The name is what your thing is called.'
   )
   setting.appendInput(
     'version',
     json.version,
-    'version',
+    'Version',
     'Version must be parseable by node-semver, which is bundled with npm as a dependency. (npm install semver to use it yourself.)'
   )
   setting.appendInput(
@@ -66,13 +66,13 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
   setting.appendInput(
     'keywords',
     (json.keywords || []).join(','),
-    'keywords',
+    'Keywords',
     "This helps people discover your package as it's listed in npm search."
   )
   setting.appendInput(
     'homepage',
     json.homepage || '',
-    'homepage',
+    'Homepage',
     'The url to the project homepage.'
   )
   const licenseOptions: any = {
@@ -87,14 +87,14 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
   setting.appendSelect(
     'license',
     json.license || '',
-    'license',
+    'License',
     "You should specify a license for your package so that people know how they are permitted to use it, and any restrictions you're placing on it.",
     licenseOptions
   )
   setting.appendInput(
     'main',
     json.main,
-    'main',
+    'Main',
     'The main field is a module ID that is the primary entry point to your program.'
   )
 
