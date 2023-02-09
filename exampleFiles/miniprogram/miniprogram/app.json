@@ -187,19 +187,27 @@
   "preloadRule": {
     "page/component/index": {
       "network": "all",
-      "packages": ["packageComponent"]
+      "packages": [
+        "packageComponent"
+      ]
     },
     "page/API/index": {
       "network": "all",
-      "packages": ["packageAPI"]
+      "packages": [
+        "packageAPI"
+      ]
     },
     "page/cloud/index": {
       "network": "all",
-      "packages": ["packageCloud"]
+      "packages": [
+        "packageCloud"
+      ]
     },
     "page/extend/index": {
       "network": "all",
-      "packages": ["packageExtend"]
+      "packages": [
+        "packageExtend"
+      ]
     }
   },
   "window": {
@@ -263,7 +271,12 @@
     "weui": true
   },
   "frameset": true,
-  "requiredBackgroundModes": ["audio", "location"],
-  "embeddedAppIdList": ["wxfdcee92a299bcaf1"],
+  "requiredBackgroundModes": [
+    "audio",
+    "location"
+  ],
+  "embeddedAppIdList": [
+    "wxfdcee92a299bcaf1"
+  ],
   "lazyCodeLoading": "requiredComponents"
 }

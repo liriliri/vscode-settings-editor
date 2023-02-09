@@ -4,14 +4,21 @@ import each from 'licia/each'
 import truncate from 'licia/truncate'
 import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
-import { vscode, updateText } from './util'
-import endWith from 'licia/endWith'
+import ini from 'licia/ini'
+import { vscode, updateText, appendMarkdown } from './util'
 
 export function handler(setting: LunaSetting, fileName: string, text: string) {
-  if (endWith(fileName, 'package.json')) {
-    pack(setting, fileName, text)
-    return true
+  const { name } = splitPath(fileName)
+
+  switch (name) {
+    case 'package.json':
+      pack(setting, fileName, text)
+      return true
+    case '.npmrc':
+      config(setting, text)
+      return true
   }
+
   return false
 }
 
@@ -33,7 +40,11 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
     updateText(JSON.stringify(json, null, 2) + '\n')
   })
 
-  setting.appendTitle('NPM Package')
+  setting.appendTitle('Npm Package')
+  appendMarkdown(
+    setting,
+    'Click [here](https://docs.npmjs.com/cli/v9/configuring-npm/package-json) to see the documentation.'
+  )
   setting.appendInput(
     'name',
     json.name,
@@ -49,7 +60,7 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
   setting.appendInput(
     'description',
     json.description,
-    'description',
+    'Description',
     "This helps people discover your package, as it's listed in npm search."
   )
   setting.appendInput(
@@ -99,4 +110,44 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
       })
     })
   }
+}
+
+function config(setting: LunaSetting, text: string) {
+  const obj = ini.parse(text)
+
+  setting.on('change', (key, val) => {
+    safeSet(obj, key, val)
+
+    updateText(ini.stringify(obj))
+  })
+
+  setting.appendTitle('Npm Config')
+  appendMarkdown(
+    setting,
+    'Click [here](https://docs.npmjs.com/cli/v9/using-npm/config) to see the documentation.'
+  )
+  setting.appendInput(
+    'registry',
+    obj.registry || 'https://registry.npmjs.org/',
+    'Registry',
+    'The base URL of the npm registry.'
+  )
+  setting.appendInput(
+    'cache',
+    obj.cache || '',
+    'Cache',
+    "The location of npm's cache directory."
+  )
+  setting.appendInput(
+    'prefix',
+    obj.prefix || '',
+    'Prefix',
+    'In global mode, the folder where the node executable is installed. In local mode, the nearest parent folder containing either a package.json file or a node_modules folder.'
+  )
+  setting.appendInput(
+    'proxy',
+    obj.proxy || '',
+    'Proxy',
+    'A proxy to use for outgoing http requests. If the `HTTP_PROXY` or `http_proxy` environment variables are set, proxy settings will be honored by the underlying `request` library.'
+  )
 }

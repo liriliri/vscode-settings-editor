@@ -18,7 +18,8 @@
   "activationEvents": [
     "onCustomEditor:settingsEditor.settingsedit",
     "onCommand:settingsEditor.openFile",
-    "onLanguage:json"
+    "onLanguage:json",
+    "onLanguage:properties"
   ],
   "main": "./dist/extension.js",
   "l10n": "./l10n",
@@ -88,6 +89,7 @@
     "glob": "^8.0.3",
     "licia": "^1.37.1",
     "luna-setting": "^0.5.0",
+    "micromark": "^3.1.0",
     "mocha": "^10.1.0",
     "prettier": "^2.8.3",
     "typescript": "^4.9.3"

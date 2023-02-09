@@ -13,6 +13,9 @@
 
 .luna-setting-item {
   padding: 12px 14px 18px;
+  &.luna-setting-item-html {
+    padding: 0;
+  }
   line-height: 1.4em;
   .luna-setting-title {
     margin-bottom: 2px;
@@ -26,7 +29,7 @@
   .luna-setting-control, .luna-setting-description {
     font-size: 13px;
   }
-  .luna-setting-description {
+  .luna-setting-description, .markdown {
     code {
       line-height: 15px;
       font-family: var(--monaco-monospace-font);
@@ -34,9 +37,15 @@
     }
     a {
       color: var(--vscode-textLink-foreground);
+      text-decoration: none;
       &:hover {
         text-decoration: underline;
       }
+    }
+  }
+  .markdown {
+    * {
+      margin: 0;
     }
   }
   input {
@@ -121,6 +130,10 @@
       background: var(--vscode-button-hoverBackground); 
     }
   }
+}
+
+.item-markdown {
+  padding: 12px 14px;
 }
 
 .vscode-dark {

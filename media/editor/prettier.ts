@@ -2,7 +2,7 @@ import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
 import isUndef from 'licia/isUndef'
 import endWith from 'licia/endWith'
-import { i18n, updateText } from './util'
+import { appendMarkdown, i18n, updateText } from './util'
 
 i18n.set('en', {
   'prettier.tabWidthDesc':
@@ -29,7 +29,11 @@ function config(setting: LunaSetting, text: string) {
     updateText(JSON.stringify(json, null, 2) + '\n')
   })
 
-  setting.appendTitle('Prettier')
+  setting.appendTitle('Prettier Options')
+  appendMarkdown(
+    setting,
+    'Click [here](https://prettier.io/docs/en/options.html) to see the documentation.'
+  )
   setting.appendNumber(
     'printWidth',
     json.printWidth || 80,

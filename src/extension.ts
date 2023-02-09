@@ -7,6 +7,8 @@ import { SettingsEditorProvider } from './settingsEditorProvider'
 const supportedFiles = [
   '.prettierrc.json',
   'package.json',
+  '.npmrc',
+  'app.json',
   'project.config.json',
   'project.miniapp.json',
 ]

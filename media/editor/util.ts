@@ -1,5 +1,7 @@
 import Store from 'licia/Store'
 import I18n from 'licia/I18n'
+import LunaSetting from 'luna-setting'
+import { micromark } from 'micromark'
 
 // @ts-ignore
 export const vscode = acquireVsCodeApi()
@@ -26,3 +28,9 @@ export const i18n = new I18n('en', {
   en: {},
   'zh-cn': {},
 })
+
+export function appendMarkdown(setting: LunaSetting, markdown: string) {
+  setting.appendHtml(
+    `<div class="item-markdown markdown">${micromark(markdown)}</div>`
+  )
+}
