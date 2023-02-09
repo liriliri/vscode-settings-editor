@@ -55,6 +55,9 @@ export function buildSettings(setting: LunaSetting, config: any) {
       case 'select':
         setting.appendSelect.apply(setting, value)
         break
+      case 'input':
+        setting.appendInput.apply(setting, value)
+        break
     }
   })
 }

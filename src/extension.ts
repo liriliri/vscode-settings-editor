@@ -11,6 +11,7 @@ const supportedFiles = [
   'app.json',
   'project.config.json',
   'project.miniapp.json',
+  'tsconfig.json',
 ]
 
 function reopenWith(editor: string) {
