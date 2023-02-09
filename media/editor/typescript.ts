@@ -55,5 +55,17 @@ function config(setting: LunaSetting, text: string) {
         NodeNext: 'nodenext',
       },
     ],
+    [
+      'checkbox',
+      'compilerOptions.declaration',
+      !!compilerOptions.declaration,
+      'Declaration',
+      'Generate `.d.ts` files for every TypeScript or JavaScript file inside your project. ',
+    ],
+    [
+      'editSource',
+      'Lib',
+      'TypeScript includes a default set of type definitions for built-in JS APIs (like `Math`), as well as type definitions for things found in browser environments (like `document`). TypeScript also includes APIs for newer JS features matching the target you specify; for example the definition for Map is available if target is `ES6` or newer.',
+    ],
   ])
 }

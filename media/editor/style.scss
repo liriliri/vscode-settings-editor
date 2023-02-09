@@ -132,8 +132,18 @@
   }
 }
 
-.item-markdown {
+.item-markdown, .item-edit-source {
   padding: 12px 14px;
+}
+
+.item-edit-source {
+  a.edit-source {
+    color: var(--vscode-textLink-foreground);
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .vscode-dark {

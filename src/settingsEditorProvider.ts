@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 import randomId from 'licia/randomId'
-import { setContext, setDocument } from './util'
+import { reopenWith, setContext, setDocument } from './util'
 
 export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
@@ -56,9 +56,12 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
       switch (e.type) {
         case 'update':
           this.updateTextDocument(document, e.text)
-          return
+          break
         case 'run':
           this.runCommand(e.command)
+          break
+        case 'editSource':
+          reopenWith('default')
           return
       }
     })

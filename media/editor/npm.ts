@@ -5,7 +5,7 @@ import truncate from 'licia/truncate'
 import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
 import ini from 'licia/ini'
-import { vscode, updateText, appendMarkdown } from './util'
+import { vscode, updateText, appendMarkdown, buildSettings } from './util'
 
 export function handler(setting: LunaSetting, fileName: string, text: string) {
   const { name } = splitPath(fileName)
@@ -25,12 +25,6 @@ export function handler(setting: LunaSetting, fileName: string, text: string) {
 function pack(setting: LunaSetting, fileName: string, text: string) {
   const json = JSON.parse(text)
   setting.on('change', (key, val) => {
-    switch (key) {
-      case 'keywords':
-        val = val.split(',')
-        break
-    }
-
     safeSet(json, key, val)
 
     if (key === 'license' && val === '') {
@@ -40,41 +34,46 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
     updateText(JSON.stringify(json, null, 2) + '\n')
   })
 
-  setting.appendTitle('Npm Package')
-  appendMarkdown(
-    setting,
-    'Click [here](https://docs.npmjs.com/cli/v9/configuring-npm/package-json) to see the documentation.'
-  )
-  setting.appendInput(
-    'name',
-    json.name,
-    'Name',
-    'The name is what your thing is called.'
-  )
-  setting.appendInput(
-    'version',
-    json.version,
-    'Version',
-    'Version must be parseable by node-semver, which is bundled with npm as a dependency. (npm install semver to use it yourself.)'
-  )
-  setting.appendInput(
-    'description',
-    json.description,
-    'Description',
-    "This helps people discover your package, as it's listed in npm search."
-  )
-  setting.appendInput(
-    'keywords',
-    (json.keywords || []).join(','),
-    'Keywords',
-    "This helps people discover your package as it's listed in npm search."
-  )
-  setting.appendInput(
-    'homepage',
-    json.homepage || '',
-    'Homepage',
-    'The url to the project homepage.'
-  )
+  buildSettings(setting, [
+    ['title', 'Npm Package'],
+    [
+      'markdown',
+      'Click [here](https://docs.npmjs.com/cli/v9/configuring-npm/package-json) to see the documentation.',
+    ],
+    [
+      'input',
+      'name',
+      json.name,
+      'Name',
+      'The name is what your thing is called.',
+    ],
+    [
+      'input',
+      'version',
+      json.version,
+      'Version',
+      'Version must be parseable by node-semver, which is bundled with npm as a dependency. (npm install semver to use it yourself.)',
+    ],
+    [
+      'input',
+      'description',
+      json.description,
+      'Description',
+      "This helps people discover your package, as it's listed in npm search.",
+    ],
+    [
+      'editSource',
+      'Keywords',
+      "This helps people discover your package as it's listed in npm search.",
+    ],
+    [
+      'input',
+      'homepage',
+      json.homepage || '',
+      'Homepage',
+      'The url to the project homepage.',
+    ],
+  ])
   const licenseOptions: any = {
     MIT: 'MIT',
     ISC: 'ISC',
@@ -84,19 +83,23 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
   if (json.license) {
     licenseOptions[json.license] = json.license
   }
-  setting.appendSelect(
-    'license',
-    json.license || '',
-    'License',
-    "You should specify a license for your package so that people know how they are permitted to use it, and any restrictions you're placing on it.",
-    licenseOptions
-  )
-  setting.appendInput(
-    'main',
-    json.main,
-    'Main',
-    'The main field is a module ID that is the primary entry point to your program.'
-  )
+  buildSettings(setting, [
+    [
+      'select',
+      'license',
+      json.license || '',
+      'License',
+      "You should specify a license for your package so that people know how they are permitted to use it, and any restrictions you're placing on it.",
+      licenseOptions,
+    ],
+    [
+      'input',
+      'main',
+      json.main,
+      'Main',
+      'The main field is a module ID that is the primary entry point to your program.',
+    ],
+  ])
 
   if (json.scripts && !isEmpty(json.scripts)) {
     setting.appendTitle('Scripts')

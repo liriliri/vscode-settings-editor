@@ -2,7 +2,10 @@ import Store from 'licia/Store'
 import I18n from 'licia/I18n'
 import LunaSetting from 'luna-setting'
 import { micromark } from 'micromark'
+import h from 'licia/h'
 import each from 'licia/each'
+import toEl from 'licia/toEl'
+import splitPath from 'licia/splitPath'
 
 // @ts-ignore
 export const vscode = acquireVsCodeApi()
@@ -36,6 +39,47 @@ export function appendMarkdown(setting: LunaSetting, markdown: string) {
   )
 }
 
+export function appendEditSource(
+  setting: LunaSetting,
+  title: string,
+  description: string
+) {
+  const fileName = store.get('fileName')
+  const { name } = splitPath(fileName)
+  setting.appendHtml(
+    h(
+      'div',
+      {
+        class: 'item-edit-source',
+      },
+      h(
+        'div',
+        {
+          class: 'luna-setting-title',
+        },
+        title
+      ),
+      h(
+        'div',
+        {
+          class: 'luna-setting-description',
+        },
+        toEl(`<div>${micromark(description)}</div>`) as HTMLElement
+      ),
+      h(
+        'a',
+        {
+          class: 'edit-source',
+          onclick() {
+            vscode.postMessage({ type: 'editSource' })
+          },
+        },
+        `Edit in ${name}`
+      )
+    )
+  )
+}
+
 export function buildSettings(setting: LunaSetting, config: any) {
   each(config, (value: any) => {
     const type = value.shift()
@@ -57,6 +101,9 @@ export function buildSettings(setting: LunaSetting, config: any) {
         break
       case 'input':
         setting.appendInput.apply(setting, value)
+        break
+      case 'editSource':
+        appendEditSource(setting, value[0], value[1])
         break
     }
   })

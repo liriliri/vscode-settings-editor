@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import splitPath from 'licia/splitPath'
 import contain from 'licia/contain'
-import { getDocument, setContext, setDocument } from './util'
+import { setContext, setDocument, reopenWith } from './util'
 import { SettingsEditorProvider } from './settingsEditorProvider'
 
 const supportedFiles = [
@@ -13,23 +13,6 @@ const supportedFiles = [
   'project.miniapp.json',
   'tsconfig.json',
 ]
-
-function reopenWith(editor: string) {
-  const document = getDocument()
-  let uri: vscode.Uri | undefined
-  if (document) {
-    uri = document.uri
-  } else {
-    try {
-      const activeTabInput = vscode.window.tabGroups.activeTabGroup.activeTab
-        ?.input as { [key: string]: any; uri: vscode.Uri | undefined }
-      uri = activeTabInput.uri
-    } catch (e) {}
-  }
-  if (uri) {
-    vscode.commands.executeCommand('vscode.openWith', uri, editor)
-  }
-}
 
 export function activate(context: vscode.ExtensionContext) {
   const openEditorCommand = vscode.commands.registerCommand(
