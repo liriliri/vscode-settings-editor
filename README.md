@@ -13,6 +13,8 @@ Supported configuration type:
   - .npmrc
 * prettier
   - .prettierrc.json
+* typescript
+  - tsconfig.json  
 
 ![settings-editor](https://raw.githubusercontent.com/liriliri/vscode-settings-editor/main/settings-editor.gif)
 
