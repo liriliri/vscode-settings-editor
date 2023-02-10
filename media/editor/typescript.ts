@@ -34,7 +34,7 @@ function config(setting: LunaSetting, text: string) {
       'Extends',
       'The value of `extends` is a string which contains a path to another configuration file to inherit from. The path may use Node.js style resolution.',
     ],
-    ['title', 'Compiler Options'],
+    ['title', 'Compiler Options', 2],
     [
       'select',
       'compilerOptions.module',

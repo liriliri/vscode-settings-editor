@@ -2,7 +2,7 @@ import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
 import isUndef from 'licia/isUndef'
 import endWith from 'licia/endWith'
-import { appendMarkdown, buildSettings, i18n, updateText } from './util'
+import { buildSettings, i18n, updateText } from './util'
 
 i18n.set('en', {
   'prettier.tabWidthDesc':

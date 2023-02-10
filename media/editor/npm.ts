@@ -102,7 +102,7 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
   ])
 
   if (json.scripts && !isEmpty(json.scripts)) {
-    setting.appendTitle('Scripts')
+    setting.appendTitle('Scripts', 2)
     const { dir } = splitPath(fileName)
     each(json.scripts, (script: string, name: string) => {
       setting.appendButton(name, truncate(script, 30), () => {
@@ -124,33 +124,39 @@ function config(setting: LunaSetting, text: string) {
     updateText(ini.stringify(obj))
   })
 
-  setting.appendTitle('Npm Config')
-  appendMarkdown(
-    setting,
-    'Click [here](https://docs.npmjs.com/cli/v9/using-npm/config) to see the documentation.'
-  )
-  setting.appendInput(
-    'registry',
-    obj.registry || 'https://registry.npmjs.org/',
-    'Registry',
-    'The base URL of the npm registry.'
-  )
-  setting.appendInput(
-    'cache',
-    obj.cache || '',
-    'Cache',
-    "The location of npm's cache directory."
-  )
-  setting.appendInput(
-    'prefix',
-    obj.prefix || '',
-    'Prefix',
-    'In global mode, the folder where the node executable is installed. In local mode, the nearest parent folder containing either a package.json file or a node_modules folder.'
-  )
-  setting.appendInput(
-    'proxy',
-    obj.proxy || '',
-    'Proxy',
-    'A proxy to use for outgoing http requests. If the `HTTP_PROXY` or `http_proxy` environment variables are set, proxy settings will be honored by the underlying `request` library.'
-  )
+  buildSettings(setting, [
+    ['title', 'Npm Config'],
+    [
+      'markdown',
+      'Click [here](https://docs.npmjs.com/cli/v9/using-npm/config) to see the documentation.',
+    ],
+    [
+      'input',
+      'registry',
+      obj.registry || 'https://registry.npmjs.org/',
+      'Registry',
+      'The base URL of the npm registry.',
+    ],
+    [
+      'input',
+      'cache',
+      obj.cache || '',
+      'Cache',
+      "The location of npm's cache directory.",
+    ],
+    [
+      'input',
+      'prefix',
+      obj.prefix || '',
+      'Prefix',
+      'In global mode, the folder where the node executable is installed. In local mode, the nearest parent folder containing either a package.json file or a node_modules folder.',
+    ],
+    [
+      'input',
+      'proxy',
+      obj.proxy || '',
+      'Proxy',
+      'A proxy to use for outgoing http requests. If the `HTTP_PROXY` or `http_proxy` environment variables are set, proxy settings will be honored by the underlying `request` library.',
+    ],
+  ])
 }

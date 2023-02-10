@@ -62,8 +62,16 @@
 .luna-setting-item-title {
   padding: 10px 10px 10px 15px;
   color: var(--vscode-settings-headerForeground);
-  font-size: 26px;
   font-weight: 600;
+  &.luna-setting-level-1 {
+    font-size: 26px;
+  }
+  &.luna-setting-level-2 {
+    font-size: 22px;
+  }
+  &.luna-setting-level-3 {
+    font-size: 18px;
+  }
 }
 
 .luna-setting-item-input {
