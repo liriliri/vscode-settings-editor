@@ -131,6 +131,11 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
         <title>Settings Editor</title>
       </head>
       <body>
+        <div id="search">
+          <div class="input-container">
+            <input types="text" placeholder="Search settings"/>
+          </div>
+        </div>
         <div id="container"></div>
         <script nonce="${nonce}" src="${scriptUri}"></script>
       </body>

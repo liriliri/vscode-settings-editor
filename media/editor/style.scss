@@ -1,9 +1,53 @@
 @import "luna-setting/luna-setting.css";
 
+#search {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: var(--vscode-editor-background);
+  .input-container {
+    padding: 10px 20px;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    max-width: 1040px;
+    margin: 0 auto;
+    &::after {
+      content: '';
+      display: block;
+      margin-top: 10px;
+      width: 100%;
+      border-bottom: 1px solid var(--vscode-settings-headerBorder);
+    }
+    input {
+      width: 100%;
+      display: block;
+      box-sizing: border-box;
+      background-color: var(--vscode-input-background);
+      color: var(--vscode-input-foreground);
+      border-width: 1px;
+      border-style: solid;
+      border-color: var(--vscode-settings-textInputBorder, transparent);
+      padding: 3px 6px;
+      border-radius: 2px;
+      height: 26px;
+      &:focus {
+        outline-color: #007fd4;
+        outline-width: 1px;
+        outline-style: solid;
+        outline-offset: -1px;
+        opacity: 1;
+      }
+    }
+  }
+}
+
 #container {
   max-width: 1000px;
   padding: 14px 0;
   margin: 0 auto;
+  margin-top: 40px;
 }
 
 .luna-setting {
@@ -49,6 +93,7 @@
     }
   }
   input {
+    font-size: 13px;
     &:focus {
       outline-color: #007fd4;
       outline-width: 1px;

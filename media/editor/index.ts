@@ -1,4 +1,6 @@
 import LunaSetting from 'luna-setting'
+import debounce from 'licia/debounce'
+import trim from 'licia/trim'
 import * as npm from './npm'
 import * as miniprogram from './miniprogram'
 import * as prettier from './prettier'
@@ -14,6 +16,18 @@ const handlers = [
 
 const container = document.getElementById('container') as HTMLElement
 const setting = new LunaSetting(container)
+
+const searchInput = document
+  .getElementById('search')
+  ?.querySelector('input') as HTMLInputElement
+searchInput.addEventListener(
+  'input',
+  debounce(function () {
+    const filter = trim(searchInput.value)
+    setting.setOption('filter', filter)
+  }, 500),
+  false
+)
 
 window.addEventListener('message', (event) => {
   const message = event.data // The json data that the extension sent
@@ -35,8 +49,9 @@ window.addEventListener('message', (event) => {
 })
 
 function updateContent(fileName: string, text: string) {
+  searchInput.value = ''
   setting.clear()
-  setting.removeAllListeners()
+  setting.removeAllListeners('change')
 
   for (let i = 0, len = handlers.length; i < len; i++) {
     if (handlers[i](setting, fileName, text)) {
