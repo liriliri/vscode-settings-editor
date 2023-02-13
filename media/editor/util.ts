@@ -39,7 +39,7 @@ export function appendMarkdown(setting: LunaSetting, markdown: string) {
   )
 }
 
-export function appendEditSource(
+export function appendComplex(
   setting: LunaSetting,
   key: string,
   title: string,
@@ -51,7 +51,7 @@ export function appendEditSource(
     h(
       'div',
       {
-        class: 'item-edit-source',
+        class: 'item-complex',
       },
       h(
         'div',
@@ -103,8 +103,8 @@ export function buildSettings(setting: LunaSetting, config: any) {
       case 'input':
         setting.appendInput.apply(setting, value)
         break
-      case 'editSource':
-        appendEditSource(setting, value[0], value[1], value[2])
+      case 'complex':
+        appendComplex(setting, value[0], value[1], value[2])
         break
     }
   })

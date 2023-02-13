@@ -62,7 +62,7 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
       "This helps people discover your package, as it's listed in npm search.",
     ],
     [
-      'editSource',
+      'complex',
       'keywords',
       'Keywords',
       "This helps people discover your package as it's listed in npm search.",

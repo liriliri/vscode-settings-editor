@@ -96,7 +96,7 @@ function app(setting: LunaSetting, text: string) {
       'Entry Page Path',
       i18n.t('miniprogram.appEntryPagePathDesc'),
     ],
-    ['editSource', 'pages', 'Pages', '页面路径列表。'],
+    ['complex', 'pages', 'Pages', '页面路径列表。'],
     [
       'checkbox',
       'debug',
@@ -111,7 +111,7 @@ function app(setting: LunaSetting, text: string) {
       'Functional Pages',
       '是否启用插件功能页，默认关闭。',
     ],
-    ['editSource', 'subpackages', 'Sub Packages', '分包结构配置。'],
+    ['complex', 'subpackages', 'Sub Packages', '分包结构配置。'],
     [
       'input',
       'workers',
@@ -120,19 +120,19 @@ function app(setting: LunaSetting, text: string) {
       '`Worker` 代码放置的目录。',
     ],
     [
-      'editSource',
+      'complex',
       'requiredBackgroundModes',
       'Required Background Modes',
       '需要在后台使用的能力，如「音乐播放」。',
     ],
     [
-      'editSource',
+      'complex',
       'requiredPrivateInfos',
       'Required Private Infos',
       '调用的地理位置相关隐私接口。',
     ],
-    ['editSource', 'plugins', 'Plugins', '使用到的插件。'],
-    ['editSource', 'preloadRule', 'Preload Rule', '分包预下载规则。'],
+    ['complex', 'plugins', 'Plugins', '使用到的插件。'],
+    ['complex', 'preloadRule', 'Preload Rule', '分包预下载规则。'],
     [
       'checkbox',
       'resizable',
@@ -141,12 +141,12 @@ function app(setting: LunaSetting, text: string) {
       'PC 小程序是否支持用户任意改变窗口大小（包括最大化窗口）；iPad 小程序是否支持屏幕旋转。默认关闭。',
     ],
     [
-      'editSource',
+      'complex',
       'usingComponents',
       'Using Components',
       '全局[自定义组件](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/)配置。',
     ],
-    ['editSource', 'permission', 'Permission', '小程序接口权限相关设置。'],
+    ['complex', 'permission', 'Permission', '小程序接口权限相关设置。'],
     [
       'input',
       'style',
@@ -154,12 +154,7 @@ function app(setting: LunaSetting, text: string) {
       'Style',
       '指定使用升级后的 weui 样式。',
     ],
-    [
-      'editSource',
-      'useExtendedLib',
-      'Use Extended Lib',
-      '指定需要引用的扩展库。',
-    ],
+    ['complex', 'useExtendedLib', 'Use Extended Lib', '指定需要引用的扩展库。'],
     [
       'checkbox',
       'darkmode',

@@ -185,11 +185,11 @@
   }
 }
 
-.item-markdown, .item-edit-source {
+.item-markdown, .item-complex {
   padding: 12px 14px;
 }
 
-.item-edit-source {
+.item-complex {
   a.edit-source {
     color: var(--vscode-textLink-foreground);
     cursor: pointer;
