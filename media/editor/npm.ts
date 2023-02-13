@@ -63,6 +63,7 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
     ],
     [
       'editSource',
+      'keywords',
       'Keywords',
       "This helps people discover your package as it's listed in npm search.",
     ],

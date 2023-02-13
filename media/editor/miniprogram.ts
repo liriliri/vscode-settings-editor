@@ -84,6 +84,8 @@ function app(setting: LunaSetting, text: string) {
     updateText(JSON.stringify(json, null, 2) + '\n')
   })
 
+  const window = json.window || {}
+
   buildSettings(setting, [
     ['title', 'Miniprogram App Config'],
     ['markdown', i18n.t('miniprogram.appSeeDoc')],
@@ -94,12 +96,116 @@ function app(setting: LunaSetting, text: string) {
       'Entry Page Path',
       i18n.t('miniprogram.appEntryPagePathDesc'),
     ],
+    ['editSource', 'pages', 'Pages', '页面路径列表。'],
     [
       'checkbox',
       'debug',
       !!json.debug,
       'Debug',
       i18n.t('miniprogram.appDebug'),
+    ],
+    [
+      'checkbox',
+      'functionalPages',
+      !!json.functionalPages,
+      'Functional Pages',
+      '是否启用插件功能页，默认关闭。',
+    ],
+    ['editSource', 'subpackages', 'Sub Packages', '分包结构配置。'],
+    [
+      'input',
+      'workers',
+      json.workers || '',
+      'Workers',
+      '`Worker` 代码放置的目录。',
+    ],
+    [
+      'editSource',
+      'requiredBackgroundModes',
+      'Required Background Modes',
+      '需要在后台使用的能力，如「音乐播放」。',
+    ],
+    [
+      'editSource',
+      'requiredPrivateInfos',
+      'Required Private Infos',
+      '调用的地理位置相关隐私接口。',
+    ],
+    ['editSource', 'plugins', 'Plugins', '使用到的插件。'],
+    ['editSource', 'preloadRule', 'Preload Rule', '分包预下载规则。'],
+    [
+      'checkbox',
+      'resizable',
+      !!json.resizable,
+      'Resizable',
+      'PC 小程序是否支持用户任意改变窗口大小（包括最大化窗口）；iPad 小程序是否支持屏幕旋转。默认关闭。',
+    ],
+    [
+      'editSource',
+      'usingComponents',
+      'Using Components',
+      '全局[自定义组件](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/)配置。',
+    ],
+    ['editSource', 'permission', 'Permission', '小程序接口权限相关设置。'],
+    [
+      'input',
+      'style',
+      json.style || '',
+      'Style',
+      '指定使用升级后的 weui 样式。',
+    ],
+    [
+      'editSource',
+      'useExtendedLib',
+      'Use Extended Lib',
+      '指定需要引用的扩展库。',
+    ],
+    [
+      'checkbox',
+      'darkmode',
+      !!json.darkmode,
+      'Dark Mode',
+      '小程序支持 DarkMode。',
+    ],
+    [
+      'input',
+      'themeLocation',
+      json.themeLocation || '',
+      'Theme Location',
+      '指明 theme.json 的位置，darkmode 为 true 为必填。',
+    ],
+    [
+      'input',
+      'lazyCodeLoading',
+      json.lazyCodeLoading || '',
+      'Lazy Code Loading',
+      '配置自定义组件代码按需注入。',
+    ],
+    [
+      'select',
+      'renderer',
+      json.renderer || 'webview',
+      'Renderer',
+      '全局默认的渲染后端。',
+      {
+        webview: 'webview',
+        skyline: 'skyline',
+      },
+    ],
+    ['title', 'Window', 2],
+    [
+      'input',
+      'navigationBarBackgroundColor',
+      window.navigationBarBackgroundColor || '#000000',
+      'Navigation Bar Background Color',
+      '导航栏背景颜色，如 `#000000`。',
+    ],
+    [
+      'input',
+      'navigationBarTextStyle',
+      window.navigationBarTextStyle || 'white',
+      'Navigation Bar Text Style',
+      '导航栏标题颜色，仅支持 `black` / `white`。',
     ],
   ])
 }

@@ -41,6 +41,7 @@ export function appendMarkdown(setting: LunaSetting, markdown: string) {
 
 export function appendEditSource(
   setting: LunaSetting,
+  key: string,
   title: string,
   description: string
 ) {
@@ -103,7 +104,7 @@ export function buildSettings(setting: LunaSetting, config: any) {
         setting.appendInput.apply(setting, value)
         break
       case 'editSource':
-        appendEditSource(setting, value[0], value[1])
+        appendEditSource(setting, value[0], value[1], value[2])
         break
     }
   })
