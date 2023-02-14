@@ -35,9 +35,11 @@ export function updateText(text: string) {
 export const i18n = new I18n('en', {
   en: {
     browse: 'Browse',
+    searchSettings: 'Search settings',
   },
   'zh-cn': {
     browse: '浏览',
+    searchSettings: '搜索设置',
   },
 })
 

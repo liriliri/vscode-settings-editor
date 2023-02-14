@@ -11,6 +11,10 @@ i18n.set('en', {
   'miniprogram.appDebug': 'Whether or not to open debug Mode, off by default.',
 
   'miniprogram.miniappTitle': 'Miniapp Project',
+  'miniporgram.miniappSeeDoc':
+    'Click [here](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#project-miniapp-json) to see the documentation.',
+  'miniprogram.miniappRunArgs': 'Run Args',
+  'miniprogram.miniappBuildArgs': 'Build Args',
 })
 i18n.set('zh-cn', {
   'miniprogram.appTitle': '小程序全局配置',
@@ -19,8 +23,36 @@ i18n.set('zh-cn', {
   'miniprogram.appEntryPagePathDesc': '小程序默认启动首页。',
   'miniprogram.appDebug': '是否开启 debug 模式，默认关闭。',
 
-  'miniprogram.miniappTitle': '多端应用',
+  'miniprogram.miniappTitle': '多端应用配置',
+  'miniprogram.miniappSeeDoc':
+    '点击[此处](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#project-miniapp-json)查看文档。',
+  'miniprogram.miniappRunArgs': '运行时参数',
+  'miniprogram.miniappBuildArgs': '构建产物时参数',
 })
+
+const all = {
+  'miniprogram.miniappUseProjectTemplateDesc':
+    '标记终端工程是否由终端模板工程生成。',
+  'miniprogram.miniappProjectPathDesc': '终端工程的路径。',
+  'miniprogram.miniappArchivePathDesc':
+    '指定模块代码包同步到终端工程的目录。对于模板终端工程，只有一个模块的情况，这个路径不需要修改。对于多模块的项目，不同的模块可以指定不同的目录。',
+  'miniprogram.miniappBuildArchiveEverytimeDesc':
+    '指定每次构建或运行终端工程时都需要编译小程序模块资源包。',
+  'miniprogram.miniappRunArgsDesc':
+    '运行时使用的[编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
+  'miniprogram.miniappBuildArgsDesc':
+    '构建产物时使用的 [编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
+  'miniprogram.miniappMainActivityDesc':
+    '仅在 runArgs 下必填。运行后 Android 的入口 Activity。对于模板终端工程，无需改动；对于自有终端工程，需要手动配置。',
+  'miniprogram.miniappVariantDesc':
+    '构建变体，[详见](https://developer.android.com/studio/build/build-variants)。',
+  'miniprogram.miniappSchemeDesc':
+    '[目标、配置以及要执行的测试集合的名字](https://developer.apple.com/library/archive/featuredarticles/XcodeConcepts/Concept-Schemes.html)。',
+  'miniprogram.miniappExportOptionPlistPathDesc':
+    '仅在 buildArgs 下必填。编译 ipa 时需要用到的ExportOption.plist 文件, 可以自定义配置路径，支持相对和绝对路径。',
+}
+i18n.set('en', all)
+i18n.set('zh-cn', all)
 
 export function handler(setting: LunaSetting, fileName: string, text: string) {
   const { name } = splitPath(fileName)
@@ -87,7 +119,7 @@ function app(setting: LunaSetting, text: string) {
   const window = json.window || {}
 
   buildSettings(setting, [
-    ['title', 'Miniprogram App Config'],
+    ['title', i18n.t('miniprogram.appTitle')],
     ['markdown', i18n.t('miniprogram.appSeeDoc')],
     [
       'input',
@@ -213,104 +245,164 @@ function miniapp(setting: LunaSetting, text: string) {
     updateText(JSON.stringify(json, null, 2) + '\n')
   })
 
+  const android = json['mini-android'] || {}
+  const ios = json['mini-ios'] || {}
+
   buildSettings(setting, [
     ['title', i18n.t('miniprogram.miniappTitle')],
-    ['input', 'name', json.name, 'Name'],
-    ['input', 'version', json.version, 'Version'],
-    ['input', 'miniModuleId', json.miniModuleId, 'Mini Module Id'],
-    ['input', 'description', json.description, 'Description'],
-    ['input', 'icon', json.icon, 'Icon'],
+    ['markdown', i18n.t('miniprogram.miniappSeeDoc')],
+    [
+      'input',
+      'version',
+      json.version,
+      'Version',
+      '`project.miniapp.json` 的版本号。',
+    ],
+    [
+      'input',
+      'description',
+      json.description,
+      'Description',
+      '`project.miniapp.json` 的描述说明。',
+    ],
+    [
+      'input',
+      'miniModuleId',
+      json.miniModuleId,
+      'Mini Module Id',
+      '开发平台上申请的模块 ID。',
+    ],
+    ['input', 'name', json.name, 'Name', '应用名称。'],
+    [
+      'path',
+      'icon',
+      json.icon,
+      'Icon',
+      '应用启动图标。',
+      { extensions: ['png', 'jpg'] },
+    ],
     ['title', 'Android'],
     [
       'checkbox',
       'mini-android.useProjectTemplate',
-      json['mini-android'].useProjectTemplate,
+      android.useProjectTemplate,
       'Use Project Template',
+      i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
     ],
     [
-      'input',
+      'path',
       'mini-android.projectPath',
-      json['mini-android'].projectPath,
+      android.projectPath,
       'Project Path',
+      i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
     ],
     [
       'input',
       'mini-android.archivePath',
-      json['mini-android'].archivePath,
+      android.archivePath,
       'Archive Path',
+      i18n.t('miniprogram.miniappArchivePathDesc'),
     ],
     [
       'checkbox',
       'mini-android.buildArchiveEverytime',
-      json['mini-android'].buildArchiveEverytime,
+      android.buildArchiveEverytime,
       'Build Archive Everytime',
+      i18n.t('miniprogram.miniappBuildArchiveEverytimeDesc'),
     ],
+    ['title', i18n.t('miniprogram.miniappRunArgs'), 2],
+    ['markdown', i18n.t('miniprogram.miniappRunArgsDesc')],
     [
       'input',
       'mini-android.runArgs.mainActivity',
-      json['mini-android'].runArgs.mainActivity,
-      'runArgs: mainActivity',
+      android.runArgs.mainActivity,
+      'Main Activity',
+      i18n.t('miniprogram.miniappMainActivityDesc'),
     ],
     [
-      'input',
+      'select',
       'mini-android.runArgs.variant',
-      json['mini-android'].runArgs.variant,
-      'runArgs: variant',
+      android.runArgs.variant,
+      'Variant',
+      i18n.t('miniprogram.miniappVariantDesc'),
+      {
+        ArmRelease: 'ArmRelease',
+        ArmDebug: 'ArmDebug',
+      },
     ],
+    ['title', i18n.t('miniprogram.miniappBuildArgs'), 2],
+    ['markdown', i18n.t('miniprogram.miniappBuildArgsDesc')],
     [
       'input',
       'mini-android.buildArgs.mainActivity',
-      json['mini-android'].buildArgs.mainActivity,
-      'buildArgs: mainActivity',
+      android.buildArgs.mainActivity,
+      'Main Activity',
+      i18n.t('miniprogram.miniappMainActivityDesc'),
     ],
     [
-      'input',
+      'select',
       'mini-android.buildArgs.variant',
-      json['mini-android'].buildArgs.variant,
-      'buildArgs: variant',
+      android.buildArgs.variant,
+      'Variant',
+      i18n.t('miniprogram.miniappVariantDesc'),
+      {
+        ArmRelease: 'ArmRelease',
+        ArmDebug: 'ArmDebug',
+      },
     ],
     ['title', 'iOS'],
     [
       'checkbox',
       'mini-ios.useProjectTemplate',
-      json['mini-ios'].useProjectTemplate,
+      ios.useProjectTemplate,
       'Use Project Template',
+      i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
     ],
     [
-      'input',
+      'path',
       'mini-ios.projectPath',
-      json['mini-ios'].projectPath,
+      ios.projectPath,
       'Project Path',
+      i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
     ],
     [
       'input',
       'mini-ios.archivePath',
-      json['mini-ios'].archivePath,
+      ios.archivePath,
       'Archive Path',
+      i18n.t('miniprogram.miniappArchivePathDesc'),
     ],
     [
       'checkbox',
       'mini-ios.buildArchiveEverytime',
-      json['mini-ios'].buildArchiveEverytime,
+      ios.buildArchiveEverytime,
       'Build Archive Everytime',
+      i18n.t('miniprogram.miniappBuildArchiveEverytimeDesc'),
     ],
+    ['title', i18n.t('miniprogram.miniappRunArgs'), 2],
+    ['markdown', i18n.t('miniprogram.miniappRunArgsDesc')],
     [
       'input',
       'mini-ios.runArgs.scheme',
-      json['mini-ios'].runArgs.scheme,
-      'runArgs: scheme',
+      ios.runArgs.scheme,
+      'Scheme',
+      i18n.t('miniprogram.miniappSchemeDesc'),
     ],
+    ['title', i18n.t('miniprogram.miniappBuildArgs'), 2],
+    ['markdown', i18n.t('miniprogram.miniappBuildArgsDesc')],
     [
       'input',
       'mini-ios.buildArgs.scheme',
-      json['mini-ios'].buildArgs.scheme,
-      'buildArgs: scheme',
+      ios.buildArgs.scheme,
+      'Scheme',
+      i18n.t('miniprogram.miniappSchemeDesc'),
     ],
     [
-      'input',
+      'path',
       'mini-ios.buildArgs.exportOptionPlistPath',
-      json['mini-ios'].buildArgs.exportOptionPlistPath,
-      'buildArgs: exportOptionPlistPath',
+      ios.buildArgs.exportOptionPlistPath,
+      'Export Option Plist Path',
+      i18n.t('miniprogram.miniappExportOptionPlistPathDesc'),
     ],
   ])
 }

@@ -39,16 +39,31 @@ window.addEventListener('message', (event) => {
       }
       store.set('fileName', fileName)
       store.set('text', text)
-      updateContent(fileName, text)
+      updateContent()
       break
     case 'init':
-      i18n.locale(message.language)
       store.set('language', message.language)
+      updateLanguage()
       break
   }
 })
 
-function updateContent(fileName: string, text: string) {
+function updateLanguage() {
+  const language = store.get('language')
+  if (language) {
+    i18n.locale(language)
+    searchInput.setAttribute('placeholder', i18n.t('searchSettings'))
+  }
+}
+
+function updateContent() {
+  const fileName = store.get('fileName')
+  const text = store.get('text')
+
+  if (!fileName || !text) {
+    return
+  }
+
   searchInput.value = ''
   setting.clear()
   setting.removeAllListeners('change')
@@ -60,12 +75,5 @@ function updateContent(fileName: string, text: string) {
   }
 }
 
-const fileName = store.get('fileName')
-const text = store.get('text')
-const language = store.get('language')
-if (language) {
-  i18n.locale(language)
-}
-if (fileName && text) {
-  updateContent(fileName, text)
-}
+updateLanguage()
+updateContent()

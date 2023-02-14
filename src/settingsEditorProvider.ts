@@ -152,7 +152,7 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
       <body>
         <div id="search">
           <div class="input-container">
-            <input types="text" placeholder="Search settings"/>
+            <input types="text"/>
           </div>
         </div>
         <div id="container"></div>
