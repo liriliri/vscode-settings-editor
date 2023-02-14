@@ -150,6 +150,10 @@ function app(setting: LunaSetting, text: string) {
       json.workers || '',
       'Workers',
       '`Worker` 代码放置的目录。',
+      {
+        folder: true,
+        file: false,
+      },
     ],
     [
       'complex',
@@ -200,6 +204,9 @@ function app(setting: LunaSetting, text: string) {
       json.themeLocation || '',
       'Theme Location',
       '指明 theme.json 的位置，darkmode 为 true 为必填。',
+      {
+        extensions: ['json'],
+      },
     ],
     [
       'input',
