@@ -94,11 +94,14 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
       licenseOptions,
     ],
     [
-      'input',
+      'path',
       'main',
       json.main,
       'Main',
       'The main field is a module ID that is the primary entry point to your program.',
+      {
+        extensions: ['js'],
+      },
     ],
   ])
 

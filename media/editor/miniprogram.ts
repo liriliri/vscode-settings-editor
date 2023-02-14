@@ -41,7 +41,7 @@ const all = {
   'miniprogram.miniappRunArgsDesc':
     '运行时使用的[编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
   'miniprogram.miniappBuildArgsDesc':
-    '构建产物时使用的 [编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
+    '构建产物时使用的[编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
   'miniprogram.miniappMainActivityDesc':
     '仅在 runArgs 下必填。运行后 Android 的入口 Activity。对于模板终端工程，无需改动；对于自有终端工程，需要手动配置。',
   'miniprogram.miniappVariantDesc':
