@@ -96,6 +96,7 @@ interface IPathOptions {
   file?: boolean
   cwd?: string
   extensions?: string[]
+  absolute?: boolean
 }
 
 export function appendPath(
@@ -119,6 +120,7 @@ export function appendPath(
   const canSelectFile = isUndef(options.file) ? true : options.file
   const extensions = options.extensions || []
   const cwd = options.cwd || splitPath(store.get('fileName')).dir
+  const absolute = !!options.absolute
   button.onclick = async function () {
     let result = await sendCommand('showOpenDialog', {
       canSelectFolders,
@@ -129,8 +131,10 @@ export function appendPath(
       canSelectMany: false,
     })
     if (result) {
-      if (startWith(result, cwd)) {
-        result = path.relative(cwd, result)
+      if (!absolute) {
+        if (startWith(result, cwd)) {
+          result = path.relative(cwd, result)
+        }
       }
       input.value = result
       onChange()

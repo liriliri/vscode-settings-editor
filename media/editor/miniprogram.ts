@@ -145,7 +145,7 @@ function app(setting: LunaSetting, text: string) {
     ],
     ['complex', 'subpackages', 'Sub Packages', '分包结构配置。'],
     [
-      'input',
+      'path',
       'workers',
       json.workers || '',
       'Workers',
@@ -195,7 +195,7 @@ function app(setting: LunaSetting, text: string) {
       '小程序支持 DarkMode。',
     ],
     [
-      'input',
+      'path',
       'themeLocation',
       json.themeLocation || '',
       'Theme Location',

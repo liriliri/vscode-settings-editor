@@ -139,11 +139,16 @@ function config(setting: LunaSetting, text: string) {
       'The base URL of the npm registry.',
     ],
     [
-      'input',
+      'path',
       'cache',
       obj.cache || '',
       'Cache',
       "The location of npm's cache directory.",
+      {
+        folder: true,
+        file: false,
+        absolute: true,
+      },
     ],
     [
       'input',
