@@ -52,7 +52,26 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
       this.updateOpenSourceButton(false)
     })
 
-    webviewPanel.webview.onDidReceiveMessage((e) => {
+    webviewPanel.webview.onDidReceiveMessage(async (e) => {
+      let result = ''
+      if (e.type === 'command') {
+        const { id, command, data } = e
+        switch (command) {
+          case 'showOpenDialog':
+            const paths = await vscode.window.showOpenDialog(data)
+            if (paths) {
+              result = paths[0].fsPath
+            }
+            break
+        }
+        webviewPanel.webview.postMessage({
+          type: 'commandCallback',
+          id,
+          result,
+        })
+        return
+      }
+
       switch (e.type) {
         case 'update':
           this.updateTextDocument(document, e.text)
@@ -62,7 +81,7 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
           break
         case 'editSource':
           reopenWith('default')
-          return
+          break
       }
     })
 

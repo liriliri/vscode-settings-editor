@@ -4,6 +4,7 @@ import LunaSetting from 'luna-setting'
 import { micromark } from 'micromark'
 import h from 'licia/h'
 import each from 'licia/each'
+import uniqId from 'licia/uniqId'
 import toEl from 'licia/toEl'
 import splitPath from 'licia/splitPath'
 
@@ -29,8 +30,12 @@ export function updateText(text: string) {
 }
 
 export const i18n = new I18n('en', {
-  en: {},
-  'zh-cn': {},
+  en: {
+    browse: 'Browse',
+  },
+  'zh-cn': {
+    browse: '浏览',
+  },
 })
 
 export function appendMarkdown(setting: LunaSetting, markdown: string) {
@@ -81,6 +86,60 @@ export function appendComplex(
   )
 }
 
+interface IPathOptions {
+  folder?: boolean
+}
+
+export function appendPath(
+  setting: LunaSetting,
+  key: string,
+  val: string,
+  title: string,
+  description: string = '',
+  options: IPathOptions = {}
+) {
+  let value = val
+  const input = h('input', { type: 'text' }) as HTMLInputElement
+  input.value = value
+  function onChange() {
+    setting.emit('change', key, input.value, value)
+    value = input.value
+  }
+  input.onchange = onChange
+  const button = h('button', {}, i18n.t('browse')) as HTMLButtonElement
+  button.onclick = async function () {
+    const result = await sendCommand('showOpenDialog', {
+      canSelectMany: false,
+    })
+    if (result) {
+      input.value = result
+      onChange()
+    }
+  }
+
+  setting.appendHtml(
+    h(
+      'div',
+      { class: 'item-path' },
+      h(
+        'div',
+        {
+          class: 'luna-setting-title',
+        },
+        title
+      ),
+      h(
+        'div',
+        {
+          class: 'luna-setting-description',
+        },
+        toEl(`<div>${micromark(description)}</div>`) as HTMLElement
+      ),
+      h('div', { class: 'luna-setting-control' }, input, button)
+    )
+  )
+}
+
 export function buildSettings(setting: LunaSetting, config: any) {
   each(config, (value: any) => {
     const type = value.shift()
@@ -104,8 +163,29 @@ export function buildSettings(setting: LunaSetting, config: any) {
         setting.appendInput.apply(setting, value)
         break
       case 'complex':
-        appendComplex(setting, value[0], value[1], value[2])
+        appendComplex.apply(null, [setting, ...value] as any)
+        break
+      case 'path':
+        appendPath.apply(null, [setting, ...value] as any)
         break
     }
+  })
+}
+
+export async function sendCommand(command: string, data: any): Promise<any> {
+  const id = uniqId()
+  return new Promise((resolve) => {
+    function callback(event: any) {
+      const message = event.data
+      if (message.type === 'commandCallback') {
+        const { id } = message
+        if (message.id === id) {
+          window.removeEventListener('message', callback)
+          resolve(message.result)
+        }
+      }
+    }
+    window.addEventListener('message', callback)
+    vscode.postMessage({ type: 'command', id, command, data })
   })
 }

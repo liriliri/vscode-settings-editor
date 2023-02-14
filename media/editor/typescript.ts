@@ -29,7 +29,7 @@ function config(setting: LunaSetting, text: string) {
       'Click [here](https://www.typescriptlang.org/tsconfig) to see the documentation.',
     ],
     [
-      'input',
+      'path',
       'extends',
       json.extends || '',
       'Extends',
@@ -89,6 +89,13 @@ function config(setting: LunaSetting, text: string) {
       !!compilerOptions.declaration,
       'Declaration',
       'Generate `.d.ts` files for every TypeScript or JavaScript file inside your project. ',
+    ],
+    [
+      'checkbox',
+      'compilerOptions.esModuleInterop',
+      !!compilerOptions.esModuleInterop,
+      'ES Module Interop',
+      'Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility.',
     ],
     [
       'complex',

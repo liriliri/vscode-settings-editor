@@ -119,7 +119,7 @@
   }
 }
 
-.luna-setting-item-input {
+.luna-setting-item-input, .item-path {
   input {
     color: var(--vscode-settings-textInputForeground);
     background: var(--vscode-settings-textInputBackground);
@@ -171,7 +171,7 @@
   }
 }
 
-.luna-setting-item-button {
+.luna-setting-item-button, .item-path {
   button {
     padding: 2px 14px;
     margin-top: 4px;
@@ -185,7 +185,7 @@
   }
 }
 
-.item-markdown, .item-complex {
+.item-markdown, .item-complex, .item-path {
   padding: 12px 14px;
 }
 
@@ -196,6 +196,17 @@
     &:hover {
       text-decoration: underline;
     }
+  }
+}
+
+.item-path {
+  input {
+    border: 1px solid #ccc;
+    border-color: var(--vscode-settings-textInputBorder, transparent);
+  }
+  button {
+    height: 25px;
+    margin: 0;
   }
 }
 
