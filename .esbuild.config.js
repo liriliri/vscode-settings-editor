@@ -4,6 +4,21 @@ const sassPlugin = require('esbuild-sass-plugin').sassPlugin
 const watch = process.argv.includes('--watch')
 const minify = !watch
 
+const replaceNodeBuiltIns = () => {
+  const replace = {
+    path: require.resolve('path-browserify'),
+  }
+  const filter = RegExp(`^(${Object.keys(replace).join('|')})$`)
+  return {
+    name: 'replaceNodeBuiltIns',
+    setup(build) {
+      build.onResolve({ filter }, (arg) => ({
+        path: replace[arg.path],
+      }))
+    },
+  }
+}
+
 esbuild
   .build({
     entryPoints: ['src/extension.ts'],
@@ -27,6 +42,7 @@ esbuild
     sourcemap: watch ? 'inline' : false,
     minify,
     watch,
+    plugins: [replaceNodeBuiltIns()],
     platform: 'browser',
     outfile: 'dist/editor.js',
   })

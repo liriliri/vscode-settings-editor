@@ -7,6 +7,9 @@ import each from 'licia/each'
 import uniqId from 'licia/uniqId'
 import toEl from 'licia/toEl'
 import splitPath from 'licia/splitPath'
+import isUndef from 'licia/isUndef'
+import path from 'path'
+import startWith from 'licia/startWith'
 
 // @ts-ignore
 export const vscode = acquireVsCodeApi()
@@ -88,6 +91,9 @@ export function appendComplex(
 
 interface IPathOptions {
   folder?: boolean
+  file?: boolean
+  cwd?: string
+  extensions?: string[]
 }
 
 export function appendPath(
@@ -107,11 +113,23 @@ export function appendPath(
   }
   input.onchange = onChange
   const button = h('button', {}, i18n.t('browse')) as HTMLButtonElement
+  const canSelectFolders = !!options.folder
+  const canSelectFile = isUndef(options.file) ? true : options.file
+  const extensions = options.extensions || []
+  const cwd = options.cwd || splitPath(store.get('fileName')).dir
   button.onclick = async function () {
-    const result = await sendCommand('showOpenDialog', {
+    let result = await sendCommand('showOpenDialog', {
+      canSelectFolders,
+      canSelectFile,
+      filters: {
+        Files: extensions,
+      },
       canSelectMany: false,
     })
     if (result) {
+      if (startWith(result, cwd)) {
+        result = path.relative(cwd, result)
+      }
       input.value = result
       onChange()
     }

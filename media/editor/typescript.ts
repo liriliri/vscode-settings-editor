@@ -34,6 +34,9 @@ function config(setting: LunaSetting, text: string) {
       json.extends || '',
       'Extends',
       'The value of `extends` is a string which contains a path to another configuration file to inherit from. The path may use Node.js style resolution.',
+      {
+        extensions: ['json'],
+      },
     ],
     ['title', 'Compiler Options', 2],
     [
