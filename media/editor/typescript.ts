@@ -38,7 +38,7 @@ function config(setting: LunaSetting, text: string) {
         extensions: ['json'],
       },
     ],
-    ['title', 'Compiler Options', 2],
+    ['title', 'Compiler Options'],
     [
       'select',
       'compilerOptions.module',

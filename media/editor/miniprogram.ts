@@ -66,7 +66,7 @@ function project(setting: LunaSetting, text: string) {
         Plugin: 'plugin',
       },
     ],
-    ['title', 'Setting', 2],
+    ['title', 'Setting'],
     [
       'checkbox',
       'setting.ignoreUploadUnusedFiles',
@@ -187,7 +187,7 @@ function app(setting: LunaSetting, text: string) {
         skyline: 'skyline',
       },
     ],
-    ['title', 'Window', 2],
+    ['title', 'Window'],
     [
       'input',
       'navigationBarBackgroundColor',
@@ -220,7 +220,7 @@ function miniapp(setting: LunaSetting, text: string) {
     ['input', 'miniModuleId', json.miniModuleId, 'Mini Module Id'],
     ['input', 'description', json.description, 'Description'],
     ['input', 'icon', json.icon, 'Icon'],
-    ['title', 'Android', 2],
+    ['title', 'Android'],
     [
       'checkbox',
       'mini-android.useProjectTemplate',
@@ -269,7 +269,7 @@ function miniapp(setting: LunaSetting, text: string) {
       json['mini-android'].buildArgs.variant,
       'buildArgs: variant',
     ],
-    ['title', 'iOS', 2],
+    ['title', 'iOS'],
     [
       'checkbox',
       'mini-ios.useProjectTemplate',
