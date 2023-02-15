@@ -33,7 +33,7 @@ function config(setting: LunaSetting, text: string) {
     ['title', 'Prettier Options'],
     [
       'markdown',
-      'Click [here](https://prettier.io/docs/en/options.html) to see the documentation.',
+      i18n.t('seeDoc', { url: 'https://prettier.io/docs/en/options.html' }),
     ],
     [
       'number',

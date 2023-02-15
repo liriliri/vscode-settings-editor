@@ -3,7 +3,7 @@ import safeSet from 'licia/safeSet'
 import lowerCase from 'licia/lowerCase'
 import json5 from 'json5'
 import LunaSetting from 'luna-setting'
-import { buildSettings, updateText, def } from './util'
+import { buildSettings, updateText, def, i18n } from './util'
 
 export function handler(setting: LunaSetting, fileName: string, text: string) {
   if (endWith(fileName, 'tsconfig.json')) {
@@ -26,7 +26,7 @@ function config(setting: LunaSetting, text: string) {
     ['title', 'Typescript Config'],
     [
       'markdown',
-      'Click [here](https://www.typescriptlang.org/tsconfig) to see the documentation.',
+      i18n.t('seeDoc', { url: 'https://www.typescriptlang.org/tsconfig' }),
     ],
     [
       'path',

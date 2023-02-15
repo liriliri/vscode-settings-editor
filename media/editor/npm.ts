@@ -5,7 +5,7 @@ import truncate from 'licia/truncate'
 import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
 import ini from 'licia/ini'
-import { vscode, updateText, buildSettings, def } from './util'
+import { vscode, updateText, buildSettings, def, i18n } from './util'
 
 export function handler(setting: LunaSetting, fileName: string, text: string) {
   const { name } = splitPath(fileName)
@@ -38,7 +38,9 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
     ['title', 'Npm Package'],
     [
       'markdown',
-      'Click [here](https://docs.npmjs.com/cli/v9/configuring-npm/package-json) to see the documentation.',
+      i18n.t('seeDoc', {
+        url: 'https://docs.npmjs.com/cli/v9/configuring-npm/package-json',
+      }),
     ],
     [
       'input',
@@ -139,7 +141,9 @@ function config(setting: LunaSetting, text: string) {
     ['title', 'Npm Config'],
     [
       'markdown',
-      'Click [here](https://docs.npmjs.com/cli/v9/using-npm/config) to see the documentation.',
+      i18n.t('seeDoc', {
+        url: 'https://docs.npmjs.com/cli/v9/using-npm/config',
+      }),
     ],
     [
       'input',

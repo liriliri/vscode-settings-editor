@@ -37,10 +37,12 @@ export const i18n = new I18n('en', {
   en: {
     browse: 'Browse',
     searchSettings: 'Search settings',
+    seeDoc: 'Click [here]({{url}}) to see the documentation.',
   },
   'zh-cn': {
     browse: '浏览',
     searchSettings: '搜索设置',
+    seeDoc: '点击[此处]({{url}})查看文档。',
   },
 })
 

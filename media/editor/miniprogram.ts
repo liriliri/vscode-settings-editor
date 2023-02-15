@@ -5,27 +5,19 @@ import splitPath from 'licia/splitPath'
 
 i18n.set('en', {
   'miniprogram.appTitle': 'Miniprogram App Config',
-  'miniprogram.appSeeDoc':
-    'Click [here](https://developers.weixin.qq.com/miniprogram/en/dev/reference/configuration/app.html) to see the documentation.',
   'miniprogram.appEntryPagePathDesc': 'Mini Program default start home page.',
   'miniprogram.appDebug': 'Whether or not to open debug Mode, off by default.',
 
   'miniprogram.miniappTitle': 'Miniapp Project',
-  'miniporgram.miniappSeeDoc':
-    'Click [here](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#project-miniapp-json) to see the documentation.',
   'miniprogram.miniappRunArgs': 'Run Args',
   'miniprogram.miniappBuildArgs': 'Build Args',
 })
 i18n.set('zh-cn', {
   'miniprogram.appTitle': '小程序全局配置',
-  'miniprogram.appSeeDoc':
-    '点击[此处](https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html)查看文档。',
   'miniprogram.appEntryPagePathDesc': '小程序默认启动首页。',
   'miniprogram.appDebug': '是否开启 debug 模式，默认关闭。',
 
   'miniprogram.miniappTitle': '多端应用配置',
-  'miniprogram.miniappSeeDoc':
-    '点击[此处](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#project-miniapp-json)查看文档。',
   'miniprogram.miniappRunArgs': '运行时参数',
   'miniprogram.miniappBuildArgs': '构建产物时参数',
 })
@@ -120,7 +112,12 @@ function app(setting: LunaSetting, text: string) {
 
   buildSettings(setting, [
     ['title', i18n.t('miniprogram.appTitle')],
-    ['markdown', i18n.t('miniprogram.appSeeDoc')],
+    [
+      'markdown',
+      i18n.t('seeDoc', {
+        url: 'https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html',
+      }),
+    ],
     [
       'input',
       'entryPagePath',
@@ -257,7 +254,12 @@ function miniapp(setting: LunaSetting, text: string) {
 
   buildSettings(setting, [
     ['title', i18n.t('miniprogram.miniappTitle')],
-    ['markdown', i18n.t('miniprogram.miniappSeeDoc')],
+    [
+      'markdown',
+      i18n.t('seeDoc', {
+        url: 'https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#project-miniapp-json',
+      }),
+    ],
     [
       'input',
       'version',
