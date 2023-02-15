@@ -6,8 +6,10 @@ Supported configuration type:
 
 * miniprogram
   - project.config.json
+  - project.private.config.json
   - project.miniapp.json
   - app.json
+  - page.json
 * npm
   - package.json
   - .npmrc
