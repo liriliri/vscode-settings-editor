@@ -74,7 +74,7 @@
   .luna-setting-control, .luna-setting-description {
     font-size: 13px;
   }
-  .luna-setting-description, .markdown {
+  .luna-setting-description, .luna-setting-control, .markdown {
     code {
       line-height: 15px;
       font-family: var(--monaco-monospace-font);
