@@ -45,6 +45,7 @@ export async function getFileHandler(document: vscode.TextDocument) {
       return 'npm'
     case 'app.json':
     case 'project.config.json':
+    case 'project.private.config.json':
     case 'project.miniapp.json':
       return 'miniprogram'
     case 'tsconfig.json':

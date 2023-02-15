@@ -55,6 +55,7 @@ export default function handler(
 
   switch (name) {
     case 'project.config.json':
+    case 'project.private.config.json':
       project(setting, text)
       break
     case 'project.miniapp.json':
