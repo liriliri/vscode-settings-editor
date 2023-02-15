@@ -3,7 +3,7 @@ import safeSet from 'licia/safeSet'
 import lowerCase from 'licia/lowerCase'
 import json5 from 'json5'
 import LunaSetting from 'luna-setting'
-import { buildSettings, updateText } from './util'
+import { buildSettings, updateText, def } from './util'
 
 export function handler(setting: LunaSetting, fileName: string, text: string) {
   if (endWith(fileName, 'tsconfig.json')) {
@@ -31,7 +31,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'path',
       'extends',
-      json.extends || '',
+      def(json.extends, ''),
       'Extends',
       'The value of `extends` is a string which contains a path to another configuration file to inherit from. The path may use Node.js style resolution.',
       {
@@ -42,7 +42,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'select',
       'compilerOptions.module',
-      compilerOptions.module || 'commonjs',
+      def(compilerOptions.module, 'commonjs'),
       'Module',
       'Sets the module system for the program. See the [Modules](https://www.typescriptlang.org/docs/handbook/modules.html) reference page for more information. You very likely want `"CommonJS"` for node projects.',
       {
@@ -62,7 +62,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'select',
       'compilerOptions.target',
-      lowerCase(compilerOptions.target || 'es3'),
+      def(lowerCase(compilerOptions.target), 'es3'),
       'Target',
       'Modern browsers support all ES6 features, so `ES6` is a good choice. You might choose to set a lower target if your code is deployed to older environments, or a higher target if your code is guaranteed to run in newer environments.',
       {
@@ -82,21 +82,21 @@ function config(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'compilerOptions.strict',
-      !!compilerOptions.strict,
+      def(compilerOptions.strict, false),
       'Strict',
       'The `strict` flag enables a wide range of type checking behavior that results in stronger guarantees of program correctness. Turning this on is equivalent to enabling all of the *strict mode family* options, which are outlined below. You can then turn off individual strict mode family checks as needed.',
     ],
     [
       'checkbox',
       'compilerOptions.declaration',
-      !!compilerOptions.declaration,
+      def(compilerOptions.declaration, false),
       'Declaration',
       'Generate `.d.ts` files for every TypeScript or JavaScript file inside your project. ',
     ],
     [
       'checkbox',
       'compilerOptions.esModuleInterop',
-      !!compilerOptions.esModuleInterop,
+      def(compilerOptions.esModuleInterop, false),
       'ES Module Interop',
       'Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility.',
     ],
@@ -109,7 +109,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'compilerOptions.sourceMap',
-      !!compilerOptions.sourceMap,
+      def(compilerOptions.sourceMap, false),
       'Source Map',
       'Enables the generation of [sourcemap files](https://developer.mozilla.org/docs/Tools/Debugger/How_to/Use_a_source_map). These files allow debuggers and other tools to display the original TypeScript source code when actually working with the emitted JavaScript files. Source map files are emitted as `.js.map` (or `.jsx.map`) files next to the corresponding `.js` output file.',
     ],

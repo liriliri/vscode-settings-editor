@@ -1,6 +1,6 @@
 import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
-import { updateText, i18n, buildSettings } from './util'
+import { updateText, i18n, buildSettings, def } from './util'
 import splitPath from 'licia/splitPath'
 
 i18n.set('en', {
@@ -132,14 +132,14 @@ function app(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'debug',
-      !!json.debug,
+      def(json.debug, false),
       'Debug',
       i18n.t('miniprogram.appDebug'),
     ],
     [
       'checkbox',
       'functionalPages',
-      !!json.functionalPages,
+      def(json.functionalPages, false),
       'Functional Pages',
       '是否启用插件功能页，默认关闭。',
     ],
@@ -147,7 +147,7 @@ function app(setting: LunaSetting, text: string) {
     [
       'path',
       'workers',
-      json.workers || '',
+      def(json.workers, ''),
       'Workers',
       '`Worker` 代码放置的目录。',
       {
@@ -172,7 +172,7 @@ function app(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'resizable',
-      !!json.resizable,
+      def(json.resizable, false),
       'Resizable',
       'PC 小程序是否支持用户任意改变窗口大小（包括最大化窗口）；iPad 小程序是否支持屏幕旋转。默认关闭。',
     ],
@@ -186,7 +186,7 @@ function app(setting: LunaSetting, text: string) {
     [
       'input',
       'style',
-      json.style || '',
+      def(json.style, ''),
       'Style',
       '指定使用升级后的 weui 样式。',
     ],
@@ -194,14 +194,14 @@ function app(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'darkmode',
-      !!json.darkmode,
+      def(json.darkmode, false),
       'Dark Mode',
       '小程序支持 DarkMode。',
     ],
     [
       'path',
       'themeLocation',
-      json.themeLocation || '',
+      def(json.themeLocation, ''),
       'Theme Location',
       '指明 theme.json 的位置，darkmode 为 true 为必填。',
       {
@@ -211,14 +211,14 @@ function app(setting: LunaSetting, text: string) {
     [
       'input',
       'lazyCodeLoading',
-      json.lazyCodeLoading || '',
+      def(json.lazyCodeLoading, ''),
       'Lazy Code Loading',
       '配置自定义组件代码按需注入。',
     ],
     [
       'select',
       'renderer',
-      json.renderer || 'webview',
+      def(json.renderer, 'webview'),
       'Renderer',
       '全局默认的渲染后端。',
       {
@@ -230,14 +230,14 @@ function app(setting: LunaSetting, text: string) {
     [
       'input',
       'navigationBarBackgroundColor',
-      window.navigationBarBackgroundColor || '#000000',
+      def(window.navigationBarBackgroundColor, '#000000'),
       'Navigation Bar Background Color',
       '导航栏背景颜色，如 `#000000`。',
     ],
     [
       'input',
       'navigationBarTextStyle',
-      window.navigationBarTextStyle || 'white',
+      def(window.navigationBarTextStyle, 'white'),
       'Navigation Bar Text Style',
       '导航栏标题颜色，仅支持 `black` / `white`。',
     ],

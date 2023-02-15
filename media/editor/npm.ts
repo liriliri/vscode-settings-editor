@@ -5,7 +5,7 @@ import truncate from 'licia/truncate'
 import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
 import ini from 'licia/ini'
-import { vscode, updateText, appendMarkdown, buildSettings } from './util'
+import { vscode, updateText, buildSettings, def } from './util'
 
 export function handler(setting: LunaSetting, fileName: string, text: string) {
   const { name } = splitPath(fileName)
@@ -70,7 +70,7 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
     [
       'input',
       'homepage',
-      json.homepage || '',
+      def(json.homepage, ''),
       'Homepage',
       'The url to the project homepage.',
     ],
@@ -144,14 +144,14 @@ function config(setting: LunaSetting, text: string) {
     [
       'input',
       'registry',
-      obj.registry || 'https://registry.npmjs.org/',
+      def(obj.registry, 'https://registry.npmjs.org/'),
       'Registry',
       'The base URL of the npm registry.',
     ],
     [
       'path',
       'cache',
-      obj.cache || '',
+      def(obj.cache, ''),
       'Cache',
       "The location of npm's cache directory.",
       {
@@ -163,14 +163,14 @@ function config(setting: LunaSetting, text: string) {
     [
       'input',
       'prefix',
-      obj.prefix || '',
+      def(obj.prefix, ''),
       'Prefix',
       'In global mode, the folder where the node executable is installed. In local mode, the nearest parent folder containing either a package.json file or a node_modules folder.',
     ],
     [
       'input',
       'proxy',
-      obj.proxy || '',
+      def(obj.proxy, ''),
       'Proxy',
       'A proxy to use for outgoing http requests. If the `HTTP_PROXY` or `http_proxy` environment variables are set, proxy settings will be honored by the underlying `request` library.',
     ],
