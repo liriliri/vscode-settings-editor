@@ -14,16 +14,16 @@ export function getDocument() {
 }
 
 export function reopenWith(editor: string) {
-  const document = getDocument()
   let uri: vscode.Uri | undefined
-  if (document) {
-    uri = document.uri
-  } else {
-    try {
-      const activeTabInput = vscode.window.tabGroups.activeTabGroup.activeTab
-        ?.input as { [key: string]: any; uri: vscode.Uri | undefined }
-      uri = activeTabInput.uri
-    } catch (e) {}
+  try {
+    const activeTabInput = vscode.window.tabGroups.activeTabGroup.activeTab
+      ?.input as { [key: string]: any; uri: vscode.Uri | undefined }
+    uri = activeTabInput.uri
+  } catch (e) {
+    const document = getDocument()
+    if (document) {
+      uri = document.uri
+    }
   }
   if (uri) {
     vscode.commands.executeCommand('vscode.openWith', uri, editor)
