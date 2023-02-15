@@ -1,6 +1,7 @@
 import splitPath from 'licia/splitPath'
-import contain from 'licia/contain'
 import * as vscode from 'vscode'
+import endWith from 'licia/endWith'
+import path from 'path'
 
 export function setContext(name: string, value: any) {
   vscode.commands.executeCommand('setContext', name, value)
@@ -34,7 +35,7 @@ export function reopenWith(editor: string) {
 
 export async function getFileHandler(document: vscode.TextDocument) {
   const fileName = document.fileName
-  const { name } = splitPath(fileName)
+  const { name, dir } = splitPath(fileName)
 
   switch (name) {
     case '.prettierrc.json':
@@ -48,6 +49,16 @@ export async function getFileHandler(document: vscode.TextDocument) {
       return 'miniprogram'
     case 'tsconfig.json':
       return 'typescript'
+  }
+
+  // miniprogram page
+  if (endWith(name, '.json')) {
+    const wxmlPath = path.resolve(dir, name.replace('.json', '.wxml'))
+    const wxmlUri = vscode.Uri.file(wxmlPath)
+    try {
+      await vscode.workspace.fs.stat(wxmlUri)
+      return 'miniprogram'
+    } catch (e) {}
   }
 
   return ''

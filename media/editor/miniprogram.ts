@@ -63,6 +63,9 @@ export default function handler(
     case 'app.json':
       app(setting, text)
       break
+    default:
+      page(setting, text)
+      break
   }
 }
 
@@ -228,17 +231,37 @@ function app(setting: LunaSetting, text: string) {
     ['title', 'Window'],
     [
       'input',
-      'navigationBarBackgroundColor',
+      'window.navigationBarBackgroundColor',
       def(window.navigationBarBackgroundColor, '#000000'),
       'Navigation Bar Background Color',
       '导航栏背景颜色，如 `#000000`。',
     ],
     [
       'input',
-      'navigationBarTextStyle',
+      'window.navigationBarTextStyle',
       def(window.navigationBarTextStyle, 'white'),
       'Navigation Bar Text Style',
       '导航栏标题颜色，仅支持 `black` / `white`。',
+    ],
+  ])
+}
+
+function page(setting: LunaSetting, text: string) {
+  const json = JSON.parse(text)
+  setting.on('change', (key, val) => {
+    safeSet(json, key, val)
+
+    updateText(JSON.stringify(json, null, 2) + '\n')
+  })
+
+  buildSettings(setting, [
+    ['title', '页面配置'],
+    [
+      'input',
+      'navigationBarBackgroundColor',
+      def(json.navigationBarBackgroundColor, '#000000'),
+      'Navigation Bar Background Color',
+      '导航栏背景颜色，如 `#000000`。',
     ],
   ])
 }

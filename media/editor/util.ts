@@ -241,7 +241,7 @@ class Def {
     this.val = val
   }
   get value() {
-    return isUndef(this.val) ? def : this.val
+    return isUndef(this.val) ? this.def : this.val
   }
   get isModified() {
     return !isUndef(this.val) && this.val !== this.def
