@@ -2,7 +2,7 @@ import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
 import isUndef from 'licia/isUndef'
 import endWith from 'licia/endWith'
-import { buildSettings, i18n, updateText } from './util'
+import { buildSettings, i18n, updateText, def } from './util'
 
 i18n.set('en', {
   'prettier.tabWidthDesc':
@@ -38,7 +38,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'number',
       'printWidth',
-      json.printWidth || 80,
+      def(json.printWidth, 80),
       'Print Width',
       'Specify the line length that the printer will wrap on.',
       { min: 0, step: 1, max: Infinity },
@@ -46,7 +46,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'number',
       'tabWidth',
-      json.tabWidth || 2,
+      def(json.tabWidth, 2),
       'Tab Width',
       i18n.t('prettier.tabWidthDesc'),
       {
@@ -58,28 +58,28 @@ function config(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'useTabs',
-      !!json.useTabs,
+      def(json.useTabs, false),
       'Tabs',
       'Indent lines with tabs instead of spaces.',
     ],
     [
       'checkbox',
       'semi',
-      isUndef(json.semi) ? true : json.semi,
+      def(json.semi, true),
       'Semicolons',
       'Print semicolons at the ends of statements.',
     ],
     [
       'checkbox',
       'singleQuote',
-      !!json.singleQuote,
+      def(json.singleQuote, false),
       'Quotes',
       'Use single quotes instead of double quotes.',
     ],
     [
       'select',
       'quoteProps',
-      json.quoteProps || 'as-needed',
+      def(json.quoteProps, 'as-needed'),
       'Quote Props',
       'Change when properties in objects are quoted.',
       {
@@ -92,14 +92,14 @@ function config(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'jsxSingleQuote',
-      !!json.jsxSingleQuote,
+      def(json.jsxSingleQuote, 'false'),
       'JSX Quotes',
       'Use single quotes instead of double quotes in JSX.',
     ],
     [
       'select',
       'trailingComma',
-      json.trailingComma || 'es5',
+      def(json.trailingComma, 'es5'),
       'Trailing Commas',
       'Print trailing commas wherever possible in multi-line comma-separated syntactic structures. (A single-line array, for example, never gets trailing commas.)',
       {
@@ -112,21 +112,21 @@ function config(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'bracketSpacing',
-      isUndef(json.bracketSpacing) ? true : json.bracketSpacing,
+      def(json.bracketSpacing, true),
       'Bracket Spacing',
       'Print spaces between brackets in object literals.',
     ],
     [
       'checkbox',
       'bracketSameLine',
-      !!json.bracketSameLine,
+      def(json.bracketSameLine, false),
       'Bracket Line',
       'Put the `>` of a multi-line HTML (HTML, JSX, Vue, Angular) element at the end of the last line instead of being alone on the next line (does not apply to self closing elements).',
     ],
     [
       'select',
       'arrowParens',
-      json.arrowParens || 'always',
+      def(json.arrowParens, 'always'),
       'Arrow Function Parentheses',
       'Include parentheses around a sole arrow function parameter.',
       {
@@ -137,7 +137,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'select',
       'proseWrap',
-      json.proseWrap || 'preserve',
+      def(json.proseWrap, 'preserve'),
       'Prose Wrap',
       'To have Prettier wrap prose to the print width, change this option to "always". If you want Prettier to force all prose blocks to be on a single line and rely on editor/viewer soft wrapping instead, you can use "never".',
       {
@@ -149,7 +149,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'select',
       'htmlWhitespaceSensitivity',
-      json.htmlWhitespaceSensitivity || 'css',
+      def(json.htmlWhitespaceSensitivity, 'css'),
       'HTML Whitespace Sensitivity',
       'Specify the global whitespace sensitivity for HTML, Vue, Angular, and Handlebars. See [whitespace-sensitive formatting](https://prettier.io/blog/2018/11/07/1.15.0.html#whitespace-sensitive-formatting) for more info.',
       {
@@ -163,14 +163,14 @@ function config(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'vueIndentScriptAndStyle',
-      !!json.vueIndentScriptAndStyle,
+      def(json.vueIndentScriptAndStyle, false),
       'Vue files script and style tags indentation',
       'Whether or not to indent the code inside `<script>` and `<style>` tags in Vue files.',
     ],
     [
       'select',
       'endOfLine',
-      json.endOfLine || 'lf',
+      def(json.endOfLine, 'lf'),
       'End of Line',
       'For historical reasons, there exist two common flavors of line endings in text files. That is `\\n` (or `LF` for Line Feed) and `\\r\\n` (or `CRLF` for Carriage Return + Line Feed). The former is common on Linux and macOS, while the latter is prevalent on Windows. Some details explaining why it is so [can be found on Wikipedia](https://en.wikipedia.org/wiki/Newline).',
       {
@@ -185,7 +185,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'select',
       'embeddedLanguageFormatting',
-      json.embeddedLanguageFormatting || 'auto',
+      def(json.embeddedLanguageFormatting, 'auto'),
       'Embedded Language Formatting',
       'Control whether Prettier formats quoted code embedded in the file.',
       {
@@ -197,7 +197,7 @@ function config(setting: LunaSetting, text: string) {
     [
       'checkbox',
       'singleAttributePerLine',
-      !!json.singleAttributePerLine,
+      def(json.singleAttributePerLine, false),
       'Single Attribute Per Line',
       'Enforce single attribute per line in HTML, Vue and JSX.',
     ],

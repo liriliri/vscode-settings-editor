@@ -1,6 +1,6 @@
 import LunaSetting from 'luna-setting'
 import isEmpty from 'licia/isEmpty'
-import each from 'licia/each'
+import map from 'licia/map'
 import truncate from 'licia/truncate'
 import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
@@ -106,16 +106,23 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
   ])
 
   if (json.scripts && !isEmpty(json.scripts)) {
-    setting.appendTitle('Scripts', 2)
     const { dir } = splitPath(fileName)
-    each(json.scripts, (script: string, name: string) => {
-      setting.appendButton(name, truncate(script, 30), () => {
-        vscode.postMessage({
-          type: 'run',
-          command: `cd ${dir} && npm run ${name}`,
-        })
-      })
-    })
+    buildSettings(setting, [
+      ['title', 'Scripts'],
+      ...map(json.scripts, (script: string, name: string) => {
+        return [
+          'button',
+          name,
+          truncate(script, 30),
+          () => {
+            vscode.postMessage({
+              type: 'run',
+              command: `cd ${dir} && npm run ${name}`,
+            })
+          },
+        ]
+      }),
+    ])
   }
 }
 

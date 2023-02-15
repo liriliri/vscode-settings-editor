@@ -56,6 +56,7 @@
 }
 
 .luna-setting-item {
+  position: relative;
   padding: 12px 14px 18px;
   &.luna-setting-item-html {
     padding: 0;
@@ -182,6 +183,19 @@
     &:active {
       background: var(--vscode-button-hoverBackground); 
     }
+  }
+}
+
+.modified {
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 5px;
+    top: 12px;
+    width: 6px;
+    bottom: 18px;
+    border-left: 2px solid var(--vscode-settings-modifiedItemIndicator);
   }
 }
 

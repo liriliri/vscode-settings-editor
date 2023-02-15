@@ -9,6 +9,7 @@ import toEl from 'licia/toEl'
 import splitPath from 'licia/splitPath'
 import isUndef from 'licia/isUndef'
 import path from 'path'
+import $class from 'licia/$class'
 import startWith from 'licia/startWith'
 
 // @ts-ignore
@@ -44,7 +45,7 @@ export const i18n = new I18n('en', {
 })
 
 export function appendMarkdown(setting: LunaSetting, markdown: string) {
-  setting.appendHtml(
+  return setting.appendHtml(
     `<div class="item-markdown markdown">${micromark(markdown)}</div>`
   )
 }
@@ -57,7 +58,7 @@ export function appendComplex(
 ) {
   const fileName = store.get('fileName')
   const { name } = splitPath(fileName)
-  setting.appendHtml(
+  return setting.appendHtml(
     h(
       'div',
       {
@@ -111,8 +112,7 @@ export function appendPath(
   const input = h('input', { type: 'text' }) as HTMLInputElement
   input.value = value
   function onChange() {
-    setting.emit('change', key, input.value, value)
-    value = input.value
+    ;(item as any).onChange(input.value)
   }
   input.onchange = onChange
   const button = h('button', {}, i18n.t('browse')) as HTMLButtonElement
@@ -141,7 +141,7 @@ export function appendPath(
     }
   }
 
-  setting.appendHtml(
+  const item = setting.appendHtml(
     h(
       'div',
       { class: 'item-path' },
@@ -162,38 +162,92 @@ export function appendPath(
       h('div', { class: 'luna-setting-control' }, input, button)
     )
   )
+  item.key = key
+  item.value = value
+
+  return item
 }
 
 export function buildSettings(setting: LunaSetting, config: any) {
   each(config, (value: any) => {
     const type = value.shift()
+    let def: Def | undefined
+    each(value, (val, idx) => {
+      if (val instanceof Def) {
+        def = val
+        value[idx] = val.value
+      }
+    })
+    let item: any
     switch (type) {
       case 'title':
-        setting.appendTitle.apply(setting, value)
+        item = setting.appendTitle.apply(setting, value)
         break
       case 'markdown':
-        appendMarkdown(setting, value[0])
+        item = appendMarkdown(setting, value[0])
         break
       case 'number':
-        setting.appendNumber.apply(setting, value)
+        item = setting.appendNumber.apply(setting, value)
         break
       case 'checkbox':
-        setting.appendCheckbox.apply(setting, value)
+        item = setting.appendCheckbox.apply(setting, value)
         break
       case 'select':
-        setting.appendSelect.apply(setting, value)
+        item = setting.appendSelect.apply(setting, value)
         break
       case 'input':
-        setting.appendInput.apply(setting, value)
+        item = setting.appendInput.apply(setting, value)
         break
       case 'complex':
-        appendComplex.apply(null, [setting, ...value] as any)
+        item = appendComplex.apply(null, [setting, ...value] as any)
         break
       case 'path':
-        appendPath.apply(null, [setting, ...value] as any)
+        item = appendPath.apply(null, [setting, ...value] as any)
+        break
+      case 'button':
+        item = setting.appendButton.apply(setting, value)
         break
     }
+
+    if (def) {
+      const onChange = (item as any).onChange
+      item.onChange = function (value: any) {
+        onChange.call(item, value)
+        def?.update(value)
+        updateModified()
+      }
+      function updateModified() {
+        if (def?.isModified) {
+          $class.add(item.container, 'modified')
+        } else {
+          $class.remove(item.container, 'modified')
+        }
+      }
+      updateModified()
+    }
   })
+}
+
+class Def {
+  private val: any
+  private def: any
+  constructor(val: any, def: any) {
+    this.val = val
+    this.def = def
+  }
+  update(val: any) {
+    this.val = val
+  }
+  get value() {
+    return isUndef(this.val) ? def : this.val
+  }
+  get isModified() {
+    return !isUndef(this.val) && this.val !== this.def
+  }
+}
+
+export function def(val: any, def: any) {
+  return new Def(val, def)
 }
 
 export async function sendCommand(command: string, data: any): Promise<any> {
