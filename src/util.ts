@@ -1,3 +1,5 @@
+import splitPath from 'licia/splitPath'
+import contain from 'licia/contain'
 import * as vscode from 'vscode'
 
 export function setContext(name: string, value: any) {
@@ -28,4 +30,25 @@ export function reopenWith(editor: string) {
   if (uri) {
     vscode.commands.executeCommand('vscode.openWith', uri, editor)
   }
+}
+
+export async function getFileHandler(document: vscode.TextDocument) {
+  const fileName = document.fileName
+  const { name } = splitPath(fileName)
+
+  switch (name) {
+    case '.prettierrc.json':
+      return 'prettier'
+    case 'package.json':
+    case '.npmrc':
+      return 'npm'
+    case 'app.json':
+    case 'project.config.json':
+    case 'project.miniapp.json':
+      return 'miniprogram'
+    case 'tsconfig.json':
+      return 'typescript'
+  }
+
+  return ''
 }

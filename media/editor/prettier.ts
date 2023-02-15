@@ -12,15 +12,11 @@ i18n.set('zh-cn', {
   'prettier.tabWidthDesc': '指定缩进空格数。',
 })
 
-export function handler(setting: LunaSetting, fileName: string, text: string) {
-  if (endWith(fileName, '.prettierrc.json')) {
-    config(setting, text)
-    return true
-  }
-  return false
-}
-
-function config(setting: LunaSetting, text: string) {
+export default function handler(
+  setting: LunaSetting,
+  fileName: string,
+  text: string
+) {
   const json = JSON.parse(text)
 
   setting.on('change', (key, val) => {

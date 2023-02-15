@@ -5,15 +5,11 @@ import json5 from 'json5'
 import LunaSetting from 'luna-setting'
 import { buildSettings, updateText, def, i18n } from './util'
 
-export function handler(setting: LunaSetting, fileName: string, text: string) {
-  if (endWith(fileName, 'tsconfig.json')) {
-    config(setting, text)
-    return true
-  }
-  return false
-}
-
-function config(setting: LunaSetting, text: string) {
+export default function handler(
+  setting: LunaSetting,
+  fileName: string,
+  text: string
+) {
   const json = json5.parse(text)
   setting.on('change', (key, val) => {
     safeSet(json, key, val)

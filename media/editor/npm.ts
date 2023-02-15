@@ -7,19 +7,21 @@ import splitPath from 'licia/splitPath'
 import ini from 'licia/ini'
 import { vscode, updateText, buildSettings, def, i18n } from './util'
 
-export function handler(setting: LunaSetting, fileName: string, text: string) {
+export default function handler(
+  setting: LunaSetting,
+  fileName: string,
+  text: string
+) {
   const { name } = splitPath(fileName)
 
   switch (name) {
     case 'package.json':
       pack(setting, fileName, text)
-      return true
+      break
     case '.npmrc':
       config(setting, text)
-      return true
+      break
   }
-
-  return false
 }
 
 function pack(setting: LunaSetting, fileName: string, text: string) {

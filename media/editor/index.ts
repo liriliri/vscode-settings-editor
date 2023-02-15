@@ -1,18 +1,18 @@
 import LunaSetting from 'luna-setting'
 import debounce from 'licia/debounce'
 import trim from 'licia/trim'
-import * as npm from './npm'
-import * as miniprogram from './miniprogram'
-import * as prettier from './prettier'
-import * as typescript from './typescript'
+import npm from './npm'
+import miniprogram from './miniprogram'
+import prettier from './prettier'
+import typescript from './typescript'
 import { store, i18n } from './util'
 
-const handlers = [
-  prettier.handler,
-  miniprogram.handler,
-  npm.handler,
-  typescript.handler,
-]
+const handlers: any = {
+  prettier,
+  miniprogram,
+  npm,
+  typescript,
+}
 
 const container = document.getElementById('container') as HTMLElement
 const setting = new LunaSetting(container)
@@ -33,12 +33,13 @@ window.addEventListener('message', (event) => {
   const message = event.data // The json data that the extension sent
   switch (message.type) {
     case 'update':
-      const { fileName, text } = message
+      const { fileName, text, handler } = message
       if (store.get('fileName') === fileName && store.get('text') === text) {
         return
       }
       store.set('fileName', fileName)
       store.set('text', text)
+      store.set('handler', handler)
       updateContent()
       break
     case 'init':
@@ -59,8 +60,9 @@ function updateLanguage() {
 function updateContent() {
   const fileName = store.get('fileName')
   const text = store.get('text')
+  const handler = store.get('handler')
 
-  if (!fileName || !text) {
+  if (!fileName || !text || !handler) {
     return
   }
 
@@ -68,11 +70,7 @@ function updateContent() {
   setting.clear()
   setting.removeAllListeners('change')
 
-  for (let i = 0, len = handlers.length; i < len; i++) {
-    if (handlers[i](setting, fileName, text)) {
-      break
-    }
-  }
+  handlers[handler](setting, fileName, text)
 }
 
 updateLanguage()

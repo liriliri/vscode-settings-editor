@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 import randomId from 'licia/randomId'
-import { reopenWith, setContext, setDocument } from './util'
+import { getFileHandler, reopenWith, setContext, setDocument } from './util'
 
 export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
@@ -31,11 +31,12 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
     setDocument(document)
     this.updateOpenSourceButton(true)
 
-    function updateWebview() {
+    async function updateWebview() {
       webviewPanel.webview.postMessage({
         type: 'update',
         fileName: document.fileName,
         text: document.getText(),
+        handler: await getFileHandler(document),
       })
     }
 

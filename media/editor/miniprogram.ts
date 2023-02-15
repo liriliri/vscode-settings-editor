@@ -46,22 +46,24 @@ const all = {
 i18n.set('en', all)
 i18n.set('zh-cn', all)
 
-export function handler(setting: LunaSetting, fileName: string, text: string) {
+export default function handler(
+  setting: LunaSetting,
+  fileName: string,
+  text: string
+) {
   const { name } = splitPath(fileName)
 
   switch (name) {
     case 'project.config.json':
       project(setting, text)
-      return true
+      break
     case 'project.miniapp.json':
       miniapp(setting, text)
-      return true
+      break
     case 'app.json':
       app(setting, text)
-      return true
+      break
   }
-
-  return false
 }
 
 function project(setting: LunaSetting, text: string) {
