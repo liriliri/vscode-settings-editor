@@ -115,6 +115,9 @@ function app(setting: LunaSetting, text: string) {
   })
 
   const window = json.window || {}
+  const networkTimeout = json.networkTimeout || {}
+  const halfPage = json.halfPage || {}
+  const debugOptions = json.debugOptions || {}
 
   buildSettings(setting, [
     ['title', i18n.t('miniprogram.appTitle')],
@@ -132,6 +135,7 @@ function app(setting: LunaSetting, text: string) {
       i18n.t('miniprogram.appEntryPagePathDesc'),
     ],
     ['complex', 'pages', 'Pages', '页面路径列表。'],
+    ['complex', 'tabBar', 'Tab Bar', '底部 `tab` 栏的表现。'],
     [
       'checkbox',
       'debug',
@@ -218,6 +222,33 @@ function app(setting: LunaSetting, text: string) {
       'Lazy Code Loading',
       '配置自定义组件代码按需注入。',
     ],
+    ['complex', 'singlePage', 'Singe Page', '单页模式相关配置。'],
+    [
+      'complex',
+      'supportedMaterials',
+      'Supported Materials',
+      '[聊天素材小程序打开](https://developers.weixin.qq.com/miniprogram/dev/framework/material/support_material.html)相关配置。',
+    ],
+    [
+      'input',
+      'serviceProviderTicket',
+      def(json.serviceProviderTicket, ''),
+      'Sercvice Provider Ticket',
+      '[定制化型服务商](https://developers.weixin.qq.com/doc/oplatform/Third-party_Platforms/2.0/operation/thirdparty/customized_service_platform_guidelines.html)票据。',
+    ],
+    [
+      'complex',
+      'embeddedAppIdList',
+      'Embedded App Id List',
+      '半屏小程序 appId。',
+    ],
+    [
+      'complex',
+      'enablePassiveEvent',
+      'Enable Passive Event',
+      'touch 事件监听是否为 passive。',
+    ],
+    ['complex', 'resolveAlias', 'Resolve Alias', '自定义模块映射规则。'],
     [
       'select',
       'renderer',
@@ -230,19 +261,71 @@ function app(setting: LunaSetting, text: string) {
       },
     ],
     ['title', 'Window'],
+    ['markdown', '用于设置小程序的状态栏、导航条、标题、窗口背景色。'],
+    ...commonWindow(window, 'window.'),
+    ['title', 'Network Timeout'],
+    ['markdown', '各类网络请求的超时时间，单位均为毫秒。'],
     [
-      'input',
-      'window.navigationBarBackgroundColor',
-      def(window.navigationBarBackgroundColor, '#000000'),
-      'Navigation Bar Background Color',
-      '导航栏背景颜色，如 `#000000`。',
+      'number',
+      'networkTimeout.request',
+      def(networkTimeout.request, 60000),
+      'Request',
+      '[wx.request](https://developers.weixin.qq.com/miniprogram/dev/api/network/request/wx.request.html) 的超时时间，单位：毫秒。',
+      {
+        min: 0,
+      },
     ],
     [
-      'input',
-      'window.navigationBarTextStyle',
-      def(window.navigationBarTextStyle, 'white'),
-      'Navigation Bar Text Style',
-      '导航栏标题颜色，仅支持 `black` / `white`。',
+      'number',
+      'networkTimeout.connectSocket',
+      def(networkTimeout.connectSocket, 60000),
+      'Connect Socket',
+      '[wx.connectSocket](https://developers.weixin.qq.com/miniprogram/dev/api/network/websocket/wx.connectSocket.html) 的超时时间，单位：毫秒。',
+      {
+        min: 0,
+      },
+    ],
+    [
+      'number',
+      'networkTimeout.uploadFile',
+      def(networkTimeout.uploadFile, 60000),
+      'Upload File',
+      '[wx.uploadFile](https://developers.weixin.qq.com/miniprogram/dev/api/network/upload/wx.uploadFile.html) 的超时时间，单位：毫秒。',
+      {
+        min: 0,
+      },
+    ],
+    [
+      'number',
+      'networkTimeout.downloadFile',
+      def(networkTimeout.downloadFile, 60000),
+      'Download File',
+      '[wx.downloadFile](https://developers.weixin.qq.com/miniprogram/dev/api/network/download/wx.downloadFile.html) 的超时时间，单位：毫秒。',
+      {
+        min: 0,
+      },
+    ],
+    ['title', 'Half Page'],
+    ['markdown', '视频号直播半屏场景设置。'],
+    [
+      'select',
+      'halfPage.firstPageNavigationStyle',
+      def(halfPage.firstPageNavigationStyle, 'default'),
+      'First Page Navigation Style',
+      '视频号直播打开的第一个页面的全屏状态使用自定义顶部，支持 `default` / `custom`。',
+      {
+        Default: 'default',
+        Custom: 'custom',
+      },
+    ],
+    ['title', 'Debug Options'],
+    ['markdown', '调试相关配置'],
+    [
+      'checkbox',
+      'debugOptions.enableFPSPanel',
+      def(debugOptions.enableFPSPanel, false),
+      'Enable FPS Panel',
+      '是否开启 [FPS 面板](https://developers.weixin.qq.com/miniprogram/dev/framework/performance/fps_panel.html)。',
     ],
   ])
 }
@@ -263,110 +346,7 @@ function page(setting: LunaSetting, text: string) {
         url: 'https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/page.html',
       }),
     ],
-    [
-      'input',
-      'navigationBarBackgroundColor',
-      def(json.navigationBarBackgroundColor, '#000000'),
-      'Navigation Bar Background Color',
-      '导航栏背景颜色，如 `#000000`。',
-    ],
-    [
-      'select',
-      'navigationBarTextStyle',
-      def(json.navigationBarTextStyle, 'white'),
-      'Navigation Bar Text Style',
-      '导航栏标题颜色，仅支持 `black` / `white`。',
-      {
-        White: 'white',
-        Black: 'black',
-      },
-    ],
-    [
-      'input',
-      'navigationBarTitleText',
-      def(json.navigationBarTitleText, ''),
-      'Navigation Bar Title Text',
-      '导航栏标题文字内容。',
-    ],
-    [
-      'select',
-      'navigationStyle',
-      def(json.navigationStyle, 'default'),
-      'Navigation Style',
-      '导航栏样式，仅支持以下值：\n\ndefault 默认样式\n\ncustom 自定义导航栏，只保留右上角胶囊按钮',
-      {
-        Default: 'default',
-        Custom: 'custom',
-      },
-    ],
-    [
-      'checkbox',
-      'homeButton',
-      def(json.homeButton, false),
-      'Home Button',
-      '在非首页、非页面栈最底层页面或非 tabbar 内页面中的导航栏展示 home 键。',
-    ],
-    [
-      'input',
-      'backgroundColor',
-      def(json.backgroundColor, '#ffffff'),
-      'Background Color',
-      '窗口的背景色。',
-    ],
-    [
-      'select',
-      'backgroundTextStyle',
-      def(json.backgroundTextStyle, 'dark'),
-      'Background Text Style',
-      '下拉 loading 的样式，仅支持 `dark` / `light`。',
-      {
-        Dark: 'dark',
-        Light: 'light',
-      },
-    ],
-    [
-      'input',
-      'backgroundColorTop',
-      def(json.backgroundColorTop, '#ffffff'),
-      'Background Color Top',
-      '顶部窗口的背景色，仅 iOS 支持。',
-    ],
-    [
-      'input',
-      'backgroundColorBottom',
-      def(json.backgroundColorBottom, '#ffffff'),
-      'Background Color Bottom',
-      '底部窗口的背景色，仅 iOS 支持。',
-    ],
-    [
-      'checkbox',
-      'enablePullDownRefresh',
-      def(json.enablePullDownRefresh, false),
-      'Enable Pull Down Refresh',
-      '是否开启当前页面下拉刷新，详见 [Page.onPullDownRefresh](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onpulldownrefresh)。',
-    ],
-    [
-      'number',
-      'onReachBottomDistance',
-      def(json.onReachBottomDistance, 50),
-      'On Reach Bottom Distance',
-      '页面上拉触底事件触发时距页面底部距离，单位为px，详见 [Page.onReachBottom](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onreachbottom)。',
-      {
-        min: 0,
-      },
-    ],
-    [
-      'select',
-      'pageOrientation',
-      def(json.pageOrientation, 'portrait'),
-      'Page Orientation',
-      '屏幕旋转设置，支持 `auto` / `portrait` / `landscape`，详见 [响应显示区域变化](https://developers.weixin.qq.com/miniprogram/dev/framework/view/resizable.html)。',
-      {
-        Auto: 'auto',
-        Portrait: 'portrait',
-        Landscape: 'landscape',
-      },
-    ],
+    ...commonWindow(json),
     [
       'checkbox',
       'disableScroll',
@@ -381,18 +361,6 @@ function page(setting: LunaSetting, text: string) {
       '页面[自定义组件](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/)配置。',
     ],
     [
-      'select',
-      'initialRenderingCache',
-      def(json.initialRenderingCache, ''),
-      'Initial Rendering Cache',
-      '页面[初始渲染缓存](https://developers.weixin.qq.com/miniprogram/dev/framework/view/initial-rendering-cache.html)配置，支持 `static` / `dynamic`。',
-      {
-        None: '',
-        Static: 'static',
-        Dynamic: 'dynamic',
-      },
-    ],
-    [
       'input',
       'style',
       def(json.style, 'default'),
@@ -400,36 +368,6 @@ function page(setting: LunaSetting, text: string) {
       '启用新版的组件样式。',
     ],
     ['complex', 'singlePage', 'Singe Page', '单页模式相关配置。'],
-    [
-      'input',
-      'restartStrategy',
-      def(json.restartStrategy, 'homePage'),
-      'Restart Strategy',
-      '重新启动策略配置。',
-    ],
-    [
-      'checkbox',
-      'handleWebviewPreload',
-      def(json.handleWebviewPreload, 'static'),
-      'Handle Webview Preload',
-      '控制预加载下个页面的时机，支持 `static` / `manual` / `auto`。',
-      {
-        Static: 'static',
-        Manual: 'manual',
-        Auto: 'auto',
-      },
-    ],
-    [
-      'select',
-      'visualEffectInBackground',
-      def(json.visualEffectInBackground, 'none'),
-      'Visual Effect in Background',
-      '切入系统后台时，隐藏页面内容，保护用户隐私。支持 `hidden` / `none`，若对页面单独设置则会覆盖全局的配置，详见 [全局配置](https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html)。',
-      {
-        None: 'none',
-        Hidden: 'hidden',
-      },
-    ],
     [
       'complex',
       'enablePassiveEvent',
@@ -448,6 +386,157 @@ function page(setting: LunaSetting, text: string) {
       },
     ],
   ])
+}
+
+function commonWindow(window: any, prefix: string = '') {
+  return [
+    [
+      'input',
+      `${prefix}navigationBarBackgroundColor`,
+      def(window.navigationBarBackgroundColor, '#000000'),
+      'Navigation Bar Background Color',
+      '导航栏背景颜色，如 `#000000`。',
+    ],
+    [
+      'select',
+      `${prefix}navigationBarTextStyle`,
+      def(window.navigationBarTextStyle, 'white'),
+      'Navigation Bar Text Style',
+      '导航栏标题颜色，仅支持 `black` / `white`。',
+      {
+        White: 'white',
+        Black: 'black',
+      },
+    ],
+    [
+      'input',
+      `${prefix}navigationBarTitleText`,
+      def(window.navigationBarTitleText, ''),
+      'Navigation Bar Title Text',
+      '导航栏标题文字内容。',
+    ],
+    [
+      'select',
+      `${prefix}navigationStyle`,
+      def(window.navigationStyle, 'default'),
+      'Navigation Style',
+      '导航栏样式，仅支持以下值：\n\ndefault 默认样式\n\ncustom 自定义导航栏，只保留右上角胶囊按钮',
+      {
+        Default: 'default',
+        Custom: 'custom',
+      },
+    ],
+    [
+      'checkbox',
+      `${prefix}homeButton`,
+      def(window.homeButton, false),
+      'Home Button',
+      '在非首页、非页面栈最底层页面或非 tabbar 内页面中的导航栏展示 home 键。',
+    ],
+    [
+      'input',
+      `${prefix}backgroundColor`,
+      def(window.backgroundColor, '#ffffff'),
+      'Background Color',
+      '窗口的背景色。',
+    ],
+    [
+      'select',
+      `${prefix}backgroundTextStyle`,
+      def(window.backgroundTextStyle, 'dark'),
+      'Background Text Style',
+      '下拉 loading 的样式，仅支持 `dark` / `light`。',
+      {
+        Dark: 'dark',
+        Light: 'light',
+      },
+    ],
+    [
+      'input',
+      `${prefix}backgroundColorTop`,
+      def(window.backgroundColorTop, '#ffffff'),
+      'Background Color Top',
+      '顶部窗口的背景色，仅 iOS 支持。',
+    ],
+    [
+      'input',
+      `${prefix}backgroundColorBottom`,
+      def(window.backgroundColorBottom, '#ffffff'),
+      'Background Color Bottom',
+      '底部窗口的背景色，仅 iOS 支持。',
+    ],
+    [
+      'checkbox',
+      `${prefix}.enablePullDownRefresh`,
+      def(window.enablePullDownRefresh, false),
+      'Enable Pull Down Refresh',
+      '是否开启当前页面下拉刷新，详见 [Page.onPullDownRefresh](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onpulldownrefresh)。',
+    ],
+    [
+      'number',
+      `${prefix}onReachBottomDistance`,
+      def(window.onReachBottomDistance, 50),
+      'On Reach Bottom Distance',
+      '页面上拉触底事件触发时距页面底部距离，单位为px，详见 [Page.onReachBottom](https://developers.weixin.qq.com/miniprogram/dev/reference/api/Page.html#onreachbottom)。',
+      {
+        min: 0,
+      },
+    ],
+    [
+      'select',
+      `${prefix}pageOrientation`,
+      def(window.pageOrientation, 'portrait'),
+      'Page Orientation',
+      '屏幕旋转设置，支持 `auto` / `portrait` / `landscape`，详见 [响应显示区域变化](https://developers.weixin.qq.com/miniprogram/dev/framework/view/resizable.html)。',
+      {
+        Auto: 'auto',
+        Portrait: 'portrait',
+        Landscape: 'landscape',
+      },
+    ],
+    [
+      'select',
+      `${prefix}initialRenderingCache`,
+      def(window.initialRenderingCache, ''),
+      'Initial Rendering Cache',
+      '页面[初始渲染缓存](https://developers.weixin.qq.com/miniprogram/dev/framework/view/initial-rendering-cache.html)配置，支持 `static` / `dynamic`。',
+      {
+        None: '',
+        Static: 'static',
+        Dynamic: 'dynamic',
+      },
+    ],
+    [
+      'input',
+      `${prefix}restartStrategy`,
+      def(window.restartStrategy, 'homePage'),
+      'Restart Strategy',
+      '重新启动策略配置。',
+    ],
+    [
+      'checkbox',
+      `${prefix}handleWebviewPreload`,
+      def(window.handleWebviewPreload, 'static'),
+      'Handle Webview Preload',
+      '控制预加载下个页面的时机，支持 `static` / `manual` / `auto`。',
+      {
+        Static: 'static',
+        Manual: 'manual',
+        Auto: 'auto',
+      },
+    ],
+    [
+      'select',
+      `${prefix}visualEffectInBackground`,
+      def(window.visualEffectInBackground, 'none'),
+      'Visual Effect in Background',
+      '切入系统后台时，隐藏页面内容，保护用户隐私。支持 `hidden` / `none`，若对页面单独设置则会覆盖全局的配置，详见 [全局配置](https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html)。',
+      {
+        None: 'none',
+        Hidden: 'hidden',
+      },
+    ],
+  ]
 }
 
 function miniapp(setting: LunaSetting, text: string) {
