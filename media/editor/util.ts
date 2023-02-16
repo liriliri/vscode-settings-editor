@@ -46,12 +46,6 @@ export const i18n = new I18n('en', {
   },
 })
 
-export function appendMarkdown(setting: LunaSetting, markdown: string) {
-  return setting.appendHtml(
-    `<div class="item-markdown markdown">${micromark(markdown)}</div>`
-  )
-}
-
 export function appendComplex(
   setting: LunaSetting,
   key: string,
@@ -186,7 +180,7 @@ export function buildSettings(setting: LunaSetting, config: any) {
         item = setting.appendTitle.apply(setting, value)
         break
       case 'markdown':
-        item = appendMarkdown(setting, value[0])
+        item = setting.appendMarkdown.apply(setting, value)
         break
       case 'number':
         item = setting.appendNumber.apply(setting, value)
@@ -197,8 +191,8 @@ export function buildSettings(setting: LunaSetting, config: any) {
       case 'select':
         item = setting.appendSelect.apply(setting, value)
         break
-      case 'input':
-        item = setting.appendInput.apply(setting, value)
+      case 'text':
+        item = setting.appendText.apply(setting, value)
         break
       case 'complex':
         item = appendComplex.apply(null, [setting, ...value] as any)

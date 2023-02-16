@@ -91,7 +91,7 @@
     "glob": "^8.0.3",
     "json5": "^2.2.3",
     "licia": "^1.37.1",
-    "luna-setting": "^0.6.0",
+    "luna-setting": "^0.7.0",
     "micromark": "^3.1.0",
     "mocha": "^10.1.0",
     "path-browserify": "^1.0.1",

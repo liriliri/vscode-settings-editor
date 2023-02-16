@@ -78,13 +78,61 @@ function project(setting: LunaSetting, text: string) {
   })
 
   buildSettings(setting, [
-    ['title', 'Miniprogram Project'],
-    ['input', 'appid', json.appid || '', 'AppId'],
+    ['title', '小程序项目配置文件'],
     [
-      'input',
+      'markdown',
+      i18n.t('seeDoc', {
+        url: 'https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html',
+      }),
+    ],
+    [
+      'path',
       'miniprogramRoot',
-      json.miniprogramRoot || '',
+      def(json.miniprogramRoot, ''),
       'Miniprogram Root',
+      '指定小程序源码的目录(需为相对路径)。',
+    ],
+    [
+      'path',
+      'qcloudRoot',
+      def(json.qcloudRoot, ''),
+      'Qcloud Root',
+      '指定腾讯云项目的目录(需为相对路径)。',
+    ],
+    [
+      'path',
+      'pluginRoot',
+      def(json.pluginRoot, ''),
+      'Plugin Root',
+      '指定插件项目的目录(需为相对路径)。',
+    ],
+    [
+      'path',
+      'cloudbaseRoot',
+      def(json.cloudbaseRoot, ''),
+      'Cloudbase Root',
+      '云开发代码根目录(需为相对路径)。',
+    ],
+    [
+      'path',
+      'cloudfunctionRoot',
+      def(json.cloudfunctionRoot, ''),
+      'Cloudfunction Root',
+      '云函数代码根目录(需为相对路径)。',
+    ],
+    [
+      'path',
+      'cloudfunctionTemplateRoot',
+      def(json.cloudfunctionTemplateRoot, ''),
+      'Cloudfunction Template Root',
+      '云函数本地调试请求模板的根目录(需为相对路径)。',
+    ],
+    [
+      'path',
+      'cloudcontainerRoot',
+      def(json.cloudcontainerRoot, ''),
+      'Cloudcontainer Root',
+      '云托管代码根目录(需为相对路径)。',
     ],
     [
       'select',
@@ -96,6 +144,7 @@ function project(setting: LunaSetting, text: string) {
         Plugin: 'plugin',
       },
     ],
+    ['text', 'appid', json.appid || '', 'AppId'],
     ['title', 'Setting'],
     [
       'checkbox',
@@ -128,7 +177,7 @@ function app(setting: LunaSetting, text: string) {
       }),
     ],
     [
-      'input',
+      'text',
       'entryPagePath',
       json.entryPagePath || '',
       'Entry Page Path',
@@ -191,7 +240,7 @@ function app(setting: LunaSetting, text: string) {
     ],
     ['complex', 'permission', 'Permission', '小程序接口权限相关设置。'],
     [
-      'input',
+      'text',
       'style',
       def(json.style, ''),
       'Style',
@@ -216,7 +265,7 @@ function app(setting: LunaSetting, text: string) {
       },
     ],
     [
-      'input',
+      'text',
       'lazyCodeLoading',
       def(json.lazyCodeLoading, ''),
       'Lazy Code Loading',
@@ -230,7 +279,7 @@ function app(setting: LunaSetting, text: string) {
       '[聊天素材小程序打开](https://developers.weixin.qq.com/miniprogram/dev/framework/material/support_material.html)相关配置。',
     ],
     [
-      'input',
+      'text',
       'serviceProviderTicket',
       def(json.serviceProviderTicket, ''),
       'Sercvice Provider Ticket',
@@ -361,7 +410,7 @@ function page(setting: LunaSetting, text: string) {
       '页面[自定义组件](https://developers.weixin.qq.com/miniprogram/dev/framework/custom-component/)配置。',
     ],
     [
-      'input',
+      'text',
       'style',
       def(json.style, 'default'),
       'Style',
@@ -391,7 +440,7 @@ function page(setting: LunaSetting, text: string) {
 function commonWindow(window: any, prefix: string = '') {
   return [
     [
-      'input',
+      'text',
       `${prefix}navigationBarBackgroundColor`,
       def(window.navigationBarBackgroundColor, '#000000'),
       'Navigation Bar Background Color',
@@ -409,7 +458,7 @@ function commonWindow(window: any, prefix: string = '') {
       },
     ],
     [
-      'input',
+      'text',
       `${prefix}navigationBarTitleText`,
       def(window.navigationBarTitleText, ''),
       'Navigation Bar Title Text',
@@ -434,7 +483,7 @@ function commonWindow(window: any, prefix: string = '') {
       '在非首页、非页面栈最底层页面或非 tabbar 内页面中的导航栏展示 home 键。',
     ],
     [
-      'input',
+      'text',
       `${prefix}backgroundColor`,
       def(window.backgroundColor, '#ffffff'),
       'Background Color',
@@ -452,14 +501,14 @@ function commonWindow(window: any, prefix: string = '') {
       },
     ],
     [
-      'input',
+      'text',
       `${prefix}backgroundColorTop`,
       def(window.backgroundColorTop, '#ffffff'),
       'Background Color Top',
       '顶部窗口的背景色，仅 iOS 支持。',
     ],
     [
-      'input',
+      'text',
       `${prefix}backgroundColorBottom`,
       def(window.backgroundColorBottom, '#ffffff'),
       'Background Color Bottom',
@@ -507,7 +556,7 @@ function commonWindow(window: any, prefix: string = '') {
       },
     ],
     [
-      'input',
+      'text',
       `${prefix}restartStrategy`,
       def(window.restartStrategy, 'homePage'),
       'Restart Strategy',
@@ -559,27 +608,27 @@ function miniapp(setting: LunaSetting, text: string) {
       }),
     ],
     [
-      'input',
+      'text',
       'version',
       json.version,
       'Version',
       '`project.miniapp.json` 的版本号。',
     ],
     [
-      'input',
+      'text',
       'description',
       json.description,
       'Description',
       '`project.miniapp.json` 的描述说明。',
     ],
     [
-      'input',
+      'text',
       'miniModuleId',
       json.miniModuleId,
       'Mini Module Id',
       '开发平台上申请的模块 ID。',
     ],
-    ['input', 'name', json.name, 'Name', '应用名称。'],
+    ['text', 'name', json.name, 'Name', '应用名称。'],
     [
       'path',
       'icon',
@@ -604,7 +653,7 @@ function miniapp(setting: LunaSetting, text: string) {
       i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
     ],
     [
-      'input',
+      'text',
       'mini-android.archivePath',
       android.archivePath,
       'Archive Path',
@@ -620,7 +669,7 @@ function miniapp(setting: LunaSetting, text: string) {
     ['title', i18n.t('miniprogram.miniappRunArgs'), 2],
     ['markdown', i18n.t('miniprogram.miniappRunArgsDesc')],
     [
-      'input',
+      'text',
       'mini-android.runArgs.mainActivity',
       android.runArgs.mainActivity,
       'Main Activity',
@@ -640,7 +689,7 @@ function miniapp(setting: LunaSetting, text: string) {
     ['title', i18n.t('miniprogram.miniappBuildArgs'), 2],
     ['markdown', i18n.t('miniprogram.miniappBuildArgsDesc')],
     [
-      'input',
+      'text',
       'mini-android.buildArgs.mainActivity',
       android.buildArgs.mainActivity,
       'Main Activity',
@@ -673,7 +722,7 @@ function miniapp(setting: LunaSetting, text: string) {
       i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
     ],
     [
-      'input',
+      'text',
       'mini-ios.archivePath',
       ios.archivePath,
       'Archive Path',
@@ -689,7 +738,7 @@ function miniapp(setting: LunaSetting, text: string) {
     ['title', i18n.t('miniprogram.miniappRunArgs'), 2],
     ['markdown', i18n.t('miniprogram.miniappRunArgsDesc')],
     [
-      'input',
+      'text',
       'mini-ios.runArgs.scheme',
       ios.runArgs.scheme,
       'Scheme',
@@ -698,7 +747,7 @@ function miniapp(setting: LunaSetting, text: string) {
     ['title', i18n.t('miniprogram.miniappBuildArgs'), 2],
     ['markdown', i18n.t('miniprogram.miniappBuildArgsDesc')],
     [
-      'input',
+      'text',
       'mini-ios.buildArgs.scheme',
       ios.buildArgs.scheme,
       'Scheme',
