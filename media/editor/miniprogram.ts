@@ -79,7 +79,7 @@ function project(setting: LunaSetting, text: string) {
 
   const staticServerOptions = json.staticServerOptions || {}
   const scripts = json.scripts || {}
-  const settings = json.settings || {}
+  const settings = json.setting || {}
 
   buildSettings(setting, [
     ['title', '小程序项目配置文件'],
