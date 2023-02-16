@@ -1,5 +1,17 @@
 @import "luna-setting/luna-setting.css";
 
+/* older version vscode fallback */
+.vscode-light {
+  --focusedRowBorder: #0090f1;
+  --rowHoverBackground: rgba(232, 232, 232, 0.3);
+  --headerBorder: rgba(128, 128, 128, 0.35);
+}
+.vscode-dark {
+  --focusedRowBorder: #007fd4;
+  --rowHoverBackground: rgba(63, 77, 79, 0.3);
+  --headerBorder: rgba(128, 128, 128, 0.35);
+}
+
 #search {
   position: fixed;
   left: 0;
@@ -18,7 +30,7 @@
       display: block;
       margin-top: 10px;
       width: 100%;
-      border-bottom: 1px solid var(--vscode-settings-headerBorder);
+      border-bottom: 1px solid var(--vscode-settings-headerBorder, var(--headerBorder));
     }
     input {
       width: 100%;
@@ -71,10 +83,10 @@
     margin-bottom: 2px;
   }
   &:hover, &.luna-setting-selected {
-    background: var(--vscode-settings-rowHoverBackground);
+    background: var(--vscode-settings-rowHoverBackground, var(--rowHoverBackground));
   }
   &.luna-setting-selected:focus {
-    outline-color: var(--vscode-settings-focusedRowBorder);
+    outline-color: var(--vscode-settings-focusedRowBorder, var(--focusedRowBorder));
   }
   .luna-setting-control, .luna-setting-description {
     font-size: 13px;
@@ -174,6 +186,7 @@
 
 .luna-setting-item-button, .item-path {
   button {
+    white-space: nowrap;
     padding: 2px 14px;
     margin-top: 4px;
     color: var(--vscode-button-foreground);

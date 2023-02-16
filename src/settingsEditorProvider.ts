@@ -1,5 +1,6 @@
 import * as vscode from 'vscode'
 import randomId from 'licia/randomId'
+import lowerCase from 'licia/lowerCase'
 import { getFileHandler, reopenWith, setContext, setDocument } from './util'
 
 export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
@@ -88,7 +89,7 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
 
     webviewPanel.webview.postMessage({
       type: 'init',
-      language: vscode.env.language,
+      language: lowerCase(vscode.env.language),
     })
     updateWebview()
   }
