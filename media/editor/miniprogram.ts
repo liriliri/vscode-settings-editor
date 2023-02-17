@@ -1,50 +1,99 @@
 import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
-import { updateText, i18n, buildSettings, def, store, getSpace } from './util'
+import { updateText, i18n, buildSettings, def, getSpace, setI18n } from './util'
 import splitPath from 'licia/splitPath'
 
-i18n.set('en', {
-  'miniprogram.appTitle': 'Miniprogram App Config',
-  'miniprogram.appEntryPagePathDesc': 'Mini Program default start home page.',
-  'miniprogram.appDebug': 'Whether or not to open debug Mode, off by default.',
+setI18n(
+  {
+    projectTitle: ['Miniprogram Project Config', '小程序项目配置文件'],
+    projectPrivateTitle: [
+      'Miniprogram Private Project Config',
+      '小程序项目私有配置文件',
+    ],
+    projectMiniprogramRootDesc: [
+      'Specifies the directory (a relative path) of the Mini Program source code.',
+      '指定小程序源码的目录(需为相对路径)。',
+    ],
+    projectQcloudRootDesc: [
+      'Specifies the directory (a relative path) of the Tencent Cloud project.',
+      '指定腾讯云项目的目录(需为相对路径)。',
+    ],
+    projectPluginRootDesc: [
+      'Specifies the directory (a relative path) of the plug-in project.',
+      '指定插件项目的目录(需为相对路径)。',
+    ],
+    projectCloudbaseRootDesc: '云开发代码根目录(需为相对路径)。',
+    projectCloudfunctionRootDesc: '云函数代码根目录(需为相对路径)。',
+    projectCloudfunctionTemplateRootDesc:
+      '云函数本地调试请求模板的根目录(需为相对路径)。',
+    projectCloudcontainerRootDesc: '云托管代码根目录(需为相对路径)。',
+    projectCompileTypeDesc: ['Compilation type.', '编译类型。'],
+    projectLibVersionDesc: ['Base library version.', '基础库版本。'],
+    projectProjectNameDesc: [
+      'Project name, which is **required only when a new project is created**.',
+      '项目名字。',
+    ],
+    projectAppIdDesc: [
+      "Project's AppID, which is **required only when a new project is created**.",
+      '项目的 `appid`。',
+    ],
+    projectConditionDesc: '编译条件。',
+    projectPackOptionsDesc: '打包配置选项。',
+    projectDebugOptionsDesc: '调试配置选项。',
+    projectWatchOptionsDesc: '文件监听配置设置。',
+    projectSettingDesc: '项目的编译设置，可以指定以下设置。',
+    projectSettingConditionDesc:
+      '启用[条件编译](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/condition-compile.html)。',
+    projectEs6Desc: '是否启用 es6 转 es5。',
+    projectEnhanceDesc: '是否打开增强编译。',
+    projectPostcssDesc: '上传代码时样式是否自动补全。',
+    projectMinifiedDesc: '上传代码时是否自动压缩脚本文件。',
+    projectMinifyWXSSDesc: '上传代码时是否自动压缩样式文件。',
+    projectMinifyWXMLDesc: '上传代码时是否自动压缩 WXML 文件。',
+    projectUglifyFileNameDesc: '上传时进行代码保护。',
+    projectIgnoreUploadUnusedFilesDesc: '上传时是否过滤无依赖文件。',
+    projectAutoAuditsDesc: '是否自动运行体验评分。',
+    projectUrlCheckDesc: '是否检查安全域名和 TLS 版本。',
+    projectCompileHotReLoadDesc: '是否开启文件保存后自动热重载。',
 
-  'miniprogram.miniappTitle': 'Miniapp Project',
-  'miniprogram.miniappRunArgs': 'Run Args',
-  'miniprogram.miniappBuildArgs': 'Build Args',
-})
-i18n.set('zh-cn', {
-  'miniprogram.appTitle': '小程序全局配置',
-  'miniprogram.appEntryPagePathDesc': '小程序默认启动首页。',
-  'miniprogram.appDebug': '是否开启 debug 模式，默认关闭。',
+    appTitle: ['Miniprogram App Config', '小程序全局配置'],
+    appEntryPagePathDesc: [
+      'Mini Program default start home page.',
+      '小程序默认启动首页。',
+    ],
+    appDebug: [
+      'Whether or not to open debug Mode, off by default.',
+      '是否开启 debug 模式，默认关闭。',
+    ],
 
-  'miniprogram.miniappTitle': '多端应用配置',
-  'miniprogram.miniappRunArgs': '运行时参数',
-  'miniprogram.miniappBuildArgs': '构建产物时参数',
-})
+    miniappTitle: ['Miniapp Project', '多端应用配置'],
+    miniappRunArgs: ['Run Args', '运行时参数'],
+    miniappBuildArgs: ['Build Args', '构建产物时参数'],
+    miniappUseProjectTemplateDesc: '标记终端工程是否由终端模板工程生成。',
+    miniappProjectPathDesc: '终端工程的路径。',
+    miniappArchivePathDesc:
+      '指定模块代码包同步到终端工程的目录。对于模板终端工程，只有一个模块的情况，这个路径不需要修改。对于多模块的项目，不同的模块可以指定不同的目录。',
+    miniappBuildArchiveEverytimeDesc:
+      '指定每次构建或运行终端工程时都需要编译小程序模块资源包。',
+    miniappRunArgsDesc:
+      '运行时使用的[编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
+    miniappBuildArgsDesc:
+      '构建产物时使用的[编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
+    miniappMainActivityDesc:
+      '仅在 runArgs 下必填。运行后 Android 的入口 Activity。对于模板终端工程，无需改动；对于自有终端工程，需要手动配置。',
+    miniappVariantDesc:
+      '构建变体，[详见](https://developer.android.com/studio/build/build-variants)。',
+    miniappSchemeDesc:
+      '[目标、配置以及要执行的测试集合的名字](https://developer.apple.com/library/archive/featuredarticles/XcodeConcepts/Concept-Schemes.html)。',
+    miniappExportOptionPlistPathDesc:
+      '仅在 buildArgs 下必填。编译 ipa 时需要用到的ExportOption.plist 文件, 可以自定义配置路径，支持相对和绝对路径。',
+  },
+  'miniprogram.'
+)
 
-const all = {
-  'miniprogram.miniappUseProjectTemplateDesc':
-    '标记终端工程是否由终端模板工程生成。',
-  'miniprogram.miniappProjectPathDesc': '终端工程的路径。',
-  'miniprogram.miniappArchivePathDesc':
-    '指定模块代码包同步到终端工程的目录。对于模板终端工程，只有一个模块的情况，这个路径不需要修改。对于多模块的项目，不同的模块可以指定不同的目录。',
-  'miniprogram.miniappBuildArchiveEverytimeDesc':
-    '指定每次构建或运行终端工程时都需要编译小程序模块资源包。',
-  'miniprogram.miniappRunArgsDesc':
-    '运行时使用的[编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
-  'miniprogram.miniappBuildArgsDesc':
-    '构建产物时使用的[编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
-  'miniprogram.miniappMainActivityDesc':
-    '仅在 runArgs 下必填。运行后 Android 的入口 Activity。对于模板终端工程，无需改动；对于自有终端工程，需要手动配置。',
-  'miniprogram.miniappVariantDesc':
-    '构建变体，[详见](https://developer.android.com/studio/build/build-variants)。',
-  'miniprogram.miniappSchemeDesc':
-    '[目标、配置以及要执行的测试集合的名字](https://developer.apple.com/library/archive/featuredarticles/XcodeConcepts/Concept-Schemes.html)。',
-  'miniprogram.miniappExportOptionPlistPathDesc':
-    '仅在 buildArgs 下必填。编译 ipa 时需要用到的ExportOption.plist 文件, 可以自定义配置路径，支持相对和绝对路径。',
+function t(path: string) {
+  return i18n.t(`miniprogram.${path}`)
 }
-i18n.set('en', all)
-i18n.set('zh-cn', all)
 
 export default function handler(
   setting: LunaSetting,
@@ -84,7 +133,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
   const settings = json.setting || {}
 
   buildSettings(setting, [
-    ['title', isPrivate ? '小程序项目私有配置文件' : '小程序项目配置文件'],
+    ['title', isPrivate ? t('projectPrivateTitle') : t('projectTitle')],
     [
       'markdown',
       i18n.t('seeDoc', {
@@ -100,7 +149,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         'miniprogramRoot',
         def(json.miniprogramRoot, ''),
         'Miniprogram Root',
-        '指定小程序源码的目录(需为相对路径)。',
+        t('projectMiniprogramRootDesc'),
         {
           folder: true,
           file: false,
@@ -111,7 +160,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         'qcloudRoot',
         def(json.qcloudRoot, ''),
         'Qcloud Root',
-        '指定腾讯云项目的目录(需为相对路径)。',
+        t('projectQcloudRootDesc'),
         {
           folder: true,
           file: false,
@@ -122,7 +171,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         'pluginRoot',
         def(json.pluginRoot, ''),
         'Plugin Root',
-        '指定插件项目的目录(需为相对路径)。',
+        t('projectPluginRootDesc'),
         {
           folder: true,
           file: false,
@@ -133,7 +182,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         'cloudbaseRoot',
         def(json.cloudbaseRoot, ''),
         'Cloudbase Root',
-        '云开发代码根目录(需为相对路径)。',
+        t('projectCloudbaseRootDesc'),
         {
           folder: true,
           file: false,
@@ -144,7 +193,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         'cloudfunctionRoot',
         def(json.cloudfunctionRoot, ''),
         'Cloudfunction Root',
-        '云函数代码根目录(需为相对路径)。',
+        t('projectCloudfunctionRootDesc'),
         {
           folder: true,
           file: false,
@@ -155,7 +204,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         'cloudfunctionTemplateRoot',
         def(json.cloudfunctionTemplateRoot, ''),
         'Cloudfunction Template Root',
-        '云函数本地调试请求模板的根目录(需为相对路径)。',
+        t('projectCloudfunctionTemplateRootDesc'),
         {
           folder: true,
           file: false,
@@ -166,7 +215,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         'cloudcontainerRoot',
         def(json.cloudcontainerRoot, ''),
         'Cloudcontainer Root',
-        '云托管代码根目录(需为相对路径)。',
+        t('projectCloudcontainerRootDesc'),
         {
           folder: true,
           file: false,
@@ -177,12 +226,13 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         'compileType',
         json.compileType,
         'Compile Type',
+        t('projectCompileTypeDesc'),
         {
           Miniprogram: 'miniprogram',
           Plugin: 'plugin',
         },
       ],
-      ['text', 'appid', def(json.appid, ''), 'App Id', '项目的 `appid`。'],
+      ['text', 'appid', def(json.appid, ''), 'App Id', t('projectAppIdDesc')],
     ])
   }
 
@@ -192,29 +242,39 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
       'libVersion',
       def(json.libVersion, ''),
       'Lib Version',
-      '基础库版本。',
+      t('projectLibVersionDesc'),
     ],
     [
       'text',
       'projectname',
       def(json.projectname, ''),
       'Project Name',
-      '项目名字。',
+      t('projectProjectNameDesc'),
     ],
-    ['complex', 'condition', 'Condition', '编译条件。'],
+    ['complex', 'condition', 'Condition', t('projectConditionDesc')],
   ])
 
   if (!isPrivate) {
     buildSettings(setting, [
-      ['complex', 'packOptions', 'Pack Options', '打包配置选项。'],
-      ['complex', 'debugOptions', 'Debug Options', '调试配置选项。'],
-      ['complex', 'watchOptions', 'Watch Options', '文件监听配置设置。'],
+      ['complex', 'packOptions', 'Pack Options', t('projectPackOptionsDesc')],
+      [
+        'complex',
+        'debugOptions',
+        'Debug Options',
+        t('projectDebugOptionsDesc'),
+      ],
+      [
+        'complex',
+        'watchOptions',
+        'Watch Options',
+        t('projectWatchOptionsDesc'),
+      ],
     ])
   }
 
   buildSettings(setting, [
     ['title', 'Setting'],
-    ['markdown', '项目的编译设置，可以指定以下设置。'],
+    ['markdown', t('projectSettingDesc')],
   ])
 
   if (!isPrivate) {
@@ -224,63 +284,63 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         'setting.condition',
         def(settings.condition, false),
         'Condition',
-        '启用[条件编译](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/condition-compile.html)。',
+        t('projectSettingConditionDesc'),
       ],
       [
         'checkbox',
         'setting.es6',
         def(settings.es6, false),
         'ES6',
-        '是否启用 es6 转 es5。',
+        t('projectEs6Desc'),
       ],
       [
         'checkbox',
         'setting.enhance',
         def(settings.enhance, false),
         'Enhance',
-        '是否打开增强编译。',
+        t('projectEnhanceDesc'),
       ],
       [
         'checkbox',
         'setting.postcss',
         def(settings.postcss, true),
         'Postcss',
-        '上传代码时样式是否自动补全。',
+        t('projectPostcssDesc'),
       ],
       [
         'checkbox',
         'setting.minified',
         def(settings.minified, true),
         'Minified',
-        '上传代码时是否自动压缩脚本文件。',
+        t('projectMinifiedDesc'),
       ],
       [
         'checkbox',
         'setting.minifyWXSS',
         def(settings.minifyWXSS, false),
         'Minify WXSS',
-        '上传代码时是否自动压缩样式文件。',
+        t('projectMinifyWXSSDesc'),
       ],
       [
         'checkbox',
         'setting.minifyWXML',
         def(settings.minifyWXML, false),
         'Minify WXML',
-        '上传代码时是否自动压缩 WXML 文件。',
+        t('projectMinifyWXMLDesc'),
       ],
       [
         'checkbox',
         'setting.uglifyFileName',
         def(settings.uglifyFileName, false),
         'Uglify File Name',
-        '上传时进行代码保护。',
+        t('projectUglifyFileNameDesc'),
       ],
       [
         'checkbox',
         'setting.ignoreUploadUnusedFiles',
         def(settings.ignoreUploadUnusedFiles, true),
         'Ignore Upload Unused Files',
-        '上传时是否过滤无依赖文件。',
+        t('projectIgnoreUploadUnusedFilesDesc'),
       ],
     ])
   }
@@ -291,21 +351,21 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
       'setting.autoAudits',
       def(settings.autoAudits, false),
       'Auto Audits',
-      '是否自动运行体验评分。',
+      t('projectAutoAuditsDesc'),
     ],
     [
       'checkbox',
       'setting.urlCheck',
       def(settings.urlCheck, true),
       'Url Check',
-      '是否检查安全域名和 TLS 版本。',
+      t('projectUrlCheckDesc'),
     ],
     [
       'checkbox',
       'setting.compileHotReLoad',
       def(settings.compileHotReLoad, false),
       'Compile Hot Reload',
-      '是否开启文件保存后自动热重载。',
+      t('projectCompileHotReLoadDesc'),
     ],
     [
       'checkbox',
@@ -520,7 +580,7 @@ function app(setting: LunaSetting, text: string) {
   const debugOptions = json.debugOptions || {}
 
   buildSettings(setting, [
-    ['title', i18n.t('miniprogram.appTitle')],
+    ['title', t('appTitle')],
     [
       'markdown',
       i18n.t('seeDoc', {
@@ -532,17 +592,11 @@ function app(setting: LunaSetting, text: string) {
       'entryPagePath',
       json.entryPagePath || '',
       'Entry Page Path',
-      i18n.t('miniprogram.appEntryPagePathDesc'),
+      t('appEntryPagePathDesc'),
     ],
     ['complex', 'pages', 'Pages', '页面路径列表。'],
     ['complex', 'tabBar', 'Tab Bar', '底部 `tab` 栏的表现。'],
-    [
-      'checkbox',
-      'debug',
-      def(json.debug, false),
-      'Debug',
-      i18n.t('miniprogram.appDebug'),
-    ],
+    ['checkbox', 'debug', def(json.debug, false), 'Debug', t('appDebug')],
     [
       'complex',
       'functionalPages',
@@ -949,7 +1003,7 @@ function miniapp(setting: LunaSetting, text: string) {
   const ios = json['mini-ios'] || {}
 
   buildSettings(setting, [
-    ['title', i18n.t('miniprogram.miniappTitle')],
+    ['title', t('miniappTitle')],
     [
       'markdown',
       i18n.t('seeDoc', {
@@ -992,64 +1046,64 @@ function miniapp(setting: LunaSetting, text: string) {
       'mini-android.useProjectTemplate',
       android.useProjectTemplate,
       'Use Project Template',
-      i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
+      t('miniappUseProjectTemplateDesc'),
     ],
     [
       'path',
       'mini-android.projectPath',
       android.projectPath,
       'Project Path',
-      i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
+      t('miniappUseProjectTemplateDesc'),
     ],
     [
       'text',
       'mini-android.archivePath',
       android.archivePath,
       'Archive Path',
-      i18n.t('miniprogram.miniappArchivePathDesc'),
+      t('miniappArchivePathDesc'),
     ],
     [
       'checkbox',
       'mini-android.buildArchiveEverytime',
       android.buildArchiveEverytime,
       'Build Archive Everytime',
-      i18n.t('miniprogram.miniappBuildArchiveEverytimeDesc'),
+      t('miniappBuildArchiveEverytimeDesc'),
     ],
-    ['title', i18n.t('miniprogram.miniappRunArgs'), 2],
-    ['markdown', i18n.t('miniprogram.miniappRunArgsDesc')],
+    ['title', t('miniappRunArgs'), 2],
+    ['markdown', t('miniappRunArgsDesc')],
     [
       'text',
       'mini-android.runArgs.mainActivity',
       android.runArgs.mainActivity,
       'Main Activity',
-      i18n.t('miniprogram.miniappMainActivityDesc'),
+      t('miniappMainActivityDesc'),
     ],
     [
       'select',
       'mini-android.runArgs.variant',
       android.runArgs.variant,
       'Variant',
-      i18n.t('miniprogram.miniappVariantDesc'),
+      t('miniappVariantDesc'),
       {
         ArmRelease: 'ArmRelease',
         ArmDebug: 'ArmDebug',
       },
     ],
-    ['title', i18n.t('miniprogram.miniappBuildArgs'), 2],
-    ['markdown', i18n.t('miniprogram.miniappBuildArgsDesc')],
+    ['title', t('miniappBuildArgs'), 2],
+    ['markdown', t('miniappBuildArgsDesc')],
     [
       'text',
       'mini-android.buildArgs.mainActivity',
       android.buildArgs.mainActivity,
       'Main Activity',
-      i18n.t('miniprogram.miniappMainActivityDesc'),
+      t('miniappMainActivityDesc'),
     ],
     [
       'select',
       'mini-android.buildArgs.variant',
       android.buildArgs.variant,
       'Variant',
-      i18n.t('miniprogram.miniappVariantDesc'),
+      t('miniappVariantDesc'),
       {
         ArmRelease: 'ArmRelease',
         ArmDebug: 'ArmDebug',
@@ -1061,53 +1115,53 @@ function miniapp(setting: LunaSetting, text: string) {
       'mini-ios.useProjectTemplate',
       ios.useProjectTemplate,
       'Use Project Template',
-      i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
+      t('miniappUseProjectTemplateDesc'),
     ],
     [
       'path',
       'mini-ios.projectPath',
       ios.projectPath,
       'Project Path',
-      i18n.t('miniprogram.miniappUseProjectTemplateDesc'),
+      t('miniappUseProjectTemplateDesc'),
     ],
     [
       'text',
       'mini-ios.archivePath',
       ios.archivePath,
       'Archive Path',
-      i18n.t('miniprogram.miniappArchivePathDesc'),
+      t('miniappArchivePathDesc'),
     ],
     [
       'checkbox',
       'mini-ios.buildArchiveEverytime',
       ios.buildArchiveEverytime,
       'Build Archive Everytime',
-      i18n.t('miniprogram.miniappBuildArchiveEverytimeDesc'),
+      t('miniappBuildArchiveEverytimeDesc'),
     ],
-    ['title', i18n.t('miniprogram.miniappRunArgs'), 2],
-    ['markdown', i18n.t('miniprogram.miniappRunArgsDesc')],
+    ['title', t('miniappRunArgs'), 2],
+    ['markdown', t('miniappRunArgsDesc')],
     [
       'text',
       'mini-ios.runArgs.scheme',
       ios.runArgs.scheme,
       'Scheme',
-      i18n.t('miniprogram.miniappSchemeDesc'),
+      t('miniappSchemeDesc'),
     ],
-    ['title', i18n.t('miniprogram.miniappBuildArgs'), 2],
-    ['markdown', i18n.t('miniprogram.miniappBuildArgsDesc')],
+    ['title', t('miniappBuildArgs'), 2],
+    ['markdown', t('miniappBuildArgsDesc')],
     [
       'text',
       'mini-ios.buildArgs.scheme',
       ios.buildArgs.scheme,
       'Scheme',
-      i18n.t('miniprogram.miniappSchemeDesc'),
+      t('miniappSchemeDesc'),
     ],
     [
       'path',
       'mini-ios.buildArgs.exportOptionPlistPath',
       ios.buildArgs.exportOptionPlistPath,
       'Export Option Plist Path',
-      i18n.t('miniprogram.miniappExportOptionPlistPathDesc'),
+      t('miniappExportOptionPlistPathDesc'),
     ],
   ])
 }

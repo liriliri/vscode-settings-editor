@@ -4,6 +4,7 @@ import LunaSetting from 'luna-setting'
 import { micromark } from 'micromark'
 import h from 'licia/h'
 import each from 'licia/each'
+import isStr from 'licia/isStr'
 import uniqId from 'licia/uniqId'
 import toEl from 'licia/toEl'
 import splitPath from 'licia/splitPath'
@@ -38,13 +39,33 @@ export const i18n = new I18n('en', {
     browse: 'Browse',
     searchSettings: 'Search settings',
     seeDoc: 'Click [here]({{url}}) to see the documentation.',
+    editIn: 'Edit in {{name}}',
   },
   'zh-cn': {
     browse: '浏览',
     searchSettings: '搜索设置',
     seeDoc: '点击[此处]({{url}})查看文档。',
+    editIn: '在 {{name}} 中编辑',
   },
 })
+
+export function setI18n(lang: any, prefix = '') {
+  const enLang: any = {}
+  const zhCnLang: any = {}
+  each(lang, (val: any, key: string) => {
+    key = prefix + key
+    if (isStr(val)) {
+      enLang[key] = val
+      zhCnLang[key] = val
+    } else {
+      const [en, zhCn] = val
+      enLang[key] = en
+      zhCnLang[key] = zhCn
+    }
+  })
+  i18n.set('en', enLang)
+  i18n.set('zh-cn', zhCnLang)
+}
 
 export function appendComplex(
   setting: LunaSetting,
@@ -82,7 +103,7 @@ export function appendComplex(
             vscode.postMessage({ type: 'editSource' })
           },
         },
-        `Edit in ${name}`
+        i18n.t('editIn', { name })
       )
     )
   )
