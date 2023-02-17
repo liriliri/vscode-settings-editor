@@ -101,6 +101,10 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         def(json.miniprogramRoot, ''),
         'Miniprogram Root',
         '指定小程序源码的目录(需为相对路径)。',
+        {
+          folder: true,
+          file: false,
+        },
       ],
       [
         'path',
@@ -108,6 +112,10 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         def(json.qcloudRoot, ''),
         'Qcloud Root',
         '指定腾讯云项目的目录(需为相对路径)。',
+        {
+          folder: true,
+          file: false,
+        },
       ],
       [
         'path',
@@ -115,6 +123,10 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         def(json.pluginRoot, ''),
         'Plugin Root',
         '指定插件项目的目录(需为相对路径)。',
+        {
+          folder: true,
+          file: false,
+        },
       ],
       [
         'path',
@@ -122,6 +134,10 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         def(json.cloudbaseRoot, ''),
         'Cloudbase Root',
         '云开发代码根目录(需为相对路径)。',
+        {
+          folder: true,
+          file: false,
+        },
       ],
       [
         'path',
@@ -129,6 +145,10 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         def(json.cloudfunctionRoot, ''),
         'Cloudfunction Root',
         '云函数代码根目录(需为相对路径)。',
+        {
+          folder: true,
+          file: false,
+        },
       ],
       [
         'path',
@@ -136,6 +156,10 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         def(json.cloudfunctionTemplateRoot, ''),
         'Cloudfunction Template Root',
         '云函数本地调试请求模板的根目录(需为相对路径)。',
+        {
+          folder: true,
+          file: false,
+        },
       ],
       [
         'path',
@@ -143,6 +167,10 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
         def(json.cloudcontainerRoot, ''),
         'Cloudcontainer Root',
         '云托管代码根目录(需为相对路径)。',
+        {
+          folder: true,
+          file: false,
+        },
       ],
       [
         'select',

@@ -18,7 +18,7 @@ Supported configuration type:
 * typescript
   - tsconfig.json  
 
-![settings-editor](https://raw.githubusercontent.com/liriliri/vscode-settings-editor/main/settings-editor.gif)
+![settings-editor](https://res.liriliri.io/other/vscode-settings-editor.gif)
 
 ## How to Use
 
