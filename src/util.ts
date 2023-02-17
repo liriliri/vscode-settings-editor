@@ -16,6 +16,15 @@ export function getDocument() {
   return document
 }
 
+let textEditor: vscode.TextEditor | undefined
+export function setTextEditor(editor: vscode.TextEditor) {
+  textEditor = editor
+}
+
+export function getTextEditor() {
+  return textEditor
+}
+
 export function reopenWith(editor: string) {
   let uri: vscode.Uri | undefined
   try {

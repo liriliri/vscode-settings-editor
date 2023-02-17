@@ -43,7 +43,9 @@ window.addEventListener('message', (event) => {
       updateContent()
       break
     case 'init':
-      store.set('language', message.language)
+      const { language, space } = message
+      store.set('language', language)
+      store.set('space', space)
       updateLanguage()
       break
   }

@@ -3,7 +3,7 @@ import safeSet from 'licia/safeSet'
 import lowerCase from 'licia/lowerCase'
 import json5 from 'json5'
 import LunaSetting from 'luna-setting'
-import { buildSettings, updateText, def, i18n } from './util'
+import { buildSettings, updateText, def, i18n, getSpace } from './util'
 
 export default function handler(
   setting: LunaSetting,
@@ -13,7 +13,7 @@ export default function handler(
   const json = json5.parse(text)
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
-    updateText(JSON.stringify(json, null, 2) + '\n')
+    updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
   const compilerOptions = json.compilerOptions || {}

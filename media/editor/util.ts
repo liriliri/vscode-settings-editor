@@ -88,6 +88,10 @@ export function appendComplex(
   )
 }
 
+export function getSpace() {
+  return store.get('space') || 2
+}
+
 interface IPathOptions {
   folder?: boolean
   file?: boolean

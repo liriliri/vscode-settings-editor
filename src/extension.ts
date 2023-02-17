@@ -1,5 +1,11 @@
 import * as vscode from 'vscode'
-import { setContext, setDocument, reopenWith, getFileHandler } from './util'
+import {
+  setContext,
+  setDocument,
+  reopenWith,
+  getFileHandler,
+  setTextEditor,
+} from './util'
 import { SettingsEditorProvider } from './settingsEditorProvider'
 
 export function activate(context: vscode.ExtensionContext) {
@@ -25,6 +31,7 @@ async function updateOpenEditorButton(
 ) {
   const key = 'settingsEditor.openEditor'
   if (textEditor) {
+    setTextEditor(textEditor)
     const document = textEditor.document
     if (await getFileHandler(document)) {
       setDocument(document)

@@ -1,6 +1,6 @@
 import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
-import { updateText, i18n, buildSettings, def } from './util'
+import { updateText, i18n, buildSettings, def, store, getSpace } from './util'
 import splitPath from 'licia/splitPath'
 
 i18n.set('en', {
@@ -76,7 +76,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
   const json = JSON.parse(text)
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
-    updateText(JSON.stringify(json, null, 2) + '\n')
+    updateText(JSON.stringify(json, null, getSpace()))
   })
 
   const staticServerOptions = json.staticServerOptions || {}
@@ -483,7 +483,7 @@ function app(setting: LunaSetting, text: string) {
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
 
-    updateText(JSON.stringify(json, null, 2) + '\n')
+    updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
   const window = json.window || {}
@@ -516,9 +516,8 @@ function app(setting: LunaSetting, text: string) {
       i18n.t('miniprogram.appDebug'),
     ],
     [
-      'checkbox',
+      'complex',
       'functionalPages',
-      def(json.functionalPages, false),
       'Functional Pages',
       '是否启用插件功能页，默认关闭。',
     ],
@@ -706,8 +705,7 @@ function page(setting: LunaSetting, text: string) {
   const json = JSON.parse(text)
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
-
-    updateText(JSON.stringify(json, null, 2) + '\n')
+    updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
   buildSettings(setting, [
@@ -916,7 +914,7 @@ function miniapp(setting: LunaSetting, text: string) {
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
 
-    updateText(JSON.stringify(json, null, 2) + '\n')
+    updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
   const android = json['mini-android'] || {}

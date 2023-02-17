@@ -1,7 +1,13 @@
 import * as vscode from 'vscode'
 import randomId from 'licia/randomId'
 import lowerCase from 'licia/lowerCase'
-import { getFileHandler, reopenWith, setContext, setDocument } from './util'
+import {
+  getFileHandler,
+  reopenWith,
+  setContext,
+  setDocument,
+  getTextEditor,
+} from './util'
 
 export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
@@ -32,7 +38,7 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
     setDocument(document)
     this.updateOpenSourceButton(true)
 
-    async function updateWebview() {
+    const updateWebview = async () => {
       webviewPanel.webview.postMessage({
         type: 'update',
         fileName: document.fileName,
@@ -87,11 +93,27 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
       }
     })
 
+    const textEditor = getTextEditor()
+    let space: string | number = 2
+    if (textEditor) {
+      space = this.getSpace(textEditor)
+    }
+
     webviewPanel.webview.postMessage({
       type: 'init',
+      space,
       language: lowerCase(vscode.env.language),
     })
     updateWebview()
+  }
+  private getSpace(textEditor: vscode.TextEditor) {
+    const options = textEditor.options
+    const insertSpaces = options.insertSpaces
+    if (insertSpaces) {
+      return options.tabSize || 2
+    }
+
+    return '\t'
   }
   private updateOpenSourceButton(show: boolean) {
     setContext('settingsEditor.openSource', show)

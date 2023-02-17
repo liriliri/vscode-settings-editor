@@ -2,7 +2,7 @@ import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
 import isUndef from 'licia/isUndef'
 import endWith from 'licia/endWith'
-import { buildSettings, i18n, updateText, def } from './util'
+import { buildSettings, i18n, updateText, def, getSpace } from './util'
 
 i18n.set('en', {
   'prettier.tabWidthDesc':
@@ -22,7 +22,7 @@ export default function handler(
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
 
-    updateText(JSON.stringify(json, null, 2) + '\n')
+    updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
   buildSettings(setting, [

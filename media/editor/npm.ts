@@ -5,7 +5,7 @@ import truncate from 'licia/truncate'
 import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
 import ini from 'licia/ini'
-import { vscode, updateText, buildSettings, def, i18n } from './util'
+import { vscode, updateText, buildSettings, def, i18n, getSpace } from './util'
 
 export default function handler(
   setting: LunaSetting,
@@ -33,7 +33,7 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
       delete json.license
     }
 
-    updateText(JSON.stringify(json, null, 2) + '\n')
+    updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
   buildSettings(setting, [
