@@ -166,6 +166,9 @@ export function appendPath(
 
 export function buildSettings(setting: LunaSetting, config: any) {
   each(config, (value: any) => {
+    if (!value) {
+      return
+    }
     const type = value.shift()
     let def: Def | undefined
     each(value, (val, idx) => {

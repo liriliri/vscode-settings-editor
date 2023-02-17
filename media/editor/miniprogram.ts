@@ -55,8 +55,10 @@ export default function handler(
 
   switch (name) {
     case 'project.config.json':
-    case 'project.private.config.json':
       project(setting, text)
+      break
+    case 'project.private.config.json':
+      project(setting, text, true)
       break
     case 'project.miniapp.json':
       miniapp(setting, text)
@@ -70,7 +72,7 @@ export default function handler(
   }
 }
 
-function project(setting: LunaSetting, text: string) {
+function project(setting: LunaSetting, text: string, isPrivate = false) {
   const json = JSON.parse(text)
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
@@ -82,72 +84,81 @@ function project(setting: LunaSetting, text: string) {
   const settings = json.setting || {}
 
   buildSettings(setting, [
-    ['title', '小程序项目配置文件'],
+    ['title', isPrivate ? '小程序项目私有配置文件' : '小程序项目配置文件'],
     [
       'markdown',
       i18n.t('seeDoc', {
         url: 'https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html',
       }),
     ],
-    [
-      'path',
-      'miniprogramRoot',
-      def(json.miniprogramRoot, ''),
-      'Miniprogram Root',
-      '指定小程序源码的目录(需为相对路径)。',
-    ],
-    [
-      'path',
-      'qcloudRoot',
-      def(json.qcloudRoot, ''),
-      'Qcloud Root',
-      '指定腾讯云项目的目录(需为相对路径)。',
-    ],
-    [
-      'path',
-      'pluginRoot',
-      def(json.pluginRoot, ''),
-      'Plugin Root',
-      '指定插件项目的目录(需为相对路径)。',
-    ],
-    [
-      'path',
-      'cloudbaseRoot',
-      def(json.cloudbaseRoot, ''),
-      'Cloudbase Root',
-      '云开发代码根目录(需为相对路径)。',
-    ],
-    [
-      'path',
-      'cloudfunctionRoot',
-      def(json.cloudfunctionRoot, ''),
-      'Cloudfunction Root',
-      '云函数代码根目录(需为相对路径)。',
-    ],
-    [
-      'path',
-      'cloudfunctionTemplateRoot',
-      def(json.cloudfunctionTemplateRoot, ''),
-      'Cloudfunction Template Root',
-      '云函数本地调试请求模板的根目录(需为相对路径)。',
-    ],
-    [
-      'path',
-      'cloudcontainerRoot',
-      def(json.cloudcontainerRoot, ''),
-      'Cloudcontainer Root',
-      '云托管代码根目录(需为相对路径)。',
-    ],
-    [
-      'select',
-      'compileType',
-      json.compileType,
-      'Compile Type',
-      {
-        Miniprogram: 'miniprogram',
-        Plugin: 'plugin',
-      },
-    ],
+  ])
+
+  if (!isPrivate) {
+    buildSettings(setting, [
+      [
+        'path',
+        'miniprogramRoot',
+        def(json.miniprogramRoot, ''),
+        'Miniprogram Root',
+        '指定小程序源码的目录(需为相对路径)。',
+      ],
+      [
+        'path',
+        'qcloudRoot',
+        def(json.qcloudRoot, ''),
+        'Qcloud Root',
+        '指定腾讯云项目的目录(需为相对路径)。',
+      ],
+      [
+        'path',
+        'pluginRoot',
+        def(json.pluginRoot, ''),
+        'Plugin Root',
+        '指定插件项目的目录(需为相对路径)。',
+      ],
+      [
+        'path',
+        'cloudbaseRoot',
+        def(json.cloudbaseRoot, ''),
+        'Cloudbase Root',
+        '云开发代码根目录(需为相对路径)。',
+      ],
+      [
+        'path',
+        'cloudfunctionRoot',
+        def(json.cloudfunctionRoot, ''),
+        'Cloudfunction Root',
+        '云函数代码根目录(需为相对路径)。',
+      ],
+      [
+        'path',
+        'cloudfunctionTemplateRoot',
+        def(json.cloudfunctionTemplateRoot, ''),
+        'Cloudfunction Template Root',
+        '云函数本地调试请求模板的根目录(需为相对路径)。',
+      ],
+      [
+        'path',
+        'cloudcontainerRoot',
+        def(json.cloudcontainerRoot, ''),
+        'Cloudcontainer Root',
+        '云托管代码根目录(需为相对路径)。',
+      ],
+      [
+        'select',
+        'compileType',
+        json.compileType,
+        'Compile Type',
+        {
+          Miniprogram: 'miniprogram',
+          Plugin: 'plugin',
+        },
+      ],
+      ['text', 'appid', def(json.appid, ''), 'App Id', '项目的 `appid`。'],
+    ])
+  }
+
+  buildSettings(setting, [
     [
       'text',
       'libVersion',
@@ -155,7 +166,6 @@ function project(setting: LunaSetting, text: string) {
       'Lib Version',
       '基础库版本。',
     ],
-    ['text', 'appid', def(json.appid, ''), 'App Id', '项目的 `appid`。'],
     [
       'text',
       'projectname',
@@ -163,70 +173,91 @@ function project(setting: LunaSetting, text: string) {
       'Project Name',
       '项目名字。',
     ],
-    ['complex', 'packOptions', 'Pack Options', '打包配置选项。'],
-    ['complex', 'debugOptions', 'Debug Options', '调试配置选项。'],
-    ['complex', 'watchOptions', 'Watch Options', '文件监听配置设置。'],
+    ['complex', 'condition', 'Condition', '编译条件。'],
+  ])
+
+  if (!isPrivate) {
+    buildSettings(setting, [
+      ['complex', 'packOptions', 'Pack Options', '打包配置选项。'],
+      ['complex', 'debugOptions', 'Debug Options', '调试配置选项。'],
+      ['complex', 'watchOptions', 'Watch Options', '文件监听配置设置。'],
+    ])
+  }
+
+  buildSettings(setting, [
     ['title', 'Setting'],
-    [
-      'markdown',
-      '项目的编译设置，可以指定以下设置。部分设置无法在 `project.private.config.json` 中生效',
-    ],
-    [
-      'checkbox',
-      'setting.es6',
-      def(settings.es6, false),
-      'ES6',
-      '是否启用 es6 转 es5。',
-    ],
-    [
-      'checkbox',
-      'setting.enhance',
-      def(settings.enhance, false),
-      'Enhance',
-      '是否打开增强编译。',
-    ],
-    [
-      'checkbox',
-      'setting.postcss',
-      def(settings.postcss, true),
-      'Postcss',
-      '上传代码时样式是否自动补全。',
-    ],
-    [
-      'checkbox',
-      'setting.minified',
-      def(settings.minified, true),
-      'Minified',
-      '上传代码时是否自动压缩脚本文件。',
-    ],
-    [
-      'checkbox',
-      'setting.minifyWXSS',
-      def(settings.minifyWXSS, false),
-      'Minify WXSS',
-      '上传代码时是否自动压缩样式文件。',
-    ],
-    [
-      'checkbox',
-      'setting.minifyWXML',
-      def(settings.minifyWXML, false),
-      'Minify WXML',
-      '上传代码时是否自动压缩 WXML 文件。',
-    ],
-    [
-      'checkbox',
-      'setting.uglifyFileName',
-      def(settings.uglifyFileName, false),
-      'Uglify File Name',
-      '上传时进行代码保护。',
-    ],
-    [
-      'checkbox',
-      'setting.ignoreUploadUnusedFiles',
-      def(settings.ignoreUploadUnusedFiles, true),
-      'Ignore Upload Unused Files',
-      '上传时是否过滤无依赖文件。',
-    ],
+    ['markdown', '项目的编译设置，可以指定以下设置。'],
+  ])
+
+  if (!isPrivate) {
+    buildSettings(setting, [
+      [
+        'checkbox',
+        'setting.condition',
+        def(settings.condition, false),
+        'Condition',
+        '启用[条件编译](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/condition-compile.html)。',
+      ],
+      [
+        'checkbox',
+        'setting.es6',
+        def(settings.es6, false),
+        'ES6',
+        '是否启用 es6 转 es5。',
+      ],
+      [
+        'checkbox',
+        'setting.enhance',
+        def(settings.enhance, false),
+        'Enhance',
+        '是否打开增强编译。',
+      ],
+      [
+        'checkbox',
+        'setting.postcss',
+        def(settings.postcss, true),
+        'Postcss',
+        '上传代码时样式是否自动补全。',
+      ],
+      [
+        'checkbox',
+        'setting.minified',
+        def(settings.minified, true),
+        'Minified',
+        '上传代码时是否自动压缩脚本文件。',
+      ],
+      [
+        'checkbox',
+        'setting.minifyWXSS',
+        def(settings.minifyWXSS, false),
+        'Minify WXSS',
+        '上传代码时是否自动压缩样式文件。',
+      ],
+      [
+        'checkbox',
+        'setting.minifyWXML',
+        def(settings.minifyWXML, false),
+        'Minify WXML',
+        '上传代码时是否自动压缩 WXML 文件。',
+      ],
+      [
+        'checkbox',
+        'setting.uglifyFileName',
+        def(settings.uglifyFileName, false),
+        'Uglify File Name',
+        '上传时进行代码保护。',
+      ],
+      [
+        'checkbox',
+        'setting.ignoreUploadUnusedFiles',
+        def(settings.ignoreUploadUnusedFiles, true),
+        'Ignore Upload Unused Files',
+        '上传时是否过滤无依赖文件。',
+      ],
+    ])
+  }
+
+  buildSettings(setting, [
     [
       'checkbox',
       'setting.autoAudits',
@@ -276,52 +307,60 @@ function project(setting: LunaSetting, text: string) {
       'Big Package Size Support',
       '预览及真机调试的时主包、分包体积上限调整为4M（小程序）、8M（小游戏）。',
     ],
-    [
-      'complex',
-      'setting.babelSetting',
-      'Babel Setting',
-      '增强编译下 Babel 的配置项。',
-    ],
-    [
-      'complex',
-      'setting.useCompilerPlugins',
-      'Use Compiler Plugins',
-      '编译插件配置。',
-    ],
-    [
-      'checkbox',
-      'setting.disableUseStrict',
-      def(settings.disableUseStrict, false),
-      'Disable Use Strict',
-      '将 JS 编译成 ES5 时，是否禁用严格模式。',
-    ],
-    [
-      'checkbox',
-      'setting.uploadWithSourceMap',
-      def(settings.uploadWithSourceMap, true),
-      'Upload With Source Map',
-      '上传时是否带上 sourcemap（默认为true）。',
-    ],
-    [
-      'checkbox',
-      'setting.localPlugins',
-      def(settings.localPlugins, false),
-      'Local Plugins',
-      '在小游戏插件项目中，是否启用 “以本地目录为插件资源来源” 特性。',
-    ],
-    [
-      'checkbox',
-      'setting.packNpmManually',
-      def(settings.packNpmManually, false),
-      'Pack Npm Manually',
-      '是否手动配置构建 npm 的路径。',
-    ],
-    [
-      'complex',
-      'setting.packNpmRelationList',
-      'Pack Npm Relation List',
-      '仅 `packNpmManually` 为 true 时生效，详细参考构建 [npm 文档](https://developers.weixin.qq.com/minigame/dev/devtools/npm.html)。',
-    ],
+  ])
+
+  if (!isPrivate) {
+    buildSettings(setting, [
+      [
+        'complex',
+        'setting.babelSetting',
+        'Babel Setting',
+        '增强编译下 Babel 的配置项。',
+      ],
+      [
+        'complex',
+        'setting.useCompilerPlugins',
+        'Use Compiler Plugins',
+        '编译插件配置。',
+      ],
+      [
+        'checkbox',
+        'setting.disableUseStrict',
+        def(settings.disableUseStrict, false),
+        'Disable Use Strict',
+        '将 JS 编译成 ES5 时，是否禁用严格模式。',
+      ],
+      [
+        'checkbox',
+        'setting.uploadWithSourceMap',
+        def(settings.uploadWithSourceMap, true),
+        'Upload With Source Map',
+        '上传时是否带上 sourcemap（默认为true）。',
+      ],
+      [
+        'checkbox',
+        'setting.localPlugins',
+        def(settings.localPlugins, false),
+        'Local Plugins',
+        '在小游戏插件项目中，是否启用 “以本地目录为插件资源来源” 特性。',
+      ],
+      [
+        'checkbox',
+        'setting.packNpmManually',
+        def(settings.packNpmManually, false),
+        'Pack Npm Manually',
+        '是否手动配置构建 npm 的路径。',
+      ],
+      [
+        'complex',
+        'setting.packNpmRelationList',
+        'Pack Npm Relation List',
+        '仅 `packNpmManually` 为 true 时生效，详细参考构建 [npm 文档](https://developers.weixin.qq.com/minigame/dev/devtools/npm.html)。',
+      ],
+    ])
+  }
+
+  buildSettings(setting, [
     [
       'checkbox',
       'setting.coverView',
@@ -399,39 +438,44 @@ function project(setting: LunaSetting, text: string) {
       'Show ES6 Compile Option',
       '是否在本地设置中展示传统的 ES6 转 ES5 开关（对应 es6），增强编译开关 （对应 enhance）。',
     ],
-    ['title', 'Scripts'],
-    ['markdown', '指定自定义预处理的命令。'],
-    [
-      'text',
-      'scripts.beforeCompile',
-      def(scripts.beforeCompile, ''),
-      'Before Compile',
-      '编译前预处理命令。',
-    ],
-    [
-      'text',
-      'scripts.beforePreview',
-      def(scripts.beforePreview, ''),
-      'Before Preview',
-      '预览前预处理命令。',
-    ],
-    [
-      'text',
-      'scripts.beforeUpload',
-      def(scripts.beforeUpload, ''),
-      'Before Upload',
-      '上传前预处理命令。',
-    ],
-    ['title', 'Static Server Options'],
-    ['markdown', '小游戏项目本地静态资源服务器配置。'],
-    [
-      'path',
-      'staticServerOptions.servePath',
-      def(staticServerOptions.servePath, ''),
-      'Serve Path',
-      '路径（需要是相对路径）。',
-    ],
   ])
+
+  if (!isPrivate) {
+    buildSettings(setting, [
+      ['title', 'Scripts'],
+      ['markdown', '指定自定义预处理的命令。'],
+      [
+        'text',
+        'scripts.beforeCompile',
+        def(scripts.beforeCompile, ''),
+        'Before Compile',
+        '编译前预处理命令。',
+      ],
+      [
+        'text',
+        'scripts.beforePreview',
+        def(scripts.beforePreview, ''),
+        'Before Preview',
+        '预览前预处理命令。',
+      ],
+      [
+        'text',
+        'scripts.beforeUpload',
+        def(scripts.beforeUpload, ''),
+        'Before Upload',
+        '上传前预处理命令。',
+      ],
+      ['title', 'Static Server Options'],
+      ['markdown', '小游戏项目本地静态资源服务器配置。'],
+      [
+        'path',
+        'staticServerOptions.servePath',
+        def(staticServerOptions.servePath, ''),
+        'Serve Path',
+        '路径（需要是相对路径）。',
+      ],
+    ])
+  }
 }
 
 function app(setting: LunaSetting, text: string) {
