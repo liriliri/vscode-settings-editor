@@ -43,6 +43,7 @@ esbuild
     minify,
     watch,
     plugins: [replaceNodeBuiltIns()],
+    mainFields: ['browser', 'module', 'main'],
     platform: 'browser',
     outfile: 'dist/editor.js',
   })

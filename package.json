@@ -67,7 +67,7 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "node .esbuild.config.js",
-    "format": "prettier \"*.{js,json}\" \"src/**/*.ts\" \"media/**/*.ts\" \"exampleFiles/**/*.json\" --write",
+    "format": "prettier \"*.{js,json}\" \"src/**/*.ts\" \"media/**/*.{ts,json}\" \"exampleFiles/**/*.json\" --write",
     "watch": "node .esbuild.config.js --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts"
@@ -77,6 +77,7 @@
     "url": "git+https://github.com/liriliri/vscode-settings-editor.git"
   },
   "devDependencies": {
+    "@stoplight/json-schema-tree": "^2.2.2",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",

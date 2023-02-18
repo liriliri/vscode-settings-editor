@@ -1,0 +1,14 @@
+{
+  "projectId": "8crkwu",
+  "baseUrl": "http://localhost:3000",
+  "numTestsKeptInMemory": 1,
+  "defaultCommandTimeout": 10000,
+  "experimentalStudio": true,
+  "retries": {
+    "runMode": 2
+  },
+  "env": {
+    "USE_LIVE_API": false,
+    "UPDATE_FIXTURES": false
+  }
+}

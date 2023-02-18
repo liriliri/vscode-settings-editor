@@ -47,18 +47,20 @@ export async function getFileHandler(document: vscode.TextDocument) {
   const { name, dir } = splitPath(fileName)
 
   switch (name) {
-    case '.prettierrc.json':
-      return 'prettier'
-    case 'package.json':
-    case '.npmrc':
-      return 'npm'
     case 'app.json':
     case 'project.config.json':
     case 'project.private.config.json':
     case 'project.miniapp.json':
       return 'miniprogram'
+    case 'package.json':
+    case '.npmrc':
+      return 'npm'
+    case '.prettierrc.json':
+      return 'prettier'
     case 'tsconfig.json':
-      return 'typescript'
+    case 'cypress.json':
+    case '.eslintrc.json':
+      return 'schema'
   }
 
   // miniprogram page
