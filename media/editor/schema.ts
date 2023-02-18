@@ -4,6 +4,7 @@ import last from 'licia/last'
 import safeSet from 'licia/safeSet'
 import safeGet from 'licia/safeGet'
 import splitCase from 'licia/splitCase'
+import isUndef from 'licia/isUndef'
 import map from 'licia/map'
 import upperFirst from 'licia/upperFirst'
 import LunaSetting from 'luna-setting'
@@ -27,11 +28,13 @@ export default async function handler(
   const { name } = splitPath(fileName)
   let schema: any = {}
   let title = ''
+  let maxLevel = 3
 
   switch (name) {
     case 'cypress.json':
       title = 'Cypress Config'
       schema = require('./schema/cypress.json')
+      maxLevel = 1
       break
     case '.eslintrc.json':
       title = 'Eslint Config'
@@ -40,6 +43,7 @@ export default async function handler(
     case 'tsconfig.json':
       title = 'Typescript Config'
       schema = require('./schema/tsconfig.json')
+      maxLevel = 2
       break
   }
 
@@ -48,7 +52,7 @@ export default async function handler(
       mergeAllOf: true,
     })
     tree.populate()
-    buildSettingsFromSchema(setting, text, title, tree.root)
+    buildSettingsFromSchema(setting, text, title, tree.root, maxLevel)
   }
 }
 
@@ -56,7 +60,8 @@ function buildSettingsFromSchema(
   setting: LunaSetting,
   text: string,
   title: string,
-  root: RootNode
+  root: RootNode,
+  maxLevel: number
 ) {
   const json = json5.parse(text)
   setting.on('change', (key, val) => {
@@ -64,34 +69,60 @@ function buildSettingsFromSchema(
     updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
-  const config: any[] = [
-    ['title', title]
-  ]
+  const config: any[] = []
 
-  function buildConfig(node: RegularNode, level: number = 1) {
+  function val(path: string, type: string, node: SchemaNode) {
+    const val = safeGet(json, path)
+    if (!isUndef(node.fragment.default)) {
+      return def(val, node.fragment.default)
+    } else {
+      let defVal: any = ''
+      switch (type) {
+        case 'string':
+          defVal = ''
+          break
+        case 'boolean':
+          defVal = false
+          break
+      }
+      return isUndef(val) ? defVal : val
+    }
+  }
+  function buildConfig(node: RegularNode, title: string, level: number = 0) {
+    if (level >= maxLevel) {
+      return
+    }
     if (!node.children) {
       return
     }
     if (shouldShowChildSelector(node)) {
-      buildConfig(node.children[0] as RegularNode)
+      buildConfig(node.children[0] as RegularNode, title)
       return
     }
+    config.push(['title', title, level === 0 ? 1 : level])
+    const description = getDescription(node)
+    if (description) {
+      config.push(['markdown', description])
+    }
+    const pureObjectNodes: RegularNode[] = []
     each(node.children, (node) => {
       if (!isRegularNode(node)) {
         return
       }
       if (isPureObjectNode(node)) {
+        pureObjectNodes.push(node)
         return
       }
-      const path = propertyPathToObjectPath(node)
-      const title = map(splitCase(last(node.subpath)), upperFirst).join(' ')
-      const description = node.annotations.description || ''
+      const path = propertyPathToObjectPath(node).join('.')
+      const title = propertyPathToTitle(node)
+      const description = getDescription(node)
+
       switch (node.primaryType) {
         case 'string':
           config.push([
             'text',
             path,
-            def(safeGet(json, path), ''),
+            val(path, 'string', node),
             title,
             description,
           ])
@@ -100,17 +131,30 @@ function buildSettingsFromSchema(
           config.push([
             'checkbox',
             path,
-            def(safeGet(json, path), false),
+            val(path, 'boolean', node),
             title,
             description,
           ])
           break
       }
     })
+    each(pureObjectNodes, (node) => {
+      buildConfig(node, propertyPathToTitle(node), level + 1)
+    })
   }
-  buildConfig(root.children[0] as RegularNode)
+  buildConfig(root.children[0] as RegularNode, title)
 
   buildSettings(setting, config)
+}
+
+function getDescription(node: SchemaNode) {
+  const fragment: any = node.fragment
+
+  return fragment.markdownDescription || fragment.description || ''
+}
+
+function propertyPathToTitle(node: SchemaNode) {
+  return map(splitCase(last(node.subpath)), upperFirst).join(' ')
 }
 
 function isPureObjectNode(schemaNode: RegularNode) {
