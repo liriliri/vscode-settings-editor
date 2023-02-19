@@ -67,7 +67,7 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "node .esbuild.config.js",
-    "format": "prettier \"*.{js,json}\" \"src/**/*.ts\" \"media/**/*.{ts,json}\" \"exampleFiles/**/*.json\" --write",
+    "format": "prettier \"*.{js,json}\" \"src/**/*.ts\" \"media/**/*.{ts,json}\" --write",
     "watch": "node .esbuild.config.js --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts"

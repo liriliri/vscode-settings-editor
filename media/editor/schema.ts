@@ -9,6 +9,10 @@ import map from 'licia/map'
 import upperFirst from 'licia/upperFirst'
 import LunaSetting from 'luna-setting'
 import json5 from 'json5'
+import every from 'licia/every'
+import isStr from 'licia/isStr'
+import isNum from 'licia/isNum'
+import isArr from 'licia/isArr'
 import { buildSettings, updateText, getSpace, def } from './util'
 import {
   SchemaTree,
@@ -29,6 +33,9 @@ export default async function handler(
   let schema: any = {}
   let title = ''
   let maxLevel = 3
+  let selectChoices = (node: RegularNode, val?: any) => {
+    return (node.children as any)[0] as RegularNode
+  }
 
   switch (name) {
     case 'cypress.json':
@@ -39,6 +46,22 @@ export default async function handler(
     case '.eslintrc.json':
       title = 'Eslint Config'
       schema = require('./schema/eslintrc.json')
+      selectChoices = (node: RegularNode, val?: any) => {
+        let idx = 0
+        const path = propertyPathToObjectPath(node)
+        if (path[0] === 'rules') {
+          idx = 1
+          if (!isUndef(val)) {
+            if (isNum(val)) {
+              idx = 0
+            } else if (isArr(val)) {
+              idx = 2
+            }
+          }
+        }
+
+        return (node.children as any)[idx] as RegularNode
+      }
       break
     case 'tsconfig.json':
       title = 'Typescript Config'
@@ -52,8 +75,16 @@ export default async function handler(
       mergeAllOf: true,
     })
     tree.populate()
-    buildSettingsFromSchema(setting, text, title, tree.root, maxLevel)
+    buildSettingsFromSchema(setting, text, title, tree.root, {
+      maxLevel,
+      selectChoices,
+    })
   }
+}
+
+interface IOptions {
+  maxLevel: number
+  selectChoices: (node: RegularNode, val?: any) => RegularNode
 }
 
 function buildSettingsFromSchema(
@@ -61,8 +92,10 @@ function buildSettingsFromSchema(
   text: string,
   title: string,
   root: RootNode,
-  maxLevel: number
+  options: IOptions
 ) {
+  const maxLevel = options.maxLevel
+  const selectChoices = options.selectChoices
   const json = json5.parse(text)
   setting.on('change', (key, val) => {
     safeSet(json, key, val)
@@ -84,6 +117,12 @@ function buildSettingsFromSchema(
         case 'boolean':
           defVal = false
           break
+        case 'number':
+          defVal = 0
+          break
+        case 'enum':
+          defVal = ((node as RegularNode).enum as any)[0]
+          break
       }
       return isUndef(val) ? defVal : val
     }
@@ -96,7 +135,7 @@ function buildSettingsFromSchema(
       return
     }
     if (shouldShowChildSelector(node)) {
-      buildConfig(node.children[0] as RegularNode, title)
+      buildConfig(selectChoices(node), title)
       return
     }
     config.push(['title', title, level === 0 ? 1 : level])
@@ -113,29 +152,62 @@ function buildSettingsFromSchema(
         pureObjectNodes.push(node)
         return
       }
+
       const path = propertyPathToObjectPath(node).join('.')
       const title = propertyPathToTitle(node)
+
+      if (shouldShowChildSelector(node)) {
+        node = selectChoices(node, safeGet(json, path))
+      }
+
       const description = getDescription(node)
 
-      switch (node.primaryType) {
-        case 'string':
-          config.push([
-            'text',
-            path,
-            val(path, 'string', node),
-            title,
-            description,
-          ])
-          break
-        case 'boolean':
-          config.push([
-            'checkbox',
-            path,
-            val(path, 'boolean', node),
-            title,
-            description,
-          ])
-          break
+      if (node.enum && every(node.enum, isStr)) {
+        const options: any = {}
+        each(node.enum, (val: any) => {
+          options[titleCase(val)] = val
+        })
+        config.push([
+          'select',
+          path,
+          val(path, 'enum', node),
+          title,
+          description,
+          options,
+        ])
+      } else {
+        switch (node.primaryType) {
+          case 'string':
+            config.push([
+              'text',
+              path,
+              val(path, 'string', node),
+              title,
+              description,
+            ])
+            break
+          case 'boolean':
+            config.push([
+              'checkbox',
+              path,
+              val(path, 'boolean', node),
+              title,
+              description,
+            ])
+            break
+          case 'integer':
+          case 'number':
+            config.push([
+              'number',
+              path,
+              val(path, 'number', node),
+              title,
+              description,
+            ])
+            break
+          default:
+            config.push(['complex', path, title, description])
+        }
       }
     })
     each(pureObjectNodes, (node) => {
@@ -149,12 +221,43 @@ function buildSettingsFromSchema(
 
 function getDescription(node: SchemaNode) {
   const fragment: any = node.fragment
+  let desctription = ''
+  if (fragment.description) {
+    desctription = fragment.description.replace(/\n/g, '\n\n')
+  }
+  if (fragment.markdownDescription) {
+    desctription = fragment.markdownDescription
+  }
 
-  return fragment.markdownDescription || fragment.description || ''
+  return desctription.length > 1 ? desctription : ''
 }
 
 function propertyPathToTitle(node: SchemaNode) {
-  return map(splitCase(last(node.subpath)), upperFirst).join(' ')
+  return titleCase(last(node.subpath))
+}
+
+function titleCase(name: string) {
+  const words = map(splitCase(name), upperFirst)
+
+  const ret = []
+  let word = ''
+  for (let i = 0, len = words.length; i < len; i++) {
+    if (words[i].length === 1) {
+      word += words[i]
+    } else {
+      if (word) {
+        ret.push(word)
+        word = ''
+      }
+      ret.push(words[i])
+    }
+  }
+
+  if (word) {
+    ret.push(word)
+  }
+
+  return ret.join(' ')
 }
 
 function isPureObjectNode(schemaNode: RegularNode) {
