@@ -72,6 +72,10 @@ export default async function handler(
       title = 'Lerna Config'
       schema = require('./schema/lerna.json')
       break
+    case '.nycrc.json':
+      title = 'Nyc Config'
+      schema = require('./schema/nycrc.json')
+      break  
   }
 
   if (schema) {

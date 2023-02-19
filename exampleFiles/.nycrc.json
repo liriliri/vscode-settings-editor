@@ -1,0 +1,49 @@
+{
+  "extends": "@istanbuljs/nyc-config-typescript",
+  "reporter": [
+    "lcov",
+    "text",
+    "text-summary"
+  ],
+  "exclude": [
+    "js/**/*.d.ts",
+    "typings/*.d.ts",
+    "docs/**",
+    "jsdocs/**",
+    "coverage/**",
+    "test/**",
+    "bin/**",
+    "lib/lbt/**",
+    "util/**",
+    "src/cli.ts",
+    "index.js",
+    "js/src/cli.js",
+    ".prettierrc.js"
+  ],
+  "check-coverage": true,
+  "lines": 50,
+  "statements": 50,
+  "functions": 50,
+  "branches": 40,
+  "watermarks": {
+    "lines": [
+      60,
+      90
+    ],
+    "functions": [
+      60,
+      90
+    ],
+    "branches": [
+      50,
+      70
+    ],
+    "statements": [
+      60,
+      90
+    ]
+  },
+  "cache": true,
+  "all": true,
+  "report-dir": "./coverage"
+}

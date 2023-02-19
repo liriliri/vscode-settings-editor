@@ -61,6 +61,7 @@ export async function getFileHandler(document: vscode.TextDocument) {
     case 'cypress.json':
     case '.eslintrc.json':
     case 'lerna.json':
+    case '.nycrc.json':  
       return 'schema'
   }
 

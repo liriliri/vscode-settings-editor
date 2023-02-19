@@ -21,6 +21,8 @@ Supported configuration type:
   - cypress.json
 * lerna
   - lerna.json
+* Istanbul
+  - .nycrc.json  
 
 ![settings-editor](https://res.liriliri.io/other/vscode-settings-editor.gif)
 
