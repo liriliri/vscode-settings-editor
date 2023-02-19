@@ -257,7 +257,7 @@ function titleCase(name: string) {
   const ret = []
   let word = ''
   for (let i = 0, len = words.length; i < len; i++) {
-    if (words[i].length === 1) {
+    if (words[i].length === 1 || word.length === 1) {
       word += words[i]
     } else {
       if (word) {

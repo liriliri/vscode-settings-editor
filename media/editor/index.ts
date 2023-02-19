@@ -25,7 +25,7 @@ searchInput.addEventListener(
   debounce(function () {
     const filter = trim(searchInput.value)
     setting.setOption('filter', filter)
-  }, 200),
+  }, 100),
   false
 )
 
