@@ -14,7 +14,7 @@ Supported configuration type:
   - package.json
   - .npmrc
 * prettier
-  - .prettierrc.json
+  - .prettierrc
 * typescript
   - tsconfig.json
 * cypress
@@ -22,7 +22,11 @@ Supported configuration type:
 * lerna
   - lerna.json
 * Istanbul
-  - .nycrc.json  
+  - .nycrc
+* Babel
+  - .babelrc
+* Eslint
+  - .eslintrc  
 
 ![settings-editor](https://res.liriliri.io/other/vscode-settings-editor.gif)
 

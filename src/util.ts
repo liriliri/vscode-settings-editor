@@ -55,13 +55,18 @@ export async function getFileHandler(document: vscode.TextDocument) {
     case 'package.json':
     case '.npmrc':
       return 'npm'
+    case '.prettierrc':
     case '.prettierrc.json':
       return 'prettier'
     case 'tsconfig.json':
     case 'cypress.json':
+    case '.eslintrc':
     case '.eslintrc.json':
     case 'lerna.json':
-    case '.nycrc.json':  
+    case '.nycrc':
+    case '.nycrc.json':
+    case '.babelrc':
+    case '.babelrc.json':
       return 'schema'
   }
 

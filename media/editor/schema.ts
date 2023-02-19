@@ -43,6 +43,7 @@ export default async function handler(
       schema = require('./schema/cypress.json')
       maxLevel = 1
       break
+    case '.eslintrc':
     case '.eslintrc.json':
       title = 'Eslint Config'
       schema = require('./schema/eslintrc.json')
@@ -72,10 +73,16 @@ export default async function handler(
       title = 'Lerna Config'
       schema = require('./schema/lerna.json')
       break
+    case '.nycrc':
     case '.nycrc.json':
       title = 'Nyc Config'
       schema = require('./schema/nycrc.json')
-      break  
+      break
+    case '.babelrc':
+    case '.babelrc.json':
+      title = 'Babel Config'
+      schema = require('./schema/babelrc.json')
+      break
   }
 
   if (schema) {
