@@ -5,14 +5,12 @@ import npm from './npm'
 import miniprogram from './miniprogram'
 import prettier from './prettier'
 import schema from './schema'
-import typescript from './typescript'
 import { store, i18n } from './util'
 
 const handlers: any = {
   miniprogram,
   prettier,
   npm,
-  typescript,
   schema,
 }
 
@@ -27,7 +25,7 @@ searchInput.addEventListener(
   debounce(function () {
     const filter = trim(searchInput.value)
     setting.setOption('filter', filter)
-  }, 500),
+  }, 200),
   false
 )
 
