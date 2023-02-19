@@ -17,6 +17,8 @@ Supported configuration type:
   - .prettierrc.json
 * typescript
   - tsconfig.json  
+* cypress
+  - cypress.json
 
 ![settings-editor](https://res.liriliri.io/other/vscode-settings-editor.gif)
 
