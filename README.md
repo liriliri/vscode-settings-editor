@@ -16,9 +16,11 @@ Supported configuration type:
 * prettier
   - .prettierrc.json
 * typescript
-  - tsconfig.json  
+  - tsconfig.json
 * cypress
   - cypress.json
+* lerna
+  - lerna.json
 
 ![settings-editor](https://res.liriliri.io/other/vscode-settings-editor.gif)
 

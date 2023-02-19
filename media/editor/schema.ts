@@ -68,6 +68,10 @@ export default async function handler(
       schema = require('./schema/tsconfig.json')
       maxLevel = 2
       break
+    case 'lerna.json':
+      title = 'Lerna Config'
+      schema = require('./schema/lerna.json')
+      break
   }
 
   if (schema) {
