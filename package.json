@@ -1,8 +1,8 @@
 {
   "name": "vscode-settings-editor",
   "displayName": "Settings Editor",
-  "description": "VS Code visual editor for settings like prettier, npm package etc",
-  "version": "0.6.1",
+  "description": "VS Code visual editor for settings like prettierrc etc",
+  "version": "0.6.2",
   "engines": {
     "vscode": "^1.74.0"
   },

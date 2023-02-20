@@ -1,4 +1,13 @@
-VS Code visual editor for settings like prettier, npm package etc.
+# VS Code Settings Editor
+
+VS Code visual editor for settings like prettierrc, tsconfig etc.
+
+## Install
+
+1. Open Extensions sideBar panel in Visual Studio Code and choose the menu options for View → Extensions
+1. Search for `vscode-settings-editor`
+1. Click Install
+1. Click Reload, if required
 
 ## Features
 
@@ -28,8 +37,8 @@ Supported configuration type:
 * Eslint
   - .eslintrc  
 
-![settings-editor](https://res.liriliri.io/other/vscode-settings-editor.gif)
-
 ## How to Use
 
 Click button on editor title to open settings visual editor.
+
+![settings-editor](https://res.liriliri.io/other/vscode-settings-editor.gif)

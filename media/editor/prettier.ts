@@ -1,15 +1,12 @@
 import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
-import isUndef from 'licia/isUndef'
-import endWith from 'licia/endWith'
-import { buildSettings, i18n, updateText, def, getSpace } from './util'
+import { buildSettings, i18n, updateText, def, getSpace, setI18n } from './util'
 
-i18n.set('en', {
-  'prettier.tabWidthDesc':
+setI18n({
+  'prettier.tabWidthDesc': [
     'Specify the number of spaces per indentation-level.',
-})
-i18n.set('zh-cn', {
-  'prettier.tabWidthDesc': '指定缩进空格数。',
+    '指定缩进空格数。',
+  ],
 })
 
 export default function handler(

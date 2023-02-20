@@ -75,6 +75,7 @@ setI18n(
       '指定模块代码包同步到终端工程的目录。对于模板终端工程，只有一个模块的情况，这个路径不需要修改。对于多模块的项目，不同的模块可以指定不同的目录。',
     miniappBuildArchiveEverytimeDesc:
       '指定每次构建或运行终端工程时都需要编译小程序模块资源包。',
+    miniappUseExtendedSdk: '扩展 SDK 配置',
     miniappRunArgsDesc:
       '运行时使用的[编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
     miniappBuildArgsDesc:
@@ -1001,6 +1002,7 @@ function miniapp(setting: LunaSetting, text: string) {
 
   const android = json['mini-android'] || {}
   const ios = json['mini-ios'] || {}
+  const androidUseExtendedSdk = android.useExtendedSdk || {}
 
   buildSettings(setting, [
     ['title', t('miniappTitle')],
@@ -1068,6 +1070,35 @@ function miniapp(setting: LunaSetting, text: string) {
       android.buildArchiveEverytime,
       'Build Archive Everytime',
       t('miniappBuildArchiveEverytimeDesc'),
+    ],
+    ['title', t('miniappUseExtendedSdk'), 2],
+    [
+      'checkbox',
+      'mini-android.useExtendedSdk.media',
+      def(androidUseExtendedSdk.media, true),
+      'Media SDK',
+      '音视频播放功能。',
+    ],
+    [
+      'checkbox',
+      'mini-android.useExtendedSdk.network',
+      def(androidUseExtendedSdk.network, false),
+      'Network SDK',
+      '`websocket` 相关功能。',
+    ],
+    [
+      'checkbox',
+      'mini-android.useExtendedSdk.bluetooth',
+      def(androidUseExtendedSdk.bluetooth, false),
+      'Bluetooth SDK',
+      '蓝牙相关功能。',
+    ],
+    [
+      'checkbox',
+      'mini-android.useExtendedSdk.scanner',
+      def(androidUseExtendedSdk.scanner, false),
+      'Scanner SDK',
+      '扫码 `wx.scancode` 接口。',
     ],
     ['title', t('miniappRunArgs'), 2],
     ['markdown', t('miniappRunArgsDesc')],
