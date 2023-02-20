@@ -2,6 +2,8 @@
 
 VS Code visual editor for settings like prettierrc, tsconfig etc.
 
+![settings-editor](https://res.liriliri.io/other/vscode-settings-editor.gif)
+
 ## Install
 
 1. Open Extensions sideBar panel in Visual Studio Code and choose the menu options for View → Extensions
@@ -40,5 +42,3 @@ Supported configuration type:
 ## How to Use
 
 Click button on editor title to open settings visual editor.
-
-![settings-editor](https://res.liriliri.io/other/vscode-settings-editor.gif)
