@@ -1,32 +1,29 @@
-import LunaSetting from 'luna-setting'
 import isEmpty from 'licia/isEmpty'
 import map from 'licia/map'
 import truncate from 'licia/truncate'
 import safeSet from 'licia/safeSet'
 import splitPath from 'licia/splitPath'
 import ini from 'licia/ini'
-import { vscode, updateText, buildSettings, def, i18n, getSpace } from './util'
+import { def } from './setting'
+import * as setting from './setting'
+import { vscode, updateText, i18n, getSpace } from './util'
 
-export default function handler(
-  setting: LunaSetting,
-  fileName: string,
-  text: string
-) {
+export default function handler(fileName: string, text: string) {
   const { name } = splitPath(fileName)
 
   switch (name) {
     case 'package.json':
-      pack(setting, fileName, text)
+      pack(fileName, text)
       break
     case '.npmrc':
-      config(setting, text)
+      config(text)
       break
   }
 }
 
-function pack(setting: LunaSetting, fileName: string, text: string) {
+function pack(fileName: string, text: string) {
   const json = JSON.parse(text)
-  setting.on('change', (key, val) => {
+  setting.onChange((key, val) => {
     safeSet(json, key, val)
 
     if (key === 'license' && val === '') {
@@ -36,7 +33,7 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
     updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
-  buildSettings(setting, [
+  setting.build([
     ['title', 'Npm Package'],
     [
       'markdown',
@@ -88,7 +85,7 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
   if (json.license) {
     licenseOptions[json.license] = json.license
   }
-  buildSettings(setting, [
+  setting.build([
     [
       'select',
       'license',
@@ -111,7 +108,7 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
 
   if (json.scripts && !isEmpty(json.scripts)) {
     const { dir } = splitPath(fileName)
-    buildSettings(setting, [
+    setting.build([
       ['title', 'Scripts'],
       ...map(json.scripts, (script: string, name: string) => {
         return [
@@ -130,16 +127,16 @@ function pack(setting: LunaSetting, fileName: string, text: string) {
   }
 }
 
-function config(setting: LunaSetting, text: string) {
+function config(text: string) {
   const obj = ini.parse(text)
 
-  setting.on('change', (key, val) => {
+  setting.onChange((key, val) => {
     safeSet(obj, key, val)
 
     updateText(ini.stringify(obj))
   })
 
-  buildSettings(setting, [
+  setting.build([
     ['title', 'Npm Config'],
     [
       'markdown',

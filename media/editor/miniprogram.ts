@@ -1,6 +1,7 @@
-import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
-import { updateText, i18n, buildSettings, def, getSpace, setI18n } from './util'
+import { updateText, i18n, getSpace, setI18n } from './util'
+import { def } from './setting'
+import * as setting from './setting'
 import splitPath from 'licia/splitPath'
 
 setI18n(
@@ -96,35 +97,31 @@ function t(path: string) {
   return i18n.t(`miniprogram.${path}`)
 }
 
-export default function handler(
-  setting: LunaSetting,
-  fileName: string,
-  text: string
-) {
+export default function handler(fileName: string, text: string) {
   const { name } = splitPath(fileName)
 
   switch (name) {
     case 'project.config.json':
-      project(setting, text)
+      project(text)
       break
     case 'project.private.config.json':
-      project(setting, text, true)
+      project(text, true)
       break
     case 'project.miniapp.json':
-      miniapp(setting, text)
+      miniapp(text)
       break
     case 'app.json':
-      app(setting, text)
+      app(text)
       break
     default:
-      page(setting, text)
+      page(text)
       break
   }
 }
 
-function project(setting: LunaSetting, text: string, isPrivate = false) {
+function project(text: string, isPrivate = false) {
   const json = JSON.parse(text)
-  setting.on('change', (key, val) => {
+  setting.onChange((key, val) => {
     safeSet(json, key, val)
     updateText(JSON.stringify(json, null, getSpace()))
   })
@@ -133,7 +130,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
   const scripts = json.scripts || {}
   const settings = json.setting || {}
 
-  buildSettings(setting, [
+  setting.build([
     ['title', isPrivate ? t('projectPrivateTitle') : t('projectTitle')],
     [
       'markdown',
@@ -144,7 +141,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
   ])
 
   if (!isPrivate) {
-    buildSettings(setting, [
+    setting.build([
       [
         'path',
         'miniprogramRoot',
@@ -237,7 +234,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
     ])
   }
 
-  buildSettings(setting, [
+  setting.build([
     [
       'text',
       'libVersion',
@@ -256,7 +253,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
   ])
 
   if (!isPrivate) {
-    buildSettings(setting, [
+    setting.build([
       ['complex', 'packOptions', 'Pack Options', t('projectPackOptionsDesc')],
       [
         'complex',
@@ -273,13 +270,13 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
     ])
   }
 
-  buildSettings(setting, [
+  setting.build([
     ['title', 'Setting'],
     ['markdown', t('projectSettingDesc')],
   ])
 
   if (!isPrivate) {
-    buildSettings(setting, [
+    setting.build([
       [
         'checkbox',
         'setting.condition',
@@ -346,7 +343,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
     ])
   }
 
-  buildSettings(setting, [
+  setting.build([
     [
       'checkbox',
       'setting.autoAudits',
@@ -399,7 +396,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
   ])
 
   if (!isPrivate) {
-    buildSettings(setting, [
+    setting.build([
       [
         'complex',
         'setting.babelSetting',
@@ -449,7 +446,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
     ])
   }
 
-  buildSettings(setting, [
+  setting.build([
     [
       'checkbox',
       'setting.coverView',
@@ -530,7 +527,7 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
   ])
 
   if (!isPrivate) {
-    buildSettings(setting, [
+    setting.build([
       ['title', 'Scripts'],
       ['markdown', '指定自定义预处理的命令。'],
       [
@@ -567,9 +564,9 @@ function project(setting: LunaSetting, text: string, isPrivate = false) {
   }
 }
 
-function app(setting: LunaSetting, text: string) {
+function app(text: string) {
   const json = JSON.parse(text)
-  setting.on('change', (key, val) => {
+  setting.onChange((key, val) => {
     safeSet(json, key, val)
 
     updateText(JSON.stringify(json, null, getSpace()) + '\n')
@@ -580,7 +577,7 @@ function app(setting: LunaSetting, text: string) {
   const halfPage = json.halfPage || {}
   const debugOptions = json.debugOptions || {}
 
-  buildSettings(setting, [
+  setting.build([
     ['title', t('appTitle')],
     [
       'markdown',
@@ -784,14 +781,14 @@ function app(setting: LunaSetting, text: string) {
   ])
 }
 
-function page(setting: LunaSetting, text: string) {
+function page(text: string) {
   const json = JSON.parse(text)
-  setting.on('change', (key, val) => {
+  setting.onChange((key, val) => {
     safeSet(json, key, val)
     updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
-  buildSettings(setting, [
+  setting.build([
     ['title', '页面配置'],
     [
       'markdown',
@@ -992,9 +989,9 @@ function commonWindow(window: any, prefix: string = '') {
   ]
 }
 
-function miniapp(setting: LunaSetting, text: string) {
+function miniapp(text: string) {
   const json = JSON.parse(text)
-  setting.on('change', (key, val) => {
+  setting.onChange((key, val) => {
     safeSet(json, key, val)
 
     updateText(JSON.stringify(json, null, getSpace()) + '\n')
@@ -1004,7 +1001,7 @@ function miniapp(setting: LunaSetting, text: string) {
   const ios = json['mini-ios'] || {}
   const androidUseExtendedSdk = android.useExtendedSdk || {}
 
-  buildSettings(setting, [
+  setting.build([
     ['title', t('miniappTitle')],
     [
       'markdown',

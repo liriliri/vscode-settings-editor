@@ -1,11 +1,10 @@
-import LunaSetting from 'luna-setting'
-import debounce from 'licia/debounce'
-import trim from 'licia/trim'
 import npm from './npm'
 import miniprogram from './miniprogram'
 import prettier from './prettier'
 import schema from './schema'
 import { store, i18n } from './util'
+import * as search from './search'
+import * as setting from './setting'
 
 const handlers: any = {
   miniprogram,
@@ -13,21 +12,6 @@ const handlers: any = {
   npm,
   schema,
 }
-
-const container = document.getElementById('container') as HTMLElement
-const setting = new LunaSetting(container)
-
-const searchInput = document
-  .getElementById('search')
-  ?.querySelector('input') as HTMLInputElement
-searchInput.addEventListener(
-  'input',
-  debounce(function () {
-    const filter = trim(searchInput.value)
-    setting.setOption('filter', filter)
-  }, 100),
-  false
-)
 
 window.addEventListener('message', (event) => {
   const message = event.data // The json data that the extension sent
@@ -55,7 +39,7 @@ function updateLanguage() {
   const language = store.get('language')
   if (language) {
     i18n.locale(language)
-    searchInput.setAttribute('placeholder', i18n.t('searchSettings'))
+    search.setPlaceHolder(i18n.t('searchSettings'))
   }
 }
 
@@ -68,11 +52,10 @@ function updateContent() {
     return
   }
 
-  searchInput.value = ''
-  setting.clear()
-  setting.removeAllListeners('change')
+  search.reset()
+  setting.reset()
 
-  handlers[handler](setting, fileName, text)
+  handlers[handler](fileName, text)
 }
 
 updateLanguage()

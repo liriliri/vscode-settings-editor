@@ -13,7 +13,9 @@ import every from 'licia/every'
 import isStr from 'licia/isStr'
 import isNum from 'licia/isNum'
 import isArr from 'licia/isArr'
-import { buildSettings, updateText, getSpace, def } from './util'
+import * as setting from './setting'
+import { def } from './setting'
+import { updateText, getSpace } from './util'
 import {
   SchemaTree,
   RootNode,
@@ -24,11 +26,7 @@ import {
 } from '@stoplight/json-schema-tree'
 
 // https://github.com/stoplightio/json-schema-viewer
-export default async function handler(
-  setting: LunaSetting,
-  fileName: string,
-  text: string
-) {
+export default async function handler(fileName: string, text: string) {
   const { name } = splitPath(fileName)
   let schema: any = {}
   let title = ''
@@ -90,7 +88,7 @@ export default async function handler(
       mergeAllOf: true,
     })
     tree.populate()
-    buildSettingsFromSchema(setting, text, title, tree.root, {
+    buildSettingsFromSchema(text, title, tree.root, {
       maxLevel,
       selectChoices,
     })
@@ -103,7 +101,6 @@ interface IOptions {
 }
 
 function buildSettingsFromSchema(
-  setting: LunaSetting,
   text: string,
   title: string,
   root: RootNode,
@@ -112,7 +109,7 @@ function buildSettingsFromSchema(
   const maxLevel = options.maxLevel
   const selectChoices = options.selectChoices
   const json = json5.parse(text)
-  setting.on('change', (key, val) => {
+  setting.onChange((key, val) => {
     safeSet(json, key, val)
     updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
@@ -231,7 +228,7 @@ function buildSettingsFromSchema(
   }
   buildConfig(root.children[0] as RegularNode, title)
 
-  buildSettings(setting, config)
+  setting.build(config)
 }
 
 function getDescription(node: SchemaNode) {

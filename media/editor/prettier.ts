@@ -1,6 +1,8 @@
 import LunaSetting from 'luna-setting'
 import safeSet from 'licia/safeSet'
-import { buildSettings, i18n, updateText, def, getSpace, setI18n } from './util'
+import { def } from './setting'
+import * as setting from './setting'
+import { i18n, updateText, getSpace, setI18n } from './util'
 
 setI18n({
   'prettier.tabWidthDesc': [
@@ -9,20 +11,16 @@ setI18n({
   ],
 })
 
-export default function handler(
-  setting: LunaSetting,
-  fileName: string,
-  text: string
-) {
+export default function handler(fileName: string, text: string) {
   const json = JSON.parse(text)
 
-  setting.on('change', (key, val) => {
+  setting.onChange((key, val) => {
     safeSet(json, key, val)
 
     updateText(JSON.stringify(json, null, getSpace()) + '\n')
   })
 
-  buildSettings(setting, [
+  setting.build([
     ['title', 'Prettier Options'],
     [
       'markdown',
