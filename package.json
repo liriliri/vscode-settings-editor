@@ -2,7 +2,7 @@
   "name": "vscode-settings-editor",
   "displayName": "Settings Editor",
   "description": "VS Code visual editor for settings like prettierrc etc",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -67,7 +67,7 @@
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "node .esbuild.config.js",
-    "format": "prettier \"*.{js,json}\" \"src/**/*.ts\" \"media/**/*.{ts,json}\" --write",
+    "format": "prettier \"*.{js,json}\" \"src/**/*.ts\" \"media/**/*.{ts,json,scss}\" --write",
     "watch": "node .esbuild.config.js --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts"

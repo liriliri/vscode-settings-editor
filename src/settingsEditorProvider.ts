@@ -179,7 +179,10 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
             <input types="text"/>
           </div>
         </div>
-        <div id="container"></div>
+        <div id="container">
+          <div id="toc-container"></div>
+          <div id="settings-container"></div>
+        </div>
         <script nonce="${nonce}" src="${scriptUri}"></script>
       </body>
       </html>

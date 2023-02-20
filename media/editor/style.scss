@@ -1,4 +1,4 @@
-@import "luna-setting/luna-setting.css";
+@import 'luna-setting/luna-setting.css';
 
 /* older version vscode fallback */
 .vscode-light {
@@ -30,7 +30,8 @@
       display: block;
       margin-top: 10px;
       width: 100%;
-      border-bottom: 1px solid var(--vscode-settings-headerBorder, var(--headerBorder));
+      border-bottom: 1px solid
+        var(--vscode-settings-headerBorder, var(--headerBorder));
     }
     input {
       width: 100%;
@@ -60,6 +61,74 @@
   padding: 14px 0;
   margin: 0 auto;
   margin-top: 40px;
+  position: relative;
+}
+
+#toc-container {
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 15px;
+  width: 160px;
+  & > ul > li {
+    & > a {
+      padding-left: 10px;
+    }
+    & > ul > li {
+      & > a {
+        padding-left: 20px;
+      }
+      & > ul > li > a {
+        padding-left: 40px;
+      }
+    }
+  }
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+  a {
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+    color: var(--vscode-foreground);
+    text-decoration: none;
+    line-height: 22px;
+    display: inline-block;
+    padding: 0 2px;
+    &:hover {
+      color: var(--vscode-settings-settingsHeaderHoverForeground);
+    }
+    &:focus {
+      font-weight: 700;
+      outline-color: #007fd4;
+      outline-width: 1px;
+      outline-style: solid;
+      outline-offset: -1px;
+      opacity: 1;
+    }
+  }
+  li {
+    width: 100%;
+    list-style: none;
+  }
+}
+
+#settings-container {
+  padding-left: 180px;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 160px;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    border-left: 1px solid
+      var(--vscode-settings-headerBorder, var(--headerBorder));
+  }
 }
 
 .luna-setting {
@@ -82,16 +151,26 @@
   .luna-setting-title {
     margin-bottom: 2px;
   }
-  &:hover, &.luna-setting-selected {
-    background: var(--vscode-settings-rowHoverBackground, var(--rowHoverBackground));
+  &:hover,
+  &.luna-setting-selected {
+    background: var(
+      --vscode-settings-rowHoverBackground,
+      var(--rowHoverBackground)
+    );
   }
   &.luna-setting-selected:focus {
-    outline-color: var(--vscode-settings-focusedRowBorder, var(--focusedRowBorder));
+    outline-color: var(
+      --vscode-settings-focusedRowBorder,
+      var(--focusedRowBorder)
+    );
   }
-  .luna-setting-control, .luna-setting-description {
+  .luna-setting-control,
+  .luna-setting-description {
     font-size: 13px;
   }
-  .luna-setting-description, .luna-setting-control, &.luna-setting-item-markdown {
+  .luna-setting-description,
+  .luna-setting-control,
+  &.luna-setting-item-markdown {
     code {
       line-height: 15px;
       font-family: var(--monaco-monospace-font);
@@ -132,7 +211,8 @@
   }
 }
 
-.luna-setting-item-input, .item-path {
+.luna-setting-item-input,
+.item-path {
   input {
     color: var(--vscode-settings-textInputForeground);
     background: var(--vscode-settings-textInputBackground);
@@ -184,7 +264,8 @@
   }
 }
 
-.luna-setting-item-button, .item-path {
+.luna-setting-item-button,
+.item-path {
   button {
     white-space: nowrap;
     padding: 2px 14px;
@@ -194,7 +275,7 @@
     border-color: var(--vscode-button-border, transparent);
     &:hover,
     &:active {
-      background: var(--vscode-button-hoverBackground); 
+      background: var(--vscode-button-hoverBackground);
     }
   }
 }
@@ -212,7 +293,9 @@
   }
 }
 
-.item-markdown, .item-complex, .item-path {
+.item-markdown,
+.item-complex,
+.item-path {
   padding: 12px 14px 18px;
 }
 
@@ -249,8 +332,20 @@
     input {
       &:checked {
         border-color: var(--vscode-settings-checkboxBorder);
-        background-color: var(--vscode-settings-checkboxBackground); 
+        background-color: var(--vscode-settings-checkboxBackground);
       }
+    }
+  }
+}
+
+.hide-toc {
+  #toc-container {
+    display: none;
+  }
+  #settings-container {
+    padding-left: 0;
+    &::after {
+      display: none;
     }
   }
 }

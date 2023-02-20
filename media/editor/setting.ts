@@ -9,12 +9,15 @@ import startWith from 'licia/startWith'
 import { micromark } from 'micromark'
 import h from 'licia/h'
 import types from 'licia/types'
+import * as toc from './toc'
 import { store, vscode, i18n, sendCommand } from './util'
+import uniqId from 'licia/uniqId'
 
-const container = document.getElementById('container') as HTMLElement
+const container = document.getElementById('settings-container') as HTMLElement
 const setting = new LunaSetting(container)
 
 export function setFilter(filter: string) {
+  window.scrollTo(window.scrollX, 0)
   setting.setOption('filter', filter)
 }
 
@@ -23,6 +26,7 @@ export function onChange(handler: types.AnyFn) {
 }
 
 export function reset() {
+  toc.reset()
   setting.clear()
   setting.removeAllListeners('change')
 }
@@ -183,7 +187,10 @@ export function build(config: any) {
     let item: any
     switch (type) {
       case 'title':
+        const titleId = uniqId('title-')
         item = setting.appendTitle.apply(setting, value)
+        toc.add(value[0], titleId, value[1])
+        item.container.id = titleId
         break
       case 'markdown':
         item = setting.appendMarkdown.apply(setting, value)
@@ -228,4 +235,6 @@ export function build(config: any) {
       updateModified()
     }
   })
+
+  toc.build()
 }
