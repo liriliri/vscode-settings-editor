@@ -89,6 +89,7 @@
     margin: 0;
   }
   a {
+    font-size: 13px;
     box-sizing: border-box;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -99,20 +100,25 @@
     line-height: 22px;
     display: inline-block;
     padding: 0 2px;
+    outline: none;
     &:hover {
       color: var(--vscode-settings-settingsHeaderHoverForeground);
     }
-    &:focus {
+    &.active {
       font-weight: 700;
-      outline-color: #007fd4;
-      outline-width: 1px;
-      outline-style: solid;
-      outline-offset: -1px;
+      color: var(--vscode-settings-headerForeground);
       opacity: 1;
+      &:focus {
+        outline-color: #007fd4;
+        outline-width: 1px;
+        outline-style: solid;
+        outline-offset: -1px;
+      }
     }
   }
   li {
     width: 100%;
+    font-size: 0;
     list-style: none;
   }
 }

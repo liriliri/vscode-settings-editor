@@ -2,7 +2,7 @@
   "name": "vscode-settings-editor",
   "displayName": "Settings Editor",
   "description": "VS Code visual editor for settings like prettierrc etc",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "engines": {
     "vscode": "^1.74.0"
   },
