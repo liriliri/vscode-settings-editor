@@ -1052,7 +1052,7 @@ function miniapp(text: string) {
       'mini-android.projectPath',
       android.projectPath,
       'Project Path',
-      t('miniappUseProjectTemplateDesc'),
+      t('miniappProjectPathDesc'),
     ],
     [
       'text',
@@ -1150,7 +1150,7 @@ function miniapp(text: string) {
       'mini-ios.projectPath',
       ios.projectPath,
       'Project Path',
-      t('miniappUseProjectTemplateDesc'),
+      t('miniappProjectPathDesc'),
     ],
     [
       'text',
