@@ -76,6 +76,8 @@ setI18n(
       '指定模块代码包同步到终端工程的目录。对于模板终端工程，只有一个模块的情况，这个路径不需要修改。对于多模块的项目，不同的模块可以指定不同的目录。',
     miniappBuildArchiveEverytimeDesc:
       '指定每次构建或运行终端工程时都需要编译小程序模块资源包。',
+    miniappIcons: '图标配置',
+    miniappIconDesc: '{{resolution}} 高分屏应用图标。',
     miniappUseExtendedSdk: '扩展 SDK 配置',
     miniappRunArgsDesc:
       '运行时使用的[编译参数配置](https://dev.weixin.qq.com/docs/framework/dev/framework/operation/project-intro.html#编译参数配置)。',
@@ -93,8 +95,8 @@ setI18n(
   'miniprogram.'
 )
 
-function t(path: string) {
-  return i18n.t(`miniprogram.${path}`)
+function t(path: string, data?: any) {
+  return i18n.t(`miniprogram.${path}`, data)
 }
 
 export default function handler(fileName: string, text: string) {
@@ -999,6 +1001,7 @@ function miniapp(text: string) {
 
   const android = json['mini-android'] || {}
   const ios = json['mini-ios'] || {}
+  const androidIcons = android.icons || {}
   const androidUseExtendedSdk = android.useExtendedSdk || {}
 
   setting.build([
@@ -1071,6 +1074,47 @@ function miniapp(text: string) {
       android.buildArchiveEverytime,
       'Build Archive Everytime',
       t('miniappBuildArchiveEverytimeDesc'),
+    ],
+    ['title', t('miniappIcons'), 2],
+    [
+      'path',
+      'mini-android.icons.hdpi',
+      def(androidIcons.hdpi, ''),
+      '72 × 72',
+      t('miniappIconDesc', { resolution: 'hdpi' }),
+      {
+        extensions: ['png', 'webp'],
+      },
+    ],
+    [
+      'path',
+      'mini-android.icons.xhdpi',
+      def(androidIcons.xhdpi, ''),
+      '96 × 96',
+      t('miniappIconDesc', { resolution: 'xhdpi 720P' }),
+      {
+        extensions: ['png', 'webp'],
+      },
+    ],
+    [
+      'path',
+      'mini-android.icons.xxhdpi',
+      def(androidIcons.xxhdpi, ''),
+      '144 × 144',
+      t('miniappIconDesc', { resolution: 'xxhdpi 1080P' }),
+      {
+        extensions: ['png', 'webp'],
+      },
+    ],
+    [
+      'path',
+      'mini-android.icons.xxxhdpi',
+      def(androidIcons.xxxhdpi, ''),
+      '192 × 192',
+      t('miniappIconDesc', { resolution: 'xxxhdpi 4K' }),
+      {
+        extensions: ['png', 'webp'],
+      },
     ],
     ['title', t('miniappUseExtendedSdk'), 2],
     [
