@@ -1198,10 +1198,6 @@ function miniapp(text: string) {
       ios.buildArgs.exportOptionPlistPath,
       'Export Option Plist Path',
       t('miniappExportOptionPlistPathDesc'),
-      {
-        folder: true,
-        file: false,
-      },
     ],
   ])
 }
