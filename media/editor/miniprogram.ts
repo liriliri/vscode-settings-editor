@@ -1053,6 +1053,10 @@ function miniapp(text: string) {
       android.projectPath,
       'Project Path',
       t('miniappProjectPathDesc'),
+      {
+        folder: true,
+        file: false,
+      },
     ],
     [
       'text',
@@ -1151,6 +1155,10 @@ function miniapp(text: string) {
       ios.projectPath,
       'Project Path',
       t('miniappProjectPathDesc'),
+      {
+        folder: true,
+        file: false,
+      },
     ],
     [
       'text',
@@ -1190,6 +1198,10 @@ function miniapp(text: string) {
       ios.buildArgs.exportOptionPlistPath,
       'Export Option Plist Path',
       t('miniappExportOptionPlistPathDesc'),
+      {
+        folder: true,
+        file: false,
+      },
     ],
   ])
 }
