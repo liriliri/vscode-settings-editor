@@ -46,7 +46,10 @@
       border-radius: 2px;
       height: 26px;
       &:focus {
-        outline-color: #007fd4;
+        outline-color: var(
+          --vscode-settings-focusedRowBorder,
+          var(--focusedRowBorder)
+        );
         outline-width: 1px;
         outline-style: solid;
         outline-offset: -1px;
@@ -109,7 +112,10 @@
       color: var(--vscode-settings-headerForeground);
       opacity: 1;
       &:focus {
-        outline-color: #007fd4;
+        outline-color: var(
+          --vscode-settings-focusedRowBorder,
+          var(--focusedRowBorder)
+        );
         outline-width: 1px;
         outline-style: solid;
         outline-offset: -1px;
@@ -193,7 +199,10 @@
   input {
     font-size: 13px;
     &:focus {
-      outline-color: #007fd4;
+      outline-color: var(
+        --vscode-settings-focusedRowBorder,
+        var(--focusedRowBorder)
+      );
       outline-width: 1px;
       outline-style: solid;
       outline-offset: -1px;
@@ -250,8 +259,14 @@
     border-color: var(--vscode-settings-checkboxBorder);
     background-color: var(--vscode-settings-checkboxBackground);
     &:checked {
-      border-color: #007fd4;
-      background-color: #007fd4;
+      border-color: var(
+        --vscode-settings-focusedRowBorder,
+        var(--focusedRowBorder)
+      );
+      background-color: var(
+        --vscode-settings-focusedRowBorder,
+        var(--focusedRowBorder)
+      );
     }
   }
 }
