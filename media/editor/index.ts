@@ -6,6 +6,8 @@ import { store, i18n } from './util'
 import * as search from './search'
 import * as setting from './setting'
 
+window.process = require('process')
+
 const handlers: any = {
   miniprogram,
   prettier,

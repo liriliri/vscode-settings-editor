@@ -12,6 +12,7 @@ import types from 'licia/types'
 import * as toc from './toc'
 import { store, vscode, i18n, sendCommand } from './util'
 import uniqId from 'licia/uniqId'
+import normalizePath from 'licia/normalizePath'
 
 const container = document.getElementById('settings-container') as HTMLElement
 const setting = new LunaSetting(container)
@@ -122,7 +123,7 @@ export function appendPath(
   const canSelectFolders = !!options.folder
   const canSelectFile = isUndef(options.file) ? true : options.file
   const extensions = options.extensions || []
-  const cwd = options.cwd || splitPath(store.get('fileName')).dir
+  const cwd = normalizePath(options.cwd || splitPath(store.get('fileName')).dir)
   const absolute = !!options.absolute
   button.onclick = async function () {
     let result = await sendCommand('showOpenDialog', {
@@ -134,6 +135,7 @@ export function appendPath(
       canSelectMany: false,
     })
     if (result) {
+      result = normalizePath(result)
       if (!absolute) {
         if (startWith(result, cwd)) {
           result = path.relative(cwd, result)
