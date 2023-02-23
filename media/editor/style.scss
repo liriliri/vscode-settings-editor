@@ -2,12 +2,10 @@
 
 /* older version vscode fallback */
 .vscode-light {
-  --focusedRowBorder: #0090f1;
-  --rowHoverBackground: rgba(214, 235, 255, 0.28);
+  --rowHoverBackground: rgba(0, 0, 1, 0.28);
   --headerBorder: rgba(128, 128, 128, 0.35);
 }
 .vscode-dark {
-  --focusedRowBorder: #007fd4;
   --rowHoverBackground: rgba(128, 128, 128, 0.07);
   --headerBorder: rgba(128, 128, 128, 0.35);
 }
@@ -48,7 +46,7 @@
       &:focus {
         outline-color: var(
           --vscode-settings-focusedRowBorder,
-          var(--focusedRowBorder)
+          var(--vscode-focusBorder)
         );
         outline-width: 1px;
         outline-style: solid;
@@ -114,7 +112,7 @@
       &:focus {
         outline-color: var(
           --vscode-settings-focusedRowBorder,
-          var(--focusedRowBorder)
+          var(--vscode-focusBorder)
         );
         outline-width: 1px;
         outline-style: solid;
@@ -173,7 +171,7 @@
   &.luna-setting-selected:focus {
     outline-color: var(
       --vscode-settings-focusedRowBorder,
-      var(--focusedRowBorder)
+      var(--vscode-focusBorder)
     );
   }
   .luna-setting-control,
@@ -201,7 +199,7 @@
     &:focus {
       outline-color: var(
         --vscode-settings-focusedRowBorder,
-        var(--focusedRowBorder)
+        var(--vscode-focusBorder)
       );
       outline-width: 1px;
       outline-style: solid;
@@ -261,11 +259,11 @@
     &:checked {
       border-color: var(
         --vscode-settings-focusedRowBorder,
-        var(--focusedRowBorder)
+        var(--vscode-focusBorder)
       );
       background-color: var(
         --vscode-settings-focusedRowBorder,
-        var(--focusedRowBorder)
+        var(--vscode-focusBorder)
       );
     }
   }
