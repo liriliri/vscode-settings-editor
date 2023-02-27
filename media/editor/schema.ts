@@ -7,12 +7,12 @@ import splitCase from 'licia/splitCase'
 import isUndef from 'licia/isUndef'
 import map from 'licia/map'
 import upperFirst from 'licia/upperFirst'
-import LunaSetting from 'luna-setting'
 import json5 from 'json5'
 import every from 'licia/every'
 import isStr from 'licia/isStr'
 import isNum from 'licia/isNum'
 import isArr from 'licia/isArr'
+import types from 'licia/types'
 import * as setting from './setting'
 import { def } from './setting'
 import { updateText, getSpace } from './util'
@@ -34,6 +34,7 @@ export default async function handler(fileName: string, text: string) {
   let selectChoices = (node: RegularNode, val?: any) => {
     return (node.children as any)[0] as RegularNode
   }
+  let resolve: types.AnyFn = () => {}
 
   switch (name) {
     case 'cypress.json':
@@ -66,6 +67,39 @@ export default async function handler(fileName: string, text: string) {
       title = 'Typescript Config'
       schema = require('./schema/tsconfig.json')
       maxLevel = 2
+      resolve = function (
+        path: string,
+        node: SchemaNode,
+        val: types.AnyFn,
+        title: string,
+        description: string
+      ) {
+        switch (path) {
+          case 'extends':
+            return [
+              'path',
+              path,
+              val(path, 'string', node),
+              title,
+              description,
+              {
+                extensions: ['json'],
+              },
+            ]
+          case 'compilerOptions.declarationDir':
+            return [
+              'path',
+              path,
+              val(path, 'string', node),
+              title,
+              description,
+              {
+                folder: true,
+                file: false,
+              },
+            ]
+        }
+      }
       break
     case 'lerna.json':
       title = 'Lerna Config'
@@ -90,6 +124,7 @@ export default async function handler(fileName: string, text: string) {
     tree.populate()
     buildSettingsFromSchema(text, title, tree.root, {
       maxLevel,
+      resolve,
       selectChoices,
     })
   }
@@ -97,6 +132,7 @@ export default async function handler(fileName: string, text: string) {
 
 interface IOptions {
   maxLevel: number
+  resolve: types.Fn<any[] | void>
   selectChoices: (node: RegularNode, val?: any) => RegularNode
 }
 
@@ -106,8 +142,7 @@ function buildSettingsFromSchema(
   root: RootNode,
   options: IOptions
 ) {
-  const maxLevel = options.maxLevel
-  const selectChoices = options.selectChoices
+  const { maxLevel, selectChoices, resolve } = options
   const json = json5.parse(text)
   setting.onChange((key, val) => {
     safeSet(json, key, val)
@@ -188,37 +223,42 @@ function buildSettingsFromSchema(
           options,
         ])
       } else {
-        switch (node.primaryType) {
-          case 'string':
-            config.push([
-              'text',
-              path,
-              val(path, 'string', node),
-              title,
-              description,
-            ])
-            break
-          case 'boolean':
-            config.push([
-              'checkbox',
-              path,
-              val(path, 'boolean', node),
-              title,
-              description,
-            ])
-            break
-          case 'integer':
-          case 'number':
-            config.push([
-              'number',
-              path,
-              val(path, 'number', node),
-              title,
-              description,
-            ])
-            break
-          default:
-            config.push(['complex', path, title, description])
+        const custom = resolve(path, node, val, title, description)
+        if (custom) {
+          config.push(custom)
+        } else {
+          switch (node.primaryType) {
+            case 'string':
+              config.push([
+                'text',
+                path,
+                val(path, 'string', node),
+                title,
+                description,
+              ])
+              break
+            case 'boolean':
+              config.push([
+                'checkbox',
+                path,
+                val(path, 'boolean', node),
+                title,
+                description,
+              ])
+              break
+            case 'integer':
+            case 'number':
+              config.push([
+                'number',
+                path,
+                val(path, 'number', node),
+                title,
+                description,
+              ])
+              break
+            default:
+              config.push(['complex', path, title, description])
+          }
         }
       }
     })

@@ -32,12 +32,12 @@ Supported configuration type:
   - cypress.json
 * lerna
   - lerna.json
-* Istanbul
+* istanbul
   - .nycrc
-* Babel
+* babel
   - .babelrc
-* Eslint
-  - .eslintrc  
+* eslint
+  - .eslintrc
 
 ## How to Use
 
