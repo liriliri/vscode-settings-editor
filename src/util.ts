@@ -47,11 +47,6 @@ export async function getFileHandler(document: vscode.TextDocument) {
   const { name, dir } = splitPath(fileName)
 
   switch (name) {
-    case 'app.json':
-    case 'project.config.json':
-    case 'project.private.config.json':
-    case 'project.miniapp.json':
-      return 'miniprogram'
     case 'package.json':
     case '.npmrc':
       return 'npm'
@@ -68,16 +63,6 @@ export async function getFileHandler(document: vscode.TextDocument) {
     case '.babelrc':
     case '.babelrc.json':
       return 'schema'
-  }
-
-  // miniprogram page
-  if (endWith(name, '.json')) {
-    const wxmlPath = path.resolve(dir, name.replace('.json', '.wxml'))
-    const wxmlUri = vscode.Uri.file(wxmlPath)
-    try {
-      await vscode.workspace.fs.stat(wxmlUri)
-      return 'miniprogram'
-    } catch (e) {}
   }
 
   return ''

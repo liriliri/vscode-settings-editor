@@ -1,5 +1,4 @@
 import npm from './npm'
-import miniprogram from './miniprogram'
 import prettier from './prettier'
 import schema from './schema'
 import { store, i18n } from './util'
@@ -9,7 +8,6 @@ import * as setting from './setting'
 window.process = require('process')
 
 const handlers: any = {
-  miniprogram,
   prettier,
   npm,
   schema,
