@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
 import randomId from 'licia/randomId'
 import lowerCase from 'licia/lowerCase'
+import debounce from 'licia/debounce'
 import {
   getFileHandler,
   reopenWith,
@@ -48,11 +49,13 @@ export class SettingsEditorProvider implements vscode.CustomTextEditorProvider {
     }
 
     const changeDocumentSubscription = vscode.workspace.onDidChangeTextDocument(
-      (e) => {
+      debounce((e) => {
         if (e.document.uri.toString() === document.uri.toString()) {
-          updateWebview()
+          if (!e.document.isDirty) {
+            updateWebview()
+          }
         }
-      }
+      }, 100)
     )
 
     webviewPanel.onDidDispose(() => {
